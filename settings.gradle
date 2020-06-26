@@ -1,0 +1,3 @@
+include ':needtool'
+include ':app'
+rootProject.name = "NeedToolSample"
