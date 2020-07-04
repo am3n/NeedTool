@@ -16,6 +16,15 @@ fun onIO(func: () -> Unit, delay: Long) {
     else
         onUI({ IO_EXECUTOR?.execute(func) }, delay)
 }
+fun onIO(func: Runnable) {
+    IO_EXECUTOR?.execute(func)
+}
+fun onIO(func: Runnable, delay: Long) {
+    if (delay <= 0)
+        IO_EXECUTOR?.execute(func)
+    else
+        onUI(Runnable { IO_EXECUTOR?.execute(func) }, delay)
+}
 
 private val UI_EXECUTER = Handler(Looper.getMainLooper())
 fun onUI(func: () -> Unit) {

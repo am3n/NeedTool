@@ -4,7 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 
 
-fun Context.sh(name: String, mode: Int = Context.MODE_PRIVATE): SharedPreferences {
+fun Context.sh(name: String): SharedPreferences {
+    return sh(name, Context.MODE_PRIVATE)
+}
+fun Context.sh(name: String, mode: Int): SharedPreferences {
     return getSharedPreferences(name, mode)
 }
 fun SharedPreferences.str(name: String, def: String = ""): String {
