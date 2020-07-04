@@ -6,8 +6,8 @@ import android.app.ActivityManager
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Point
 import android.location.LocationManager
@@ -24,7 +24,6 @@ import java.util.*
 import kotlin.collections.HashMap
 import kotlin.math.pow
 import kotlin.math.sqrt
-
 
 
 fun Context.sendLocalBroadcast(intent: Intent) {
@@ -183,6 +182,14 @@ fun Context.device(): HashMap<String, String> {
 
 
     return map
+}
+
+
+fun Context.isDebug(): Boolean {
+    try {
+        return 0 != (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE)
+    } catch (t: Throwable) {}
+    return false
 }
 
 
