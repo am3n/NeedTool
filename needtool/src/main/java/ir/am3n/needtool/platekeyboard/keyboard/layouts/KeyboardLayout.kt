@@ -11,7 +11,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.AppCompatButton
 import com.google.android.material.button.MaterialButton
-import ir.am3n.needtool.platekeyboard.R
+import ir.am3n.needtool.R
 import ir.am3n.needtool.platekeyboard.keyboard.KeyboardListener
 import ir.am3n.needtool.platekeyboard.keyboard.controllers.KeyboardController
 import ir.am3n.needtool.platekeyboard.utilities.ComponentUtils
