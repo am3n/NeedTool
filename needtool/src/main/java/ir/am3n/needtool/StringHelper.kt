@@ -1,7 +1,13 @@
 package ir.am3n.needtool
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import androidx.core.content.ContextCompat
 import java.math.BigDecimal
 import java.math.BigInteger
+
+val String.url2Host get() = replace(Regex(".*//"),"").replace(Regex("/.*"), "").replace("www.", "")
 
 fun String.isNumeric() = toLongOrNull() != null
 
@@ -17,6 +23,20 @@ fun String.isPhoneNumber() = isNumeric() &&
 fun String.replaceLast(delimiter: String, replace: String): String {
     val index = lastIndexOf(delimiter)
     return this.replaceRange(index, index+delimiter.length, replace)
+}
+
+
+fun String?.asUri(): Uri? {
+    try {
+        return Uri.parse(this)
+    } catch (e: Exception) {}
+    return null
+}
+
+fun Uri?.openInBrowser(context: Context) {
+    this ?: return // Do nothing if uri is null
+    val browserIntent = Intent(Intent.ACTION_VIEW, this)
+    ContextCompat.startActivity(context, browserIntent, null)
 }
 
 

@@ -3,9 +3,16 @@ package ir.am3n.needtool
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
+import kotlin.math.roundToInt
+
+
+val Activity.rootView: View get() = findViewById(android.R.id.content)
+
 
 fun Window.hideNavAndStus() {
     val flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
@@ -38,6 +45,18 @@ fun Context.hideKeyboard(view: View?) = try {
     e.printStackTrace()
 }
 
+fun Activity.isKeyboardOpen(): Boolean {
+    val visibleBounds = Rect()
+    this.rootView.getWindowVisibleDisplayFrame(visibleBounds)
+    val heightDiff = rootView.height - visibleBounds.height()
+    val marginOfError = 50.fDp2Px.roundToInt()
+    return heightDiff > marginOfError
+}
+
+fun Activity.isKeyboardClosed(): Boolean {
+    return !this.isKeyboardOpen()
+}
+
 
 
 fun Context.minimizeApp() {
@@ -47,3 +66,20 @@ fun Context.minimizeApp() {
     startActivity(startMain)
 }
 
+
+fun View.runJustBeforeBeingDrawn(runnable: () -> Unit) {
+    val preDrawListener: ViewTreeObserver.OnPreDrawListener = object : ViewTreeObserver.OnPreDrawListener {
+        override fun onPreDraw(): Boolean {
+            this@runJustBeforeBeingDrawn.viewTreeObserver.removeOnPreDrawListener(this)
+            runnable.invoke()
+            return true
+        }
+
+    }
+    this.viewTreeObserver.addOnPreDrawListener(preDrawListener)
+}
+fun View.runJustBeforeBeingDrawn(runnable: Runnable) {
+    this.runJustBeforeBeingDrawn {
+        runnable.run()
+    }
+}

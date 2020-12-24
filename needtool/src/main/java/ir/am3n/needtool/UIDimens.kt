@@ -43,3 +43,11 @@ fun Context.getScreenSize(): Point {
     display?.getSize(size)
     return size
 }
+
+fun Context.getScreenWidth(): Int {
+    return getScreenSize().x
+}
+
+fun Context.getScreenHeight(): Int {
+    return getScreenSize().y
+}

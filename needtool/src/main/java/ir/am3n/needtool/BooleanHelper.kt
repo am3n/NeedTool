@@ -10,3 +10,5 @@ fun String?.toBooleanOrNull(): Boolean? {
     }
     return null
 }
+
+operator fun Boolean.inc() = !this

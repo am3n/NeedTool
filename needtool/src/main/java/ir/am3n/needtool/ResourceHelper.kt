@@ -1,6 +1,7 @@
 package ir.am3n.needtool
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorRes
@@ -19,4 +20,6 @@ val String.asColor: Int get() = try {
     t.printStackTrace()
     Color.WHITE
 }
+
+val Int.asStateList: ColorStateList get() = ColorStateList.valueOf(this)
 

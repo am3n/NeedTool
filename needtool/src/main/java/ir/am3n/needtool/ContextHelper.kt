@@ -2,9 +2,13 @@ package ir.am3n.needtool
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.ActivityManager
 import android.app.NotificationManager
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
@@ -18,6 +22,7 @@ import android.os.PowerManager
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.view.WindowManager
+import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.jaredrummler.android.device.DeviceName
 import java.util.*
@@ -53,6 +58,9 @@ val Context.activityManager: ActivityManager?
 val Context.wifiManager: WifiManager?
     get() = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager?
 
+val Context.teleManager: TelephonyManager?
+    get() = applicationContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager?
+
 val Context.ssid: String?
     @SuppressLint("MissingPermission")
     get() {
@@ -68,8 +76,9 @@ fun Context.deviceId(): String {
 }
 
 
-val serialDevice: String @SuppressLint("MissingPermission", "HardwareIds")
-get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+val serialDevice: String 
+    @SuppressLint("MissingPermission", "HardwareIds") 
+    get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { 
         try {
             Build.getSerial()
         } catch (t: Throwable) {
@@ -202,4 +211,16 @@ fun Context.isServiceRunning(serviceClass: Class<*>): Boolean {
     val className = serviceClass.name
     val manager = activityManager
     return manager?.getRunningServices(Integer.MAX_VALUE)?.any { className == it.service.className } ?: false
+}
+
+
+fun Context.copy(text: CharSequence?, label: String = "clipboard", toast: Boolean = true) {
+    copy(text?.toString(), label, toast)
+}
+fun Context.copy(text: String?, label: String = "clipboard", toast: Boolean = true) {
+    val clipboard: ClipboardManager? = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
+    val clip: ClipData? = ClipData.newPlainText(label, text)
+    clip?.let { clipboard?.setPrimaryClip(it) }
+    if (toast)
+        toast("کپی شد")
 }

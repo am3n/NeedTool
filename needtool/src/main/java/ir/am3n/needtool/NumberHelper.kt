@@ -2,7 +2,6 @@ package ir.am3n.needtool
 
 import java.util.*
 
-
 class Num2Persian(private val value: Any) {
 
     private val delimiter = " و "
@@ -150,9 +149,11 @@ class Num2Persian(private val value: Any) {
 
 }
 
-fun String.persianLetter(): String { return Num2Persian(this).get() }
+fun String.persianLetter(): String = Num2Persian(this).get()
+fun Number.persianLetter(): String = this.toString().persianLetter()
 
-fun Number.persianLetter(): String { return Num2Persian(this).get() }
+fun String.persianNth(): String = (Num2Persian(this).get() + "م").replace("سهم", "سوم")
+fun Number.persianNth(): String = this.toString().persianNth()
 
 
 val String.d2: String get() = String.format(Locale.US, "%02d", this.toInt())
@@ -181,5 +182,8 @@ val String.persianOrArabicToEnglish: String get() {
     engNumStr = engNumStr.replace("٧".toRegex(), "7")
     engNumStr = engNumStr.replace("٨".toRegex(), "8")
     engNumStr = engNumStr.replace("٩".toRegex(), "9")
+
+    engNumStr = engNumStr.replace("[٬،]".toRegex(), ",")
+
     return engNumStr
 }

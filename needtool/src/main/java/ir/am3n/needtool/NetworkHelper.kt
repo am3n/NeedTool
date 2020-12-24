@@ -9,7 +9,23 @@ import java.util.*
 import kotlin.math.pow
 
 
-val Context.isNetworkConnected: Boolean @SuppressLint("MissingPermission") get() = connectivityManager?.activeNetworkInfo?.isConnectedOrConnecting == true
+val Context.isNetworkConnected: Boolean @SuppressLint("MissingPermission") get() =
+    connectivityManager?.activeNetworkInfo?.isConnectedOrConnecting == true
+
+
+val Context.isWifiEnabled: Boolean get() = wifiManager?.isWifiEnabled ?:false
+
+
+val Context.isDataEnabled: Boolean get() {
+    try {
+        val cm = connectivityManager!!
+        val cmClass = Class.forName(cm.javaClass.name)
+        val method = cmClass.getDeclaredMethod("getMobileDataEnabled")
+        method.isAccessible = true
+        return method.invoke(cm) as Boolean
+    } catch (t: Throwable) {}
+    return false
+}
 
 
 val Context.isHotspotOn: Boolean get() {
@@ -21,24 +37,29 @@ val Context.isHotspotOn: Boolean get() {
     return false
 }
 
-fun Context.isVpnActive(): Boolean {
+
+val Context.isVpnEnabled: Boolean get() {
     val networkList: MutableList<String> = ArrayList()
     try {
         for (networkInterface in Collections.list(NetworkInterface.getNetworkInterfaces())) {
             if (networkInterface.isUp) networkList.add(networkInterface.name)
         }
-    } catch (e: Exception) {}
-    return networkList.contains("tun0") || networkList.contains("ppp0") ||
+        return networkList.contains("tun0") || networkList.contains("ppp0") ||
             (connectivityManager?.getNetworkInfo(ConnectivityManager.TYPE_VPN)?.isConnectedOrConnecting ?: false)
+    } catch (e: Exception) {}
+    return false
 }
+
 
 fun pingGoogle(callback: (Boolean) -> Unit) {
     ping(callback, "google.com", 0)
 }
 
+
 fun pingGoogle(callback: (Boolean) -> Unit, delay: Long = 0, timeout: Long = 1000) {
     ping(callback, "google.com", delay, timeout)
 }
+
 
 fun ping(callback: (Boolean) -> Unit, address: String, delay: Long = 0, timeout: Long = 1000) {
     var myCallback: ((Boolean) -> Unit)? = callback

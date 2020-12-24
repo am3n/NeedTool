@@ -44,3 +44,16 @@ fun objectToValue(obj: Any, conv: String) {
         }
     }
 }
+
+
+fun String.isJson(): Boolean {
+    try {
+        val obj = JSONObject(this)
+        return obj!=null
+    } catch (t: Throwable) {}
+    try {
+        val arr = JSONArray(this)
+        return arr!=null
+    } catch (t: Throwable) {}
+    return false
+}

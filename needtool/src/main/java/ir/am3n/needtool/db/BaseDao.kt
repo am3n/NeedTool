@@ -3,6 +3,7 @@ import android.annotation.SuppressLint
 
 import androidx.lifecycle.Observer
 import androidx.room.*
+import java.util.ArrayList
 
 @SuppressLint("StaticFieldLeak")
 @Dao
@@ -12,13 +13,17 @@ abstract class BaseDao<T> {
         const val priority: Int = android.os.Process.THREAD_PRIORITY_BACKGROUND
     }
 
+
     // --------------------- insert --------------------------
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    abstract fun insertSync(entity: T): Long?
+    abstract fun insert(entity: T?): Long?
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    abstract fun insertSync(entity: T?): Long?
 
     @JvmOverloads
-    fun insertAsync(entity: T, observer: Observer<Long>? = null) {
+    fun insertAsync(entity: T?, observer: Observer<Long?>? = null) {
         Thread {
             android.os.Process.setThreadPriority(priority)
             val id = insertSync(entity)
@@ -28,13 +33,16 @@ abstract class BaseDao<T> {
 
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    abstract fun insertAllSync(entities: MutableList<T>): MutableList<Long>
+    abstract fun insertAll(vararg entities: T?): List<Long?>?
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    abstract fun insertAll(entities: List<T?>?): List<Long?>?
+    
     @JvmOverloads
-    fun insertAllAsync(entities: MutableList<T>, observer: Observer<MutableList<Long>>? = null) {
+    fun insertAllAsync(entities: List<T?>?, observer: Observer<List<Long?>?>? = null) {
         Thread {
             android.os.Process.setThreadPriority(priority)
-            val ids = insertAllSync(entities)
+            val ids = insertAll(entities)
             observer?.onChanged(ids)
         }.start()
     }
@@ -44,10 +52,13 @@ abstract class BaseDao<T> {
     // ------------------- update ----------------------------
 
     @Update
-    abstract fun updateSync(entity: T): Int
+    abstract fun update(device: T?): Int?
+
+    @Update
+    abstract fun updateSync(entity: T?): Int?
 
     @JvmOverloads
-    fun updateAsync(entity: T, observer: Observer<Boolean>? = null) {
+    fun updateAsync(entity: T?, observer: Observer<Boolean?>? = null) {
         Thread {
             android.os.Process.setThreadPriority(priority)
             val bool = updateSync(entity) == 1
@@ -56,13 +67,13 @@ abstract class BaseDao<T> {
     }
 
     @Update
-    abstract fun updateAllSync(entity: MutableList<T>): Int
+    abstract fun updateAllSync(entity: List<T?>?): Int?
 
     @JvmOverloads
-    fun updateAllAsync(entity: MutableList<T>, observer: Observer<Boolean>? = null) {
+    fun updateAllAsync(entity: List<T?>?, observer: Observer<Boolean?>? = null) {
         Thread {
             android.os.Process.setThreadPriority(priority)
-            val bool = updateAllSync(entity) > 0
+            val bool = (updateAllSync(entity) ?:0) > 0
             observer?.onChanged(bool)
         }.start()
     }
@@ -72,10 +83,10 @@ abstract class BaseDao<T> {
     // -------------- update or insert ------------------------
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun updateOrInsertSync(entity: T): Long?
+    abstract fun updateOrInsertSync(entity: T?): Long?
 
     @JvmOverloads
-    fun updateOrInsertAsync(entity: T, observer: Observer<Long>? = null) {
+    fun updateOrInsertAsync(entity: T?, observer: Observer<Long?>? = null) {
         Thread {
             android.os.Process.setThreadPriority(priority)
             val id = updateOrInsertSync(entity)
@@ -84,10 +95,10 @@ abstract class BaseDao<T> {
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun updateOrInsertAllSync(entity: MutableList<T>): MutableList<Long>?
+    abstract fun updateOrInsertAllSync(entity: List<T?>?): List<Long?>?
 
     @JvmOverloads
-    fun updateOrInsertAllAsync(entity: MutableList<T>, observer: Observer<MutableList<Long>>? = null) {
+    fun updateOrInsertAllAsync(entity: List<T?>?, observer: Observer<List<Long?>?>? = null) {
         Thread {
             android.os.Process.setThreadPriority(priority)
             val ids = updateOrInsertAllSync(entity)
@@ -100,34 +111,35 @@ abstract class BaseDao<T> {
     // ------------------- delete ------------------------------
 
     @Delete
-    abstract fun deleteSync(entity: T): Int
+    abstract fun delete(entity: T?): Int?
 
     @JvmOverloads
-    fun deleteAsync(entity: T, observer: Observer<Boolean>? = null) {
+    fun deleteAsync(entity: T?, observer: Observer<Boolean?>? = null) {
         Thread {
             android.os.Process.setThreadPriority(priority)
-            val bool = deleteSync(entity) == 1
+            val bool = delete(entity) == 1
             observer?.onChanged(bool)
         }.start()
     }
 
     @Delete
-    abstract fun deleteAllSync(entities: MutableList<T>): Int
+    abstract fun deleteAll(entities: List<T?>?): Int?
 
     @JvmOverloads
-    fun deleteAllAsync(entities: MutableList<T>, observer: Observer<DeletionResult>? = null) {
+    fun deleteAllAsync(entities: List<T?>?, observer: Observer<DeletionResult?>? = null) {
         Thread {
             android.os.Process.setThreadPriority(priority)
-            val dCount = deleteAllSync(entities)
+            val dCount = deleteAll(entities)
             observer?.onChanged(
                 when {
-                    dCount==entities.size -> DeletionResult.COMPLETE
-                    dCount>0 -> DeletionResult.SOME_NOT_REMOVED
+                    dCount == entities?.size -> DeletionResult.COMPLETE
+                    (dCount ?:0) > 0 -> DeletionResult.SOME_NOT_REMOVED
                     else -> DeletionResult.FAILED
                 }
             )
         }.start()
     }
+
 
     //-----------------------------------------------
 

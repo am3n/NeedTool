@@ -7,6 +7,7 @@ import androidx.annotation.NonNull
 import androidx.appcompat.widget.AppCompatEditText
 import java.lang.Exception
 import java.text.NumberFormat
+import java.util.*
 
 /*
     how to use:
@@ -22,7 +23,7 @@ abstract class BaseTextWatcher : TextWatcher {
     override fun afterTextChanged(s: Editable?) {}
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        beforeText = s.toString()
+        beforeText = s.toString().persianOrArabicToEnglish
     }
 
     abstract fun format(@NonNull amount: String): String
@@ -75,7 +76,7 @@ class SerialCardTextWatcher(override var edittext: AppCompatEditText? = null) : 
         val numOfDigitsToRightOfCursor = getNumberOfDigits(
             beforeText.substring(initialCursorPosition, beforeText.length)
         )
-        val newAmount = format(s.toString())
+        val newAmount = format(s.toString().persianOrArabicToEnglish)
         edittext?.removeTextChangedListener(this)
         edittext?.setText(newAmount)
         //set new cursor position
@@ -93,7 +94,7 @@ class SerialCardTextWatcher(override var edittext: AppCompatEditText? = null) : 
     }
 
     override fun format(amount: String): String {
-        val result = removeNonNumeric(amount)
+        val result = removeNonNumeric(amount.persianOrArabicToEnglish)
         val amt = if (!TextUtils.isEmpty(result) && TextUtils.isDigitsOnly(result)) result else ""
         var res = ""
         for (i in amt.indices) {
@@ -118,7 +119,7 @@ class CostTextWatcher(override var edittext: AppCompatEditText? = null) : BaseTe
         val numOfDigitsToRightOfCursor = getNumberOfDigits(
             beforeText.substring(initialCursorPosition, beforeText.length)
         )
-        val newAmount = format(s.toString())
+        val newAmount = format(s.toString().persianOrArabicToEnglish)
         edittext?.removeTextChangedListener(this)
         edittext?.setText(newAmount)
         //set new cursor position
@@ -142,12 +143,12 @@ class CostTextWatcher(override var edittext: AppCompatEditText? = null) : BaseTe
     companion object {
 
         fun formatCost(amount: String): String {
-            val result = removeNonNumeric(amount)
+            val result = removeNonNumeric(amount.persianOrArabicToEnglish)
             var amt: Long? = if (result.isNotEmpty() && result.isNumeric()) result.toLongOrNull() else 0
             if (amt == null) {
                 amt = result.substring(0, 15).toLong()
             }
-            val formatter = NumberFormat.getNumberInstance()
+            val formatter = NumberFormat.getNumberInstance(Locale.US)
             //return formatter.format(amt).plus(" ﷼")
             //return "﷼ ".plus(formatter.format(amt))
             return formatter.format(amt)
@@ -169,7 +170,7 @@ class PostalCodeTextWatcher(override var edittext: AppCompatEditText?) : BaseTex
         val numOfDigitsToRightOfCursor = getNumberOfDigits(
             beforeText.substring(initialCursorPosition, beforeText.length)
         )
-        val newAmount = format(s.toString())
+        val newAmount = format(s.toString().persianOrArabicToEnglish)
         edittext?.removeTextChangedListener(this)
         edittext?.setText(newAmount)
         //set new cursor position
@@ -187,7 +188,7 @@ class PostalCodeTextWatcher(override var edittext: AppCompatEditText?) : BaseTex
     }
 
     override fun format(amount: String): String {
-        val result = removeNonNumeric(amount)
+        val result = removeNonNumeric(amount.persianOrArabicToEnglish)
         val amt = if (!TextUtils.isEmpty(result) && TextUtils.isDigitsOnly(result)) result else ""
         var res = ""
         for (i in amt.indices) {

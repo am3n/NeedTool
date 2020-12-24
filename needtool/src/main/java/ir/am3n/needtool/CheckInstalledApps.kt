@@ -9,7 +9,7 @@ import java.util.*
 
 object CheckInstalledApps {
 
-    fun getInstalledFrom(context: Context, packageNames: Array<String>, listener: Listener) {
+    fun getInstalledFrom(context: Context, packageNames: Array<String>, listener: ((List<PackageInfo>?) -> Unit)? = null) {
         Thread {
             try {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_LOWEST)
@@ -23,10 +23,10 @@ object CheckInstalledApps {
                     if (!found)
                         copy.remove(packageInfo)
                 }
-                listener.onResponse(copy)
+                listener?.invoke(copy)
             } catch (t: Throwable) {
                 t.printStackTrace()
-                listener.onResponse(ArrayList())
+                listener?.invoke(ArrayList())
             }
         }.start()
     }
@@ -51,10 +51,6 @@ object CheckInstalledApps {
 
     private fun isSystemPackage(packageInfo: PackageInfo): Boolean {
         return packageInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0
-    }
-
-    interface Listener {
-        fun onResponse(packageInfoList: List<PackageInfo>?)
     }
 
 }

@@ -1,5 +1,6 @@
 package ir.am3n.needtool
 
+import androidx.core.util.Predicate
 import java.io.BufferedReader
 
 
@@ -20,4 +21,5 @@ val BufferedReader.lines: Iterator<String?> get() = object : Iterator<String?> {
     }
     override fun hasNext() = line != null
 }
+
 

@@ -13,6 +13,9 @@ fun Context.sh(name: String, mode: Int): SharedPreferences {
 fun SharedPreferences.str(name: String, def: String = ""): String {
     return getString(name, def) ?:""
 }
+fun SharedPreferences.int(name: String, def: Int = 0): Int {
+    return getInt(name, def)
+}
 fun SharedPreferences.bool(name: String, def: Boolean = false): Boolean {
     return getBoolean(name, def)
 }

@@ -16,8 +16,8 @@ class WorldTimeApi(timezone: String? = "Asia/Tehran") {
 
         val now = System.currentTimeMillis()
         with(url.openConnection() as HttpURLConnection) {
-            connectTimeout = 2000
-            readTimeout = 2000
+            connectTimeout = 3000
+            readTimeout = 3000
             requestMethod = "GET"
 
             val data = inputStream.bufferedReader().readLine()

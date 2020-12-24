@@ -1,10 +1,8 @@
 package ir.am3n.needtool
 
+import android.R.attr.columnWidth
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.view.View
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.extensions.LayoutContainer
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.PorterDuff
@@ -13,20 +11,31 @@ import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.Log
+import android.view.View
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.extensions.LayoutContainer
+import java.io.Serializable
 import kotlin.math.roundToInt
 
 
-abstract class RclAdapter<T, VH: RclVH<T>> : RecyclerView.Adapter<VH>() {
+abstract class RclAdapter<T, VH : RclVH<T>> : RecyclerView.Adapter<VH>() {
 
-    var list : MutableList<T> = ArrayList()
+    var list: MutableList<T> = ArrayList()
+
+    val isSelectMode: Boolean get() = list.any { isSelected(it) }
 
     open var listener: RclListener? = null
 
     open val animate = false
     private var onAttach = true
     private var duration = 50L
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
 
     override fun getItemCount(): Int {
         return list.size
@@ -35,7 +44,9 @@ abstract class RclAdapter<T, VH: RclVH<T>> : RecyclerView.Adapter<VH>() {
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.bind(list[position], position)
         holder.clickView?.setSafeOnClickListener { listener?.onClick(holder.adapterPosition, it) }
-        holder.clickView?.setOnLongClickListener { return@setOnLongClickListener listener?.onLongClick(holder.adapterPosition, it) ?: true }
+        holder.longClickView?.setOnLongClickListener {
+            return@setOnLongClickListener listener?.onLongClick(holder.adapterPosition, it) ?: true
+        }
         if (animate)
             animate(holder.itemView, position)
     }
@@ -71,6 +82,10 @@ abstract class RclAdapter<T, VH: RclVH<T>> : RecyclerView.Adapter<VH>() {
             }
         })
         super.onAttachedToRecyclerView(recyclerView)
+    }
+
+    open fun isSelected(item: T): Boolean {
+        return false
     }
 
     //------------------------------------------------
@@ -124,7 +139,7 @@ abstract class RclAdapter<T, VH: RclVH<T>> : RecyclerView.Adapter<VH>() {
         }
     }
 
-    fun add(newList: MutableList<T>?) {
+    fun add(newList: List<T>?) {
         if (newList != null) {
             val start = list.size
             list.addAll(newList)
@@ -179,19 +194,39 @@ abstract class RclAdapter<T, VH: RclVH<T>> : RecyclerView.Adapter<VH>() {
         notifyItemRangeRemoved(positionStart, itemCount)
     }
 
-}
+    fun autoNotify(new: List<T>, compare: (T, T) -> Boolean) {
+        DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize() = list.size
+            override fun getNewListSize() = new.size
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return compare(list[oldItemPosition], new[newItemPosition])
+            }
 
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return list[oldItemPosition] == new[newItemPosition]
+            }
+        }, true).apply {
+            list.clear()
+            list.addAll(new)
+            dispatchUpdatesTo(this@RclAdapter)
+        }
+    }
+
+}
 
 
 //************************************************************************************************
 
 
+abstract class RclVH<T>(itemView: View) : RecyclerView.ViewHolder(itemView), LayoutContainer, Serializable {
 
-abstract class RclVH<T>(itemView: View) : RecyclerView.ViewHolder(itemView), LayoutContainer {
+    var isSelected: Boolean = false
 
     abstract override val containerView: View?
 
     abstract val clickView: View?
+
+    open val longClickView: View? = null
 
     abstract fun bind(item: T, position: Int)
 
@@ -200,9 +235,7 @@ abstract class RclVH<T>(itemView: View) : RecyclerView.ViewHolder(itemView), Lay
 }
 
 
-
 //************************************************************************************************
-
 
 
 interface RclListener {
@@ -214,10 +247,7 @@ interface RclListener {
 }
 
 
-
 //************************************************************************************************
-
-
 
 
 /**
@@ -396,6 +426,7 @@ class MiddleDividerItemDecoration(context: Context, orientation: Int
     companion object {
         const val HORIZONTAL = LinearLayout.HORIZONTAL
         const val VERTICAL = LinearLayout.VERTICAL
+
         //mainly used for GridLayoutManager
         const val ALL = 2
 
@@ -406,26 +437,40 @@ class MiddleDividerItemDecoration(context: Context, orientation: Int
 }
 
 
-
-
 //*************************************************************************************************
-
-
 
 
 class RtlGridLayoutManager : GridLayoutManager {
 
-    constructor(context: Context, spanCount: Int
-    ) : super(context, spanCount)
+    interface Spanner {
+        fun compute(): Int
+    }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int
-    ) : super(context, attrs, defStyleAttr, defStyleRes)
+    private var spanner: Spanner? = null
 
-    constructor(context: Context, spanCount: Int, orientation: Int, reverseLayout: Boolean
-    ) : super(context, spanCount, orientation, reverseLayout)
+    constructor(context: Context, spanCount: Int)
+        : super(context, spanCount)
+
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int)
+        : super(context, attrs, defStyleAttr, defStyleRes)
+
+    constructor(context: Context, spanCount: Int, orientation: Int, reverseLayout: Boolean)
+        : super(context, spanCount, orientation, reverseLayout)
+
+    constructor(context: Context, spanCount: Int, orientation: Int, reverseLayout: Boolean, spanner: Spanner)
+        : super(context, spanCount, orientation, reverseLayout) { this.spanner = spanner }
 
     override fun isLayoutRTL(): Boolean {
         return true
+    }
+
+    override fun onMeasure(recycler: RecyclerView.Recycler, state: RecyclerView.State, widthSpec: Int, heightSpec: Int) {
+        super.onMeasure(recycler, state, widthSpec, heightSpec)
+        spanner?.compute().let { count ->
+            if (count != null) {
+                spanCount = count
+            }
+        }
     }
 
 }

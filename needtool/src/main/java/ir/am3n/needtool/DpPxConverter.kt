@@ -10,3 +10,7 @@ val Float.iPx2Dp: Int get() = (this / Resources.getSystem().displayMetrics.densi
 val Float.iDp2Px: Int get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 val Float.fPx2Dp: Float get() = this / Resources.getSystem().displayMetrics.density
 val Float.fDp2Px: Float get() = this * Resources.getSystem().displayMetrics.density
+val Double.iPx2Dp: Int get() = (this / Resources.getSystem().displayMetrics.density).toInt()
+val Double.iDp2Px: Int get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+val Double.fPx2Dp: Float get() = (this / Resources.getSystem().displayMetrics.density).toFloat()
+val Double.fDp2Px: Float get() = (this * Resources.getSystem().displayMetrics.density).toFloat()
