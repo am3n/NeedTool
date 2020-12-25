@@ -29,6 +29,9 @@ fun postTo(runWhen: When = When.FOREGROUNDED, onIO: Boolean = false, runnable: R
 }
 
 object AfterForegrounded {
+
+    var isDestroyed = false
+
     var isInBackground = false
         set(value) {
             field = value
@@ -82,4 +85,5 @@ object AfterForegrounded {
                 }
             }
         }
+
 }
