@@ -35,6 +35,8 @@ object AfterForegrounded {
     var isInBackground = false
         set(value) {
             field = value
+            if (!value)
+                isDestroyed = false
             onIO {
                 try {
                     sleep(500)
