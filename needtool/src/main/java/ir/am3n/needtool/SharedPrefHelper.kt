@@ -11,7 +11,7 @@ fun Context.sh(name: String, mode: Int): SharedPreferences {
     return getSharedPreferences(name, mode)
 }
 fun SharedPreferences.str(name: String, def: String = ""): String {
-    return getString(name, def) ?:""
+    return getString(name, def) ?:def
 }
 fun SharedPreferences.int(name: String, def: Int = 0): Int {
     return getInt(name, def)
