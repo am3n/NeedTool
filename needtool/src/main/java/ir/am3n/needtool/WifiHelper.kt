@@ -9,7 +9,7 @@ import android.net.wifi.WifiManager
 import android.os.Build
 
 
-fun Context.wifiDisconnect(onNeedShowChangeWifiConnectivityPermission: (() -> Unit)? = null): Boolean? {
+fun Context.wifiDisconnect(onNeedShowChangeWifiConnectivityPermission: Runnable? = null): Boolean? {
     try {
         onUI(onNeedShowChangeWifiConnectivityPermission, 500)
         val result = wifiManager?.disconnect()
@@ -23,7 +23,7 @@ fun Context.wifiDisconnect(onNeedShowChangeWifiConnectivityPermission: (() -> Un
 
 fun Context.wifiDisconnectAsync(
     onResult: ((Boolean?) -> Unit)? = null,
-    onNeedShowChangeWifiConnectivityPermission: (() -> Unit)? = null
+    onNeedShowChangeWifiConnectivityPermission: Runnable? = null
 ) {
     onIO {
         wifiDisconnect(onNeedShowChangeWifiConnectivityPermission).let {
@@ -33,7 +33,7 @@ fun Context.wifiDisconnectAsync(
 }
 
 
-fun Context.wifiDisableIf(onNeedShowChangeWifiConnectivityPermission: (() -> Unit)? = null): Boolean? {
+fun Context.wifiDisableIf(onNeedShowChangeWifiConnectivityPermission: Runnable? = null): Boolean? {
     try {
         return if (wifiManager?.isWifiEnabled == true) {
             onUI(onNeedShowChangeWifiConnectivityPermission, 500)
@@ -50,7 +50,7 @@ fun Context.wifiDisableIf(onNeedShowChangeWifiConnectivityPermission: (() -> Uni
 
 fun Context.wifiDisableIfAsync(
     onResult: ((Boolean?) -> Unit)? = null,
-    onNeedShowChangeWifiConnectivityPermission: (() -> Unit)? = null
+    onNeedShowChangeWifiConnectivityPermission: Runnable? = null
 ) {
     onIO {
         wifiDisableIf(onNeedShowChangeWifiConnectivityPermission).let {
