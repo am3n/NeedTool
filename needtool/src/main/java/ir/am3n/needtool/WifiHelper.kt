@@ -9,16 +9,55 @@ import android.net.wifi.WifiManager
 import android.os.Build
 
 
+fun Context.wifiDisconnect(onNeedShowChangeWifiConnectivityPermission: (() -> Unit)? = null): Boolean? {
+    try {
+        onUI(onNeedShowChangeWifiConnectivityPermission, 500)
+        val result = wifiManager?.disconnect()
+        offUI(onNeedShowChangeWifiConnectivityPermission)
+        return result
+    } catch (t: Throwable) {
+        offUI(onNeedShowChangeWifiConnectivityPermission)
+    }
+    return null
+}
 
-fun Context.wifiDisableIf() {
+fun Context.wifiDisconnectAsync(
+    onResult: ((Boolean?) -> Unit)? = null,
+    onNeedShowChangeWifiConnectivityPermission: (() -> Unit)? = null
+) {
     onIO {
-        try {
-            if (wifiManager?.isWifiEnabled == true)
-                wifiManager?.isWifiEnabled = false
-        } catch (t: Throwable) {}
+        wifiDisconnect(onNeedShowChangeWifiConnectivityPermission).let {
+            onResult?.invoke(it)
+        }
     }
 }
 
+
+fun Context.wifiDisableIf(onNeedShowChangeWifiConnectivityPermission: (() -> Unit)? = null): Boolean? {
+    try {
+        return if (wifiManager?.isWifiEnabled == true) {
+            onUI(onNeedShowChangeWifiConnectivityPermission, 500)
+            val result = wifiManager?.setWifiEnabled(false)
+            offUI(onNeedShowChangeWifiConnectivityPermission)
+            result
+        } else
+            true
+    } catch (t: Throwable) {
+        offUI(onNeedShowChangeWifiConnectivityPermission)
+    }
+    return null
+}
+
+fun Context.wifiDisableIfAsync(
+    onResult: ((Boolean?) -> Unit)? = null,
+    onNeedShowChangeWifiConnectivityPermission: (() -> Unit)? = null
+) {
+    onIO {
+        wifiDisableIf(onNeedShowChangeWifiConnectivityPermission).let {
+            onResult?.invoke(it)
+        }
+    }
+}
 
 
 private val wifiScanReceiver = object : BroadcastReceiver() {

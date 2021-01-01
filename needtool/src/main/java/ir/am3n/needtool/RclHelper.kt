@@ -1,6 +1,5 @@
 package ir.am3n.needtool
 
-import android.R.attr.columnWidth
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
@@ -21,7 +20,7 @@ import java.io.Serializable
 import kotlin.math.roundToInt
 
 
-abstract class RclAdapter<T, VH : RclVH<T>> : RecyclerView.Adapter<VH>() {
+abstract class RclAdapter<T, VH: RclVH<T>> : RecyclerView.Adapter<VH>() {
 
     var list: MutableList<T> = ArrayList()
 
@@ -214,23 +213,35 @@ abstract class RclAdapter<T, VH : RclVH<T>> : RecyclerView.Adapter<VH>() {
 
 }
 
+/*abstract class SecRclAdapter<T, VH: SecRclVH<T>> : RecyclerView.Adapter<VH>() {
+
+}
+
+annotation class BaseAdapter<>*/
+
 
 //************************************************************************************************
 
 
-abstract class RclVH<T>(itemView: View) : RecyclerView.ViewHolder(itemView), LayoutContainer, Serializable {
+abstract class RclVH<T>(itemView: View)
+    : RecyclerView.ViewHolder(itemView), BaseVH<T>
 
-    var isSelected: Boolean = false
+/*abstract class SecRclVH<T>(itemView: View)
+    : SectioningAdapter.ItemViewHolder(itemView), BaseVH<T>*/
 
-    abstract override val containerView: View?
+interface BaseVH<T> : LayoutContainer, Serializable {
 
-    abstract val clickView: View?
+    var isSelected: Boolean
 
-    open val longClickView: View? = null
+    override val containerView: View?
 
-    abstract fun bind(item: T, position: Int)
+    val clickView: View?
 
-    abstract fun changed(item: T, position: Int, payloads: MutableList<Any>)
+    val longClickView: View?
+
+    fun bind(item: T, position: Int)
+
+    fun changed(item: T, position: Int, payloads: MutableList<Any>)
 
 }
 
