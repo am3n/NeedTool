@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import java.math.BigDecimal
 import java.math.BigInteger
 
-val String.url2Host get() = replace(Regex(".*//"),"").replace(Regex("/.*"), "").replace("www.", "")
+val String.url2Host get() = replace(Regex(".*//"), "").replace(Regex("/.*"), "").replace("www.", "")
 
 fun String.isNumeric() = toLongOrNull() != null
 
@@ -22,7 +22,7 @@ fun String.isPhoneNumber() = isNumeric() &&
 
 fun String.replaceLast(delimiter: String, replace: String): String {
     val index = lastIndexOf(delimiter)
-    return this.replaceRange(index, index+delimiter.length, replace)
+    return this.replaceRange(index, index + delimiter.length, replace)
 }
 
 
@@ -40,7 +40,7 @@ fun Uri?.openInBrowser(context: Context) {
 }
 
 
-inline fun <reified T: Any> String.removeNoneNumeric(): T {
+inline fun <reified T : Any> String.removeNoneNumeric(): T {
     return when (T::class) {
         Short::class -> {
             return (replace(Regex("[^\\d]"), "").toShortOrNull() ?: 0) as T
@@ -66,3 +66,9 @@ inline fun <reified T: Any> String.removeNoneNumeric(): T {
         else -> 0 as T
     }
 }
+
+
+fun change2by2(str: String): ByteArray? {
+    return change2by2(str.toByteArray(Charsets.UTF_8))
+}
+
