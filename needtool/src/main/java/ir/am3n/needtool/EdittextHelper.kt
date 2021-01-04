@@ -17,3 +17,14 @@ fun EditText.onDone(edittextOnDone: EdittextOnDone) {
         return@setOnEditorActionListener false
     }
 }
+
+fun EditText.onDone(edittextOnDone: () -> Boolean) {
+    imeOptions = EditorInfo.IME_ACTION_DONE
+    maxLines = 1
+    setOnEditorActionListener { _, actionId, _ ->
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            return@setOnEditorActionListener edittextOnDone()
+        }
+        return@setOnEditorActionListener false
+    }
+}
