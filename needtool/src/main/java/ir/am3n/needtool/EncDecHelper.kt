@@ -68,9 +68,10 @@ val String.sha512: String
 
 fun encrypt(plaintext: String, key: String): String? {
     return try {
+        val iv = IvParameterSpec("0102030405060708".toByteArray())
         val skeySpec = SecretKeySpec(change2by2(key), "AES/GCM/NOPADDING")
         val cipher = Cipher.getInstance("AES/GCM/NOPADDING")
-        cipher.init(Cipher.ENCRYPT_MODE, skeySpec)
+        cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv)
         val encrypted = cipher.doFinal(plaintext.toByteArray(Charsets.UTF_8))
         Base64.encodeToString(encrypted, Base64.DEFAULT)
     } catch (t: Throwable) {
@@ -81,9 +82,10 @@ fun encrypt(plaintext: String, key: String): String? {
 
 fun decrypt(ciphertext: String, key: String): String? {
     return try {
+        val iv = IvParameterSpec("0102030405060708".toByteArray())
         val skeySpec = SecretKeySpec(change2by2(key), "AES/GCM/NOPADDING")
         val cipher = Cipher.getInstance("AES/GCM/NOPADDING")
-        cipher.init(Cipher.DECRYPT_MODE, skeySpec)
+        cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv)
         val decrypted = cipher.doFinal(Base64.decode(ciphertext, Base64.DEFAULT))
         String(decrypted, Charsets.UTF_8)
     } catch (t: Throwable) {

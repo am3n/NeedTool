@@ -5,10 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
-import ir.am3n.needtool.SnackFont
-import ir.am3n.needtool.device
-import ir.am3n.needtool.onUI
-import ir.am3n.needtool.snack
+import ir.am3n.needtool.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -29,6 +26,16 @@ class MainActivity : AppCompatActivity() {
         onUI({
             snack(activity_main, "سلام, ${device["appVersion"]}", font = SnackFont.AUTO, actionText = "بزن بریم")
         }, 3000)
+
+
+
+
+        val plainText = "salllom :)"
+        val key = "12345678901234567890123456789012"
+        val ciphered = encrypt(plainText, key) ?:""
+        Log.d("Meeeeee", ciphered)
+        val plain = decrypt(ciphered, key) ?:""
+        Log.d("Meeeeee", plain)
 
     }
 
