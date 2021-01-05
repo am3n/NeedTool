@@ -68,7 +68,7 @@ inline fun <reified T : Any> String.removeNoneNumeric(): T {
 }
 
 
-fun change2by2(str: String): ByteArray? {
+fun change2by2(str: String): ByteArray {
     return change2by2(str.toByteArray(Charsets.UTF_8))
 }
 
