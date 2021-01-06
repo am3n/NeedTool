@@ -243,6 +243,7 @@ private val lifecycleCallback = object : Application.ActivityLifecycleCallbacks 
                 t.printStackTrace()
             }
         } else {
+            scanCallback?.invoke(null)
             pending = false
             tryed = 0
         }
@@ -272,20 +273,16 @@ fun Activity.scanWifi(callback: ((List<ScanResult>?) -> Unit)? = {}, onNeedShowC
             if (!isWifiEnabled) {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    if (tryed > 0) {
-                        pending = false
-                        tryed = 0
-                    } else {
-                        try { unregisterActivityLifecycleCallbacks(lifecycleCallback) } catch (t: Throwable) {}
-                        registerActivityLifecycleCallbacks(lifecycleCallback)
-                        startActivity(Intent(Settings.Panel.ACTION_WIFI))
-                    }
+                    try { unregisterActivityLifecycleCallbacks(lifecycleCallback) } catch (t: Throwable) {}
+                    registerActivityLifecycleCallbacks(lifecycleCallback)
+                    startActivity(Intent(Settings.Panel.ACTION_WIFI))
 
                 } else {
                     wifiEnable(onNeedShowChangeWifiConnectivityPermission)
                     if (tryed > 6) {
                         pending = false
                         tryed = 0
+                        scanCallback?.invoke(null)
                     } else {
                         onIO({
                             tryed++
@@ -307,6 +304,7 @@ fun Activity.scanWifi(callback: ((List<ScanResult>?) -> Unit)? = {}, onNeedShowC
             t.printStackTrace()
             pending = false
             tryed = 0
+            scanCallback?.invoke(null)
         }
     }
 }
