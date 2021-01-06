@@ -1,5 +1,6 @@
 package ir.am3n.needtool
 
+import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -7,6 +8,8 @@ import android.content.IntentFilter
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiManager
 import android.os.Build
+import android.provider.Settings
+import androidx.core.app.ActivityCompat
 
 
 fun Context.wifiDisconnect(onNeedShowChangeWifiConnectivityPermission: Runnable? = null): Boolean? {
@@ -33,15 +36,58 @@ fun Context.wifiDisconnectAsync(
 }
 
 
-fun Context.wifiDisableIf(onNeedShowChangeWifiConnectivityPermission: Runnable? = null): Boolean? {
+//--------------------------------------------------------------------------------------------------
+
+
+fun Context.wifiDisableIf(
+    onNeedShowChangeWifiConnectivityPermission: Runnable? = null
+): Boolean? {
     try {
-        return if (wifiManager?.isWifiEnabled == true) {
-            onUI(onNeedShowChangeWifiConnectivityPermission, 500)
-            val result = wifiManager?.setWifiEnabled(false)
-            offUI(onNeedShowChangeWifiConnectivityPermission)
-            result
-        } else
-            true
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            return if (wifiManager?.isWifiEnabled == true) {
+                onUI(onNeedShowChangeWifiConnectivityPermission, 500)
+                val result = wifiManager?.setWifiEnabled(false)
+                offUI(onNeedShowChangeWifiConnectivityPermission)
+                result
+            } else
+                true
+        } else {
+            return if (wifiManager?.isWifiEnabled == true) {
+                onUI(onNeedShowChangeWifiConnectivityPermission, 500)
+                startActivity(Intent(Settings.Panel.ACTION_WIFI))
+                offUI(onNeedShowChangeWifiConnectivityPermission)
+                true
+            } else
+                true
+        }
+    } catch (t: Throwable) {
+        offUI(onNeedShowChangeWifiConnectivityPermission)
+    }
+    return null
+}
+
+fun Activity.wifiDisableIf(
+    onNeedShowChangeWifiConnectivityPermission: Runnable? = null,
+    activityResultRequestCodeOnForAndroidQ: Int
+): Boolean? {
+    try {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            return if (wifiManager?.isWifiEnabled == true) {
+                onUI(onNeedShowChangeWifiConnectivityPermission, 500)
+                val result = wifiManager?.setWifiEnabled(false)
+                offUI(onNeedShowChangeWifiConnectivityPermission)
+                result
+            } else
+                true
+        } else {
+            return if (wifiManager?.isWifiEnabled == true) {
+                onUI(onNeedShowChangeWifiConnectivityPermission, 500)
+                startActivityForResult(Intent(Settings.Panel.ACTION_WIFI), activityResultRequestCodeOnForAndroidQ)
+                offUI(onNeedShowChangeWifiConnectivityPermission)
+                true
+            } else
+                true
+        }
     } catch (t: Throwable) {
         offUI(onNeedShowChangeWifiConnectivityPermission)
     }
@@ -58,6 +104,103 @@ fun Context.wifiDisableIfAsync(
         }
     }
 }
+
+fun Activity.wifiDisableIfAsync(
+    onResult: ((Boolean?) -> Unit)? = null,
+    onNeedShowChangeWifiConnectivityPermission: Runnable? = null,
+    activityResultRequestCodeOnForAndroidQ: Int
+) {
+    onIO {
+        wifiDisableIf(onNeedShowChangeWifiConnectivityPermission, activityResultRequestCodeOnForAndroidQ).let {
+            onResult?.invoke(it)
+        }
+    }
+}
+
+
+//--------------------------------------------------------------------------------------------------
+
+
+fun Context.wifiEnable(
+    onNeedShowChangeWifiConnectivityPermission: Runnable? = null
+): Boolean? {
+    try {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            return if (wifiManager?.isWifiEnabled == false) {
+                onUI(onNeedShowChangeWifiConnectivityPermission, 500)
+                val result = wifiManager?.setWifiEnabled(true)
+                offUI(onNeedShowChangeWifiConnectivityPermission)
+                result
+            } else
+                true
+        } else {
+            return if (wifiManager?.isWifiEnabled == false) {
+                onUI(onNeedShowChangeWifiConnectivityPermission, 500)
+                startActivity(Intent(Settings.Panel.ACTION_WIFI))
+                offUI(onNeedShowChangeWifiConnectivityPermission)
+                true
+            } else
+                true
+        }
+    } catch (t: Throwable) {
+        t.printStackTrace()
+    }
+    return null
+}
+
+fun Activity.wifiEnable(
+    onNeedShowChangeWifiConnectivityPermission: Runnable? = null,
+    activityResultRequestCodeOnForAndroidQ: Int
+): Boolean? {
+    try {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            return if (wifiManager?.isWifiEnabled == false) {
+                onUI(onNeedShowChangeWifiConnectivityPermission, 500)
+                val result = wifiManager?.setWifiEnabled(true)
+                offUI(onNeedShowChangeWifiConnectivityPermission)
+                result
+            } else
+                true
+        } else {
+            return if (wifiManager?.isWifiEnabled == false) {
+                onUI(onNeedShowChangeWifiConnectivityPermission, 500)
+                startActivityForResult(Intent(Settings.Panel.ACTION_WIFI), activityResultRequestCodeOnForAndroidQ)
+                offUI(onNeedShowChangeWifiConnectivityPermission)
+                true
+            } else
+                true
+        }
+    } catch (t: Throwable) {
+        t.printStackTrace()
+    }
+    return null
+}
+
+fun Context.wifiEnableAsync(
+    onResult: ((Boolean?) -> Unit)? = null,
+    onNeedShowChangeWifiConnectivityPermission: Runnable? = null
+) {
+    onIO {
+        wifiEnable(onNeedShowChangeWifiConnectivityPermission).let {
+            onResult?.invoke(it)
+        }
+    }
+}
+
+fun Activity.wifiEnableAsync(
+    onResult: ((Boolean?) -> Unit)? = null,
+    onNeedShowChangeWifiConnectivityPermission: Runnable? = null,
+    activityResultRequestCodeOnForAndroidQ: Int
+) {
+    onIO {
+        wifiEnable(onNeedShowChangeWifiConnectivityPermission, activityResultRequestCodeOnForAndroidQ).let {
+            onResult?.invoke(it)
+        }
+    }
+}
+
+
+//--------------------------------------------------------------------------------------------------
 
 
 private val wifiScanReceiver = object : BroadcastReceiver() {
