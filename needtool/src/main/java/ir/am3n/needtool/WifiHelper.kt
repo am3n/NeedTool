@@ -1,6 +1,7 @@
 package ir.am3n.needtool
 
 import android.app.Activity
+import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -8,8 +9,8 @@ import android.content.IntentFilter
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiManager
 import android.os.Build
+import android.os.Bundle
 import android.provider.Settings
-import androidx.core.app.ActivityCompat
 
 
 fun Context.wifiDisconnect(onNeedShowChangeWifiConnectivityPermission: Runnable? = null): Boolean? {
@@ -221,26 +222,79 @@ private var scanCallback: ((List<ScanResult>?) -> Unit)? = null
 private var pending = false
 private var tryed = 0
 
-@Synchronized
-fun Context.scan(callback: (List<ScanResult>?) -> Unit = {}) {
-    scanCallback = callback
-    if (pending)
-        return
-    pending = true
-    try {
-        unregisterReceiver(wifiScanReceiver)
-    } catch (t: Throwable) {
+
+private val lifecycleCallback = object : Application.ActivityLifecycleCallbacks {
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+
     }
+    override fun onActivityStarted(activity: Activity) {
+
+    }
+    override fun onActivityResumed(activity: Activity) {
+        if (pending && activity.isWifiEnabled) {
+            try {
+                pending = false
+                tryed = 0
+                val intentFilter = IntentFilter()
+                intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
+                activity.registerReceiver(wifiScanReceiver, intentFilter)
+                activity.wifiManager?.startScan()
+            } catch (t: Throwable) {
+                t.printStackTrace()
+            }
+        } else {
+            pending = false
+            tryed = 0
+        }
+    }
+    override fun onActivityPaused(activity: Activity) {
+
+    }
+    override fun onActivityStopped(activity: Activity) {
+
+    }
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+
+    }
+    override fun onActivityDestroyed(activity: Activity) {
+
+    }
+}
+
+@Synchronized
+fun Activity.scanWifi(callback: ((List<ScanResult>?) -> Unit)? = {}, onNeedShowChangeWifiConnectivityPermission: Runnable? = null) {
+    scanCallback = callback
+    if (pending) return
+    pending = true
+    try { unregisterReceiver(wifiScanReceiver) } catch (t: Throwable) {}
     onIO {
         try {
             if (!isWifiEnabled) {
-                wifiManager?.isWifiEnabled = true
-                if (tryed > 6) {
-                    pending = false
-                    tryed = 0
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    if (tryed > 0) {
+                        pending = false
+                        tryed = 0
+                    } else {
+                        try { unregisterActivityLifecycleCallbacks(lifecycleCallback) } catch (t: Throwable) {}
+                        registerActivityLifecycleCallbacks(lifecycleCallback)
+                        startActivity(Intent(Settings.Panel.ACTION_WIFI))
+                    }
+
                 } else {
-                    onIO({ tryed++; pending = false; scan(callback) }, 500)
+                    wifiEnable(onNeedShowChangeWifiConnectivityPermission)
+                    if (tryed > 6) {
+                        pending = false
+                        tryed = 0
+                    } else {
+                        onIO({
+                            tryed++
+                            pending = false
+                            scanWifi(callback, onNeedShowChangeWifiConnectivityPermission)
+                        }, 500)
+                    }
                 }
+
             } else {
                 pending = false
                 tryed = 0

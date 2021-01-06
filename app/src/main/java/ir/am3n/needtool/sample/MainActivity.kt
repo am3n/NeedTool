@@ -37,6 +37,41 @@ class MainActivity : AppCompatActivity() {
         val plain = decrypt(ciphered, key) ?:""
         Log.d("Meeeeee", plain)
 
+
+
+
+        scanWifi({
+            onUI {
+                toast("found: ${it?.size}")
+            }
+        }, {
+            onUI {
+                toast("need")
+            }
+        })
+
+
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("Me-MainAct", "onStart()")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("Me-MainAct", "onResume()")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("Me-MainAct", "onPause()")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("Me-MainAct", "onStop()")
     }
 
     override fun attachBaseContext(newBase: Context) {
