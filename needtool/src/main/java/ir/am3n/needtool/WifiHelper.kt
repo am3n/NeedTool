@@ -231,7 +231,7 @@ private val lifecycleCallback = object : Application.ActivityLifecycleCallbacks 
 
     }
     override fun onActivityResumed(activity: Activity) {
-        activity.unregisterActivityLifecycleCallbacks(this)
+        try { activity.unregisterActivityLifecycleCallbacks(this) } catch (t: Throwable) {}
         if (pending && activity.isWifiEnabled) {
             try {
                 pending = false
