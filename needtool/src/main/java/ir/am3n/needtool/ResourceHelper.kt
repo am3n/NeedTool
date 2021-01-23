@@ -9,6 +9,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 
+import java.lang.reflect.Field
 
 fun Context.drawable(@DrawableRes drawableResource: Int): Drawable? = ContextCompat.getDrawable(this, drawableResource)
 fun Context.color(@ColorRes color: Int) = ContextCompat.getColor(this, color)
@@ -23,3 +24,11 @@ val String.asColor: Int get() = try {
 
 val Int.asStateList: ColorStateList get() = ColorStateList.valueOf(this)
 
+fun getResId(resName: String?, c: Class<*>): Int {
+    return try {
+        val idField: Field = c.getDeclaredField(resName!!)
+        idField.getInt(idField)
+    } catch (e: Exception) {
+        -1
+    }
+}

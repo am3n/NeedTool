@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Log.d("Me-MainAct", "onCreate()")
+        Log.d("Me-MainAct", "onCreate() isDataEnabled: $isDataEnabled  -  isSimCardExists: $isSimCardExists")
 
         val device = device()
         Log.d("Me-MainAct", "onCreate() > device: $device")

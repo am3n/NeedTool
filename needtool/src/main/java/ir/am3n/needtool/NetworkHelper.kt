@@ -3,6 +3,7 @@ package ir.am3n.needtool
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
+import android.telephony.TelephonyManager
 import java.lang.reflect.Method
 import java.net.NetworkInterface
 import java.util.*
@@ -22,9 +23,22 @@ val Context.isDataEnabled: Boolean get() {
         val cmClass = Class.forName(cm.javaClass.name)
         val method = cmClass.getDeclaredMethod("getMobileDataEnabled")
         method.isAccessible = true
-        return method.invoke(cm) as Boolean
+        return (method.invoke(cm) as Boolean?) ?:false
     } catch (t: Throwable) {}
     return false
+}
+
+
+val Context.isSimCardExists: Boolean get() {
+    return when (teleManager?.simState) {
+        TelephonyManager.SIM_STATE_ABSENT -> false
+        TelephonyManager.SIM_STATE_NETWORK_LOCKED,
+        TelephonyManager.SIM_STATE_PIN_REQUIRED,
+        TelephonyManager.SIM_STATE_PUK_REQUIRED,
+        TelephonyManager.SIM_STATE_READY -> true
+        TelephonyManager.SIM_STATE_UNKNOWN -> false
+        else -> false
+    }
 }
 
 

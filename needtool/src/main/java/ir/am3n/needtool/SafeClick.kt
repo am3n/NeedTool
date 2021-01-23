@@ -5,7 +5,7 @@ import android.view.View
 
 
 class SafeClickListener(
-    private var defaultInterval: Int = 700,
+    private var defaultInterval: Int = 500,
     private val onSafeCLick: (View) -> Unit
 ) : View.OnClickListener {
 
