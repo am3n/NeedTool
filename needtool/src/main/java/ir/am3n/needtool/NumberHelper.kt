@@ -187,3 +187,35 @@ val String.persianOrArabicToEnglish: String get() {
 
     return engNumStr
 }
+
+
+val Int.toPersian: String get() {
+    return toFloat().toPersian.replace(Regex("\\..*"), "")
+}
+
+val Float.toPersian: String get() {
+    return toString().toDouble().toPersian
+}
+
+val Double.toPersian: String get() {
+    return toString().toPersian
+}
+
+val Long.toPersian: String get() {
+    return toString().toPersian
+}
+
+val String.toPersian: String get() {
+    var persianNumStr = replace("0".toRegex(), "۰")
+    persianNumStr = persianNumStr.replace("1".toRegex(), "۱")
+    persianNumStr = persianNumStr.replace("2".toRegex(), "۲")
+    persianNumStr = persianNumStr.replace("3".toRegex(), "۳")
+    persianNumStr = persianNumStr.replace("4".toRegex(), "۴")
+    persianNumStr = persianNumStr.replace("5".toRegex(), "۵")
+    persianNumStr = persianNumStr.replace("6".toRegex(), "۶")
+    persianNumStr = persianNumStr.replace("7".toRegex(), "۷")
+    persianNumStr = persianNumStr.replace("8".toRegex(), "۸")
+    persianNumStr = persianNumStr.replace("9".toRegex(), "۹")
+    persianNumStr = persianNumStr.replace(",".toRegex(), "٬")
+    return persianNumStr
+}
