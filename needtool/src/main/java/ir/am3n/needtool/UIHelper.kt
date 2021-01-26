@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
+import android.os.Build
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.Window
@@ -74,7 +75,6 @@ fun View.runJustBeforeBeingDrawn(runnable: () -> Unit) {
             runnable.invoke()
             return true
         }
-
     }
     this.viewTreeObserver.addOnPreDrawListener(preDrawListener)
 }
@@ -82,4 +82,22 @@ fun View.runJustBeforeBeingDrawn(runnable: Runnable) {
     this.runJustBeforeBeingDrawn {
         runnable.run()
     }
+}
+
+
+fun View.waitForLayout(yourAction: () -> Unit) {
+    val vto = viewTreeObserver
+    vto.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            yourAction()
+            when {
+                vto.isAlive -> {
+                    vto.removeOnGlobalLayoutListener(this)
+                }
+                else -> {
+                    viewTreeObserver.removeOnGlobalLayoutListener(this)
+                }
+            }
+        }
+    })
 }

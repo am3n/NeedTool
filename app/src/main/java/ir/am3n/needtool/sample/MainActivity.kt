@@ -24,11 +24,11 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         Log.d("Me-MainAct", "onCreate() > device: $device")
 
         onUI({
-            snack(activity_main, "سلام, ${device["appVersion"]}", actionText = "بزن بریم")
+            snack(actMain, "سلام, ${device["appVersion"]}", actionText = "بزن بریم")
         }, 1000)
 
         onUI({
-            snack(activity_main, "سلام, ${device["appVersion"]}", font = SnackFont.AUTO, actionText = "بزن بریم")
+            snack(actMain, "سلام, ${device["appVersion"]}", font = SnackFont.AUTO, actionText = "بزن بریم")
         }, 3000)
 
 
@@ -56,6 +56,13 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
+
+
+
+        actMain?.waitForLayout {
+            toast("waitForLayout")
+        }
+
 
     }
 
