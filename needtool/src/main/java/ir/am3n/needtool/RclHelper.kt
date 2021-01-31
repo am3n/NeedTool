@@ -453,31 +453,28 @@ class MiddleDividerItemDecoration(context: Context, orientation: Int
 
 class RtlGridLayoutManager : GridLayoutManager {
 
-    interface Spanner {
-        fun compute(): Int
-    }
-
-    private var spanner: Spanner? = null
+    private var spanner: (() -> Int)? = null
+    private var rtlize: (() -> Boolean)? = null
 
     constructor(context: Context, spanCount: Int)
-        : super(context, spanCount)
+            : super(context, spanCount)
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int)
-        : super(context, attrs, defStyleAttr, defStyleRes)
+            : super(context, attrs, defStyleAttr, defStyleRes)
 
     constructor(context: Context, spanCount: Int, orientation: Int, reverseLayout: Boolean)
-        : super(context, spanCount, orientation, reverseLayout)
+            : super(context, spanCount, orientation, reverseLayout)
 
-    constructor(context: Context, spanCount: Int, orientation: Int, reverseLayout: Boolean, spanner: Spanner)
-        : super(context, spanCount, orientation, reverseLayout) { this.spanner = spanner }
+    constructor(context: Context, spanCount: Int, orientation: Int, reverseLayout: Boolean, rtlize: () -> Boolean, spanner: () -> Int)
+            : super(context, spanCount, orientation, reverseLayout) { this.rtlize = rtlize; this.spanner = spanner }
 
     override fun isLayoutRTL(): Boolean {
-        return true
+        return rtlize?.invoke() ?: super.isLayoutRTL()
     }
 
     override fun onMeasure(recycler: RecyclerView.Recycler, state: RecyclerView.State, widthSpec: Int, heightSpec: Int) {
         super.onMeasure(recycler, state, widthSpec, heightSpec)
-        spanner?.compute().let { count ->
+        spanner?.invoke().let { count ->
             if (count != null) {
                 spanCount = count
             }
