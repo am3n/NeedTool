@@ -8,10 +8,12 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -507,6 +509,13 @@ class RtlStaggeredLayoutManager : StaggeredGridLayoutManager {
                 spanCount = count
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    override fun getLayoutDirection(): Int {
+        return if (rtlize == null) super.getLayoutDirection()
+        else if (rtlize?.invoke() == true) View.LAYOUT_DIRECTION_RTL
+        else View.LAYOUT_DIRECTION_LTR
     }
 
 }

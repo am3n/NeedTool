@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.LinearLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -13,6 +15,8 @@ import ir.am3n.needtool.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), LifecycleObserver {
+
+    private lateinit var adapter: CustomAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +66,19 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         actMain?.waitForLayout {
             toast("waitForLayout")
         }
+
+
+
+
+        rcl?.layoutManager = RtlStaggeredLayoutManager(2, LinearLayout.VERTICAL, {
+            false
+        }, {
+            2
+        })
+        adapter = CustomAdapter(arrayOf(
+            "Helo", "aliiii", "dastamo", "sofre", "khoda"
+        ))
+        rcl?.adapter = adapter
 
 
     }
