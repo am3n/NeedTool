@@ -513,9 +513,11 @@ class RtlStaggeredLayoutManager : StaggeredGridLayoutManager {
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getLayoutDirection(): Int {
-        return if (rtlize == null) super.getLayoutDirection()
-        else if (rtlize?.invoke() == true) View.LAYOUT_DIRECTION_RTL
-        else View.LAYOUT_DIRECTION_LTR
+        return when {
+            rtlize == null -> super.getLayoutDirection()
+            rtlize?.invoke() == true -> View.LAYOUT_DIRECTION_RTL
+            else -> View.LAYOUT_DIRECTION_LTR
+        }
     }
 
 }
