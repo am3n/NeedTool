@@ -15,6 +15,7 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.extensions.LayoutContainer
 import java.io.Serializable
 import kotlin.math.roundToInt
@@ -471,6 +472,33 @@ class RtlGridLayoutManager : GridLayoutManager {
     override fun isLayoutRTL(): Boolean {
         return rtlize?.invoke() ?: super.isLayoutRTL()
     }
+
+    override fun onMeasure(recycler: RecyclerView.Recycler, state: RecyclerView.State, widthSpec: Int, heightSpec: Int) {
+        super.onMeasure(recycler, state, widthSpec, heightSpec)
+        spanner?.invoke().let { count ->
+            if (count != null) {
+                spanCount = count
+            }
+        }
+    }
+
+}
+
+
+
+class RtlStaggeredLayoutManager : StaggeredGridLayoutManager {
+
+    private var spanner: (() -> Int)? = null
+    private var rtlize: (() -> Boolean)? = null
+
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int
+    ) : super(context, attrs, defStyleAttr, defStyleRes)
+
+    constructor(spanCount: Int, orientation: Int
+    ) : super(spanCount, orientation)
+
+    constructor(spanCount: Int, orientation: Int, rtlize: () -> Boolean, spanner: () -> Int
+    ) : super(spanCount, orientation) { this.rtlize = rtlize; this.spanner = spanner }
 
     override fun onMeasure(recycler: RecyclerView.Recycler, state: RecyclerView.State, widthSpec: Int, heightSpec: Int) {
         super.onMeasure(recycler, state, widthSpec, heightSpec)
