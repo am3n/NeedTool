@@ -11,6 +11,8 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
+import androidx.annotation.FontRes
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.snackbar.Snackbar
 
@@ -29,7 +31,7 @@ enum class SnackFont {
 
 fun Context.snack(
     view: View?, text: String?, duration: Int = Snackbar.LENGTH_LONG,
-    font: SnackFont = SnackFont.CALLI, fontPath: String? = null,
+    font: SnackFont = SnackFont.CALLI, fontPath: String? = null, @FontRes fontRes: Int? = null,
     @ColorRes textColor: Int = 0, textSizeSp: Float = 0f,
     @ColorRes backgroundColor: Int = 0,
     actionText: String? = "", @ColorRes actionTextColor: Int = 0, action: () -> Unit = {}
@@ -69,6 +71,13 @@ fun Context.snack(
         }
     }
 
+    if (fontRes != null) {
+        ResourcesCompat.getFont(view.context, fontRes)?.let { typeface ->
+            snackbarView.findViewById<TextView?>(com.google.android.material.R.id.snackbar_text)?.typeface = typeface
+            snackbarView.findViewById<TextView?>(com.google.android.material.R.id.snackbar_action)?.typeface = typeface
+        }
+    }
+
     ViewCompat.setLayoutDirection(snackbar.view, ViewCompat.LAYOUT_DIRECTION_RTL)
 
     snackbar.show()
@@ -78,7 +87,7 @@ fun Context.snack(
 
 fun snack(
     view: View?, text: String?, duration: Int = Snackbar.LENGTH_LONG,
-    font: SnackFont = SnackFont.CALLI, fontPath: String? = null,
+    font: SnackFont = SnackFont.CALLI, fontPath: String? = null, @FontRes fontRes: Int? = null,
     @ColorInt textColor: Int = 0, textSizeSp: Float = 0f,
     @ColorInt backgroundColor: Int = 0,
     actionText: String? = "", @ColorInt actionTextColor: Int = 0, action: () -> Unit = {}
@@ -116,6 +125,13 @@ fun snack(
         Typeface.createFromAsset(view.context.assets, it)?.let { typeface ->
             snackbarView.findViewById<TextView?>(com.google.android.material.R.id.snackbar_action)?.typeface = typeface
             snackbarView.findViewById<TextView?>(com.google.android.material.R.id.snackbar_text)?.typeface = typeface
+        }
+    }
+
+    if (fontRes != null) {
+        ResourcesCompat.getFont(view.context, fontRes)?.let { typeface ->
+            snackbarView.findViewById<TextView?>(com.google.android.material.R.id.snackbar_text)?.typeface = typeface
+            snackbarView.findViewById<TextView?>(com.google.android.material.R.id.snackbar_action)?.typeface = typeface
         }
     }
 
