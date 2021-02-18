@@ -2,6 +2,7 @@ package ir.am3n.needtool.sample
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -9,6 +10,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import io.github.inflationx.calligraphy3.CalligraphyConfig
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
 import io.github.inflationx.viewpump.ViewPump
+import ir.am3n.needtool.ToastHelper
 
 class App : Application(), LifecycleObserver {
 
@@ -27,6 +29,8 @@ class App : Application(), LifecycleObserver {
                 )
             ).build()
         )
+
+        ToastHelper.defaultToastTypefaceRes = R.font.vazir_bold
 
     }
 

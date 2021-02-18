@@ -50,11 +50,11 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
         scanWifi({
             onUI {
-                toast("found: ${it?.size}")
+                toast("پیدا شد: ${it?.size}")
             }
         }, {
             onUI {
-                toast("need")
+                toast("نیازمند")
             }
         })
 
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
 
         actMain?.waitForLayout {
-            toast("waitForLayout")
+            toast("صبر برای ساخته شدن صفحه")
         }
 
 
