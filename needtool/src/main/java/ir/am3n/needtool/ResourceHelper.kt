@@ -18,6 +18,9 @@ fun Context.drawable(@DrawableRes drawableResource: Int): Drawable? = ContextCom
 fun Context.color(@ColorRes color: Int) = ContextCompat.getColor(this, color)
 fun Context.string(@StringRes string: Int): String = getString(string)
 
+fun Resources.string(@StringRes string: Int): String = getString(string)
+
+
 val String.asColor: Int get() = try {
     Color.parseColor(this)
 } catch (t: Throwable) {

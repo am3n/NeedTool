@@ -19,6 +19,15 @@ fun onIO(func: () -> Unit, delay: Long) {
 fun onIO(func: () -> Unit, delay: Int) {
     onIO(func, delay.toLong())
 }
+fun onIO(delay: Long, func: () -> Unit) {
+    if (delay <= 0)
+        onIO(func)
+    else
+        onUI({ onIO(func) }, delay)
+}
+fun onIO(delay: Int, func: () -> Unit) {
+    onIO(func, delay.toLong())
+}
 fun onIO(func: Runnable) {
     thread { func.run() }
 }
@@ -29,6 +38,15 @@ fun onIO(func: Runnable, delay: Long) {
         onUI(Runnable { onIO(func) }, delay)
 }
 fun onIO(func: Runnable, delay: Int) {
+    onIO(func, delay.toLong())
+}
+fun onIO(delay: Long, func: Runnable) {
+    if (delay <= 0)
+        onIO(func)
+    else
+        onUI(Runnable { onIO(func) }, delay)
+}
+fun onIO(delay: Int, func: Runnable) {
     onIO(func, delay.toLong())
 }
 
@@ -46,6 +64,15 @@ fun onUI(func: () -> Unit, delay: Long) {
 fun onUI(func: () -> Unit, delay: Int) {
     onUI(func, delay.toLong())
 }
+fun onUI(delay: Long, func: () -> Unit) {
+    if (delay <= 0)
+        func.invoke()
+    else
+        UI_EXECUTER.postDelayed(func, delay)
+}
+fun onUI(delay: Int, func: () -> Unit) {
+    onUI(func, delay.toLong())
+}
 fun onUI(func: Runnable?) {
     if (func!=null)
         UI_EXECUTER.post(func)
@@ -57,6 +84,15 @@ fun onUI(func: Runnable?, delay: Long) {
         UI_EXECUTER.postDelayed(func, delay)
 }
 fun onUI(func: Runnable?, delay: Int) {
+    onUI(func, delay.toLong())
+}
+fun onUI(delay: Long, func: Runnable?) {
+    if (delay <= 0)
+        func?.run()
+    else if (func != null)
+        UI_EXECUTER.postDelayed(func, delay)
+}
+fun onUI(delay: Int, func: Runnable?) {
     onUI(func, delay.toLong())
 }
 
