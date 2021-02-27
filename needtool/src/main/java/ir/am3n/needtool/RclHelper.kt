@@ -226,8 +226,11 @@ annotation class BaseAdapter<>*/
 //************************************************************************************************
 
 
-abstract class RclVH<T>(itemView: View)
-    : RecyclerView.ViewHolder(itemView), BaseVH<T>
+abstract class RclVH<T>(itemView: View) : RecyclerView.ViewHolder(itemView), BaseVH<T> {
+
+    val ctx: Context? get() = itemView.context
+
+}
 
 /*abstract class SecRclVH<T>(itemView: View)
     : SectioningAdapter.ItemViewHolder(itemView), BaseVH<T>*/
@@ -284,7 +287,9 @@ interface RclListener {
  * @param context Current context, it will be used to access resources.
  * @param orientation Divider orientation. Should be [.HORIZONTAL] or [.VERTICAL].
  */
-class MiddleDividerItemDecoration(context: Context, orientation: Int
+class MiddleDividerItemDecoration(
+    context: Context,
+    orientation: Int
 ) : RecyclerView.ItemDecoration() {
 
     private var mDivider: Drawable? = null
