@@ -46,3 +46,10 @@ fun Resources.currentLocale(): Locale {
         configuration.locale
     }
 }
+
+
+fun String.lc(context: Context): String =
+    toLowerCase(context.resources?.currentLocale()?: Locale.US)
+
+fun String.lc(resources: Resources): String =
+    toLowerCase(resources.currentLocale())
