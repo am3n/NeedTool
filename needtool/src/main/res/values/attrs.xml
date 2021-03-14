@@ -9,5 +9,12 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="SquareImageButton">
+        <attr name="square" format="enum">
+            <enum name="never" value="0" />
+            <enum name="width" value="1" />
+            <enum name="height" value="2" />
+        </attr>
+    </declare-styleable>
 
 </resources>
