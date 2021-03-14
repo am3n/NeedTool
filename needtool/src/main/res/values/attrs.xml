@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="SquareImageView">
+        <attr name="square" format="enum">
+            <enum name="never" value="0" />
+            <enum name="width" value="1" />
+            <enum name="height" value="2" />
+        </attr>
+    </declare-styleable>
+
+
+</resources>

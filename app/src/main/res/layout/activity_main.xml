@@ -8,6 +8,7 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="سلام جهان!"
@@ -25,5 +26,14 @@
         app:layoutManager="ir.am3n.needtool.RtlStaggeredLayoutManager"
         tools:itemCount="5"
         tools:listitem="@layout/itm_user"/>
+
+    <ir.am3n.needtool.SquareImageView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_launcher_background"
+        app:square="height"
+        app:layout_constraintRight_toLeftOf="@+id/txt"
+        app:layout_constraintTop_toTopOf="@+id/txt"
+        app:layout_constraintBottom_toBottomOf="@+id/txt"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
