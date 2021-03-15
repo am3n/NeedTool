@@ -24,6 +24,15 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
         Log.d("Me-MainAct", "onCreate() isDataEnabled: $isDataEnabled  -  isSimCardExists: $isSimCardExists")
 
+
+        btnTestVeiws?.setSafeOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.actMain, A3ViewsFrg(), "A3ViewsFrg")
+                .addToBackStack("A3ViewsFrg")
+                .commit()
+        }
+
+
         val device = device()
         Log.d("Me-MainAct", "onCreate() > device: $device")
 

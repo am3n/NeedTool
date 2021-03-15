@@ -6,10 +6,13 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.view.View.LAYOUT_DIRECTION_RTL
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.core.text.layoutDirection
 
 import java.lang.reflect.Field
 import java.util.*
@@ -46,6 +49,8 @@ fun Resources.currentLocale(): Locale {
         configuration.locale
     }
 }
+
+val Resources.isRtl: Boolean get() = currentLocale().layoutDirection == LAYOUT_DIRECTION_RTL
 
 
 fun String.lc(context: Context): String =

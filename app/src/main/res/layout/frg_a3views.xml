@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:elevation="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    tools:ignore="HardcodedText">
+
+    <ir.am3n.needtool.views.A3Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/graye"
+        app:a3_directionable="true"
+        app:a3_titleColor="@color/gray4"
+        app:a3_titleSize="20sp"
+        app:a3_titleText="@string/app_name"
+        app:a3_titleAppearance="@style/ToolbarTitleStyle"
+        app:a3_backIcon="@drawable/ic_baseline_arrow_back_ios_new_24"
+        app:a3_backScaleType="centerInside"
+        app:a3_backTint="@color/gray4"/>
+
+    <ir.am3n.needtool.views.A3LinearLayout
+        android:id="@+id/linr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="32dp"
+        app:a3_directionable="true"
+        app:a3_paddingMiddle="32dp">
+        <Button
+            android:id="@+id/btn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1" />
+        <Button
+            android:id="@+id/btn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"/>
+        <Button
+            android:id="@+id/btn3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"/>
+    </ir.am3n.needtool.views.A3LinearLayout>
+
+
+    <ir.am3n.needtool.views.A3TextView
+        android:id="@+id/txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linr"
+        android:paddingLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="66dp"
+        android:text="@string/bottom_sheet_behavior"
+        app:a3_directionable="true"/>
+
+
+    <ir.am3n.needtool.views.A3ImageView
+        android:id="@+id/img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/txt"
+        android:layout_alignBottom="@+id/txt"
+        app:srcCompat="@drawable/ic_baseline_arrow_back_ios_new_24"
+        android:tint="#f00"
+        app:a3_square="height"/>
+
+
+
+    <ir.am3n.needtool.views.A3RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt"
+        android:layout_marginTop="32dp"
+        app:a3_square="width"
+        app:a3_directionable="true">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="32dp"
+            android:paddingLeft="180dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ic_launcher_background"/>
+
+    </ir.am3n.needtool.views.A3RelativeLayout>
+
+
+</RelativeLayout>
