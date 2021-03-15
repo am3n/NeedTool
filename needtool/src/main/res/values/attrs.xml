@@ -9,42 +9,47 @@
             <enum name="height" value="2" />
         </attr>
         <attr name="a3_squareSize" format="dimension" />
-        <attr name="a3_directionable" format="boolean" />
+        <attr name="a3_direction">
+            <enum name="ltr" value="0" />
+            <enum name="rtl" value="1" />
+            <enum name="inherit" value="2" />
+            <enum name="locale" value="3" />
+        </attr>
     </declare-styleable>
 
 
     <declare-styleable name="A3ImageButton">
-        <attr name="a3_square"/>
-        <attr name="a3_squareSize"/>
-        <attr name="a3_directionable" />
+        <attr name="a3_square" />
+        <attr name="a3_squareSize" />
+        <attr name="a3_direction" />
     </declare-styleable>
 
 
     <declare-styleable name="A3RelativeLayout">
-        <attr name="a3_square"/>
-        <attr name="a3_squareSize"/>
-        <attr name="a3_directionable"/>
+        <attr name="a3_square" />
+        <attr name="a3_squareSize" />
+        <attr name="a3_direction" />
     </declare-styleable>
 
 
     <declare-styleable name="A3LinearLayout">
-        <attr name="a3_square"/>
-        <attr name="a3_squareSize"/>
-        <attr name="a3_directionable" />
+        <attr name="a3_square" />
+        <attr name="a3_squareSize" />
+        <attr name="a3_direction" />
         <attr name="a3_paddingMiddle" format="dimension" />
     </declare-styleable>
 
 
     <declare-styleable name="A3TextView">
-        <attr name="a3_directionable"/>
+        <attr name="a3_direction" />
     </declare-styleable>
 
 
     <declare-styleable name="A3Toolbar">
-        <attr name="a3_directionable"/>
-        <attr name="a3_backIcon" format="reference"/>
-        <attr name="a3_backTint" format="color"/>
-        <attr name="a3_backPadding" format="dimension"/>
+        <attr name="a3_direction" />
+        <attr name="a3_backIcon" format="reference" />
+        <attr name="a3_backTint" format="color" />
+        <attr name="a3_backPadding" format="dimension" />
         <attr name="a3_backScaleType" format="enum">
             <enum name="matrix" value="0" />
             <enum name="fitXY" value="1" />
@@ -55,13 +60,13 @@
             <enum name="centerCrop" value="6" />
             <enum name="centerInside" value="7" />
         </attr>
-        <attr name="a3_backBackground" format="reference"/>
-        <attr name="a3_titleText" format="string"/>
-        <attr name="a3_titleColor" format="color"/>
-        <attr name="a3_titleSize" format="dimension"/>
-        <attr name="a3_titleAppearance" format="reference"/>
-        <attr name="a3_optionsMenu" format="reference"/>
-        <attr name="a3_optionsMenuIconTint" format="color"/>
+        <attr name="a3_backBackground" format="reference" />
+        <attr name="a3_titleText" format="string" />
+        <attr name="a3_titleColor" format="color" />
+        <attr name="a3_titleSize" format="dimension" />
+        <attr name="a3_titleAppearance" format="reference" />
+        <attr name="a3_optionsMenu" format="reference" />
+        <attr name="a3_optionsMenuIconTint" format="color" />
     </declare-styleable>
 
 

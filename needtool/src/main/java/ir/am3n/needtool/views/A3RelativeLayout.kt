@@ -20,7 +20,7 @@ class A3RelativeLayout : RelativeLayout {
     private var lastSize = 0
     private var squareSize: Int = -1
 
-    private var isDirectionable: Boolean = false
+    private var direction: Int? = null
     private var rtlized = false
 
     constructor(context: Context?) : super(context)
@@ -60,14 +60,6 @@ class A3RelativeLayout : RelativeLayout {
 
     }
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-        if (!rtlized && isDirectionable) {
-            rtlized = true
-            rtlize()
-        }
-    }
-
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
@@ -85,7 +77,14 @@ class A3RelativeLayout : RelativeLayout {
             }
         }
 
-        if (!rtlized && isDirectionable) {
+        val isRtl = when (direction) {
+            0 -> false
+            1 -> true
+            2 -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) parent.layoutDirection==1 else false
+            3 -> resources.isRtl
+            else -> false
+        }
+        if (!rtlized && isRtl) {
             rtlized = true
             rtlize()
         }
@@ -105,8 +104,8 @@ class A3RelativeLayout : RelativeLayout {
         if (ta.hasValue(R.styleable.A3RelativeLayout_a3_squareSize) && squareSize == -1)
             squareSize = ta.getDimensionPixelSize(R.styleable.A3RelativeLayout_a3_squareSize, 0)
 
-        if (ta.hasValue(R.styleable.A3RelativeLayout_a3_directionable))
-            isDirectionable = ta.getBoolean(R.styleable.A3RelativeLayout_a3_directionable, false)
+        if (ta.hasValue(R.styleable.A3RelativeLayout_a3_direction))
+            direction = ta.getInt(R.styleable.A3RelativeLayout_a3_direction, 0)
 
     }
 

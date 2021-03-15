@@ -2,6 +2,7 @@ package ir.am3n.needtool.views
 
 import android.content.Context
 import android.content.res.TypedArray
+import android.os.Build
 import android.util.AttributeSet
 import android.view.Gravity.*
 import android.view.View
@@ -21,8 +22,10 @@ class A3LinearLayout : LinearLayoutCompat {
     private var lastSize = 0
     private var squareSize: Int = -1
 
-    private var isDirectionable: Boolean = false
+    private var direction: Int? = null
+
     private var paddingMiddle: Float? = null
+
     private var needRefresh = false
 
     constructor(context: Context) : super(context)
@@ -104,8 +107,8 @@ class A3LinearLayout : LinearLayoutCompat {
         if (ta.hasValue(R.styleable.A3LinearLayout_a3_squareSize) && squareSize == -1)
             squareSize = ta.getDimensionPixelSize(R.styleable.A3LinearLayout_a3_squareSize, 0)
 
-        if (ta.hasValue(R.styleable.A3LinearLayout_a3_directionable))
-            isDirectionable = ta.getBoolean(R.styleable.A3LinearLayout_a3_directionable, false)
+        if (ta.hasValue(R.styleable.A3LinearLayout_a3_direction))
+            direction = ta.getInt(R.styleable.A3LinearLayout_a3_direction, 0)
 
         if (ta.hasValue(R.styleable.A3LinearLayout_a3_paddingMiddle))
             paddingMiddle = ta.getDimensionPixelSize(R.styleable.A3LinearLayout_a3_paddingMiddle, 0).toFloat()
@@ -135,7 +138,15 @@ class A3LinearLayout : LinearLayoutCompat {
             }
         }
 
-        if (resources.isRtl && isDirectionable) {
+        val isRtl = when (direction) {
+            0 -> false
+            1 -> true
+            2 -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) parent.layoutDirection==1 else false
+            3 -> resources.isRtl
+            else -> false
+        }
+
+        if (isRtl) {
 
             childs.filter { it.tag != "divider" }.forEach { child ->
 

@@ -2,6 +2,7 @@ package ir.am3n.needtool.views
 
 import android.content.Context
 import android.content.res.TypedArray
+import android.os.Build
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -13,8 +14,9 @@ import ir.am3n.needtool.isRtl
 
 class A3TextView : AppCompatTextView {
 
-    private var isDirectionable: Boolean = false
+    private var direction: Int? = null
     private var rtlized = false
+
     private var needRefresh = false
 
     constructor(context: Context) : super(context)
@@ -26,9 +28,18 @@ class A3TextView : AppCompatTextView {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        if (!rtlized && isDirectionable && needRefresh) {
+
+        val isRtl = when (direction) {
+            0 -> false
+            1 -> true
+            2 -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) parent.layoutDirection==1 else false
+            3 -> resources.isRtl
+            else -> false
+        }
+        if (!rtlized && isRtl && needRefresh) {
             rtlize()
         }
+
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
@@ -36,8 +47,8 @@ class A3TextView : AppCompatTextView {
 
         val ta: TypedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.A3TextView, defStyleAttr, 0)
 
-        if (ta.hasValue(R.styleable.A3TextView_a3_directionable))
-            isDirectionable = ta.getBoolean(R.styleable.A3TextView_a3_directionable, false)
+        if (ta.hasValue(R.styleable.A3TextView_a3_direction))
+            direction = ta.getInt(R.styleable.A3TextView_a3_direction, 0)
 
         needRefresh = true
     }

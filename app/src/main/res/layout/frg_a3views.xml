@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/graye"
-        app:a3_directionable="true"
+        app:a3_direction="rtl"
         app:a3_titleColor="@color/gray4"
         app:a3_titleSize="20sp"
         app:a3_titleText="@string/app_name"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
         android:layout_marginTop="32dp"
-        app:a3_directionable="true"
+        app:a3_direction="locale"
         app:a3_paddingMiddle="32dp">
         <Button
             android:id="@+id/btn1"
@@ -59,7 +59,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginRight="66dp"
         android:text="@string/bottom_sheet_behavior"
-        app:a3_directionable="true"/>
+        app:a3_direction="locale"/>
 
 
     <ir.am3n.needtool.views.A3ImageView
@@ -80,7 +80,7 @@
         android:layout_below="@+id/txt"
         android:layout_marginTop="32dp"
         app:a3_square="width"
-        app:a3_directionable="true">
+        app:a3_direction="locale">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"

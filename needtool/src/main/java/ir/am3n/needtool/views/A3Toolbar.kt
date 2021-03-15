@@ -6,7 +6,6 @@ import android.content.res.TypedArray
 import android.graphics.Color
 import android.os.Build
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.MenuInflater
@@ -17,14 +16,13 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.*
 import androidx.core.widget.ImageViewCompat
 import ir.am3n.needtool.*
 
 class A3Toolbar : RelativeLayout {
 
-    private var isDirectionable: Boolean = false
+    private var direction: Int? = null
 
     private var imgbBack: AppCompatImageButton? = null
     private var imgbBackIcon: Int? = null
@@ -74,8 +72,8 @@ class A3Toolbar : RelativeLayout {
 
         val ta: TypedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.A3Toolbar, defStyleAttr, 0)
 
-        if (ta.hasValue(R.styleable.A3Toolbar_a3_directionable))
-            isDirectionable = ta.getBoolean(R.styleable.A3Toolbar_a3_directionable, false)
+        if (ta.hasValue(R.styleable.A3Toolbar_a3_direction))
+            direction = ta.getInt(R.styleable.A3Toolbar_a3_direction, 0)
 
         if (ta.hasValue(R.styleable.A3Toolbar_a3_backIcon))
             imgbBackIcon = ta.getResourceId(R.styleable.A3Toolbar_a3_backIcon, 0)
@@ -125,7 +123,13 @@ class A3Toolbar : RelativeLayout {
 
         if (layoutParams?.height == null) return
 
-        val isRtl = resources.isRtl && isDirectionable
+        val isRtl = when (direction) {
+            0 -> false
+            1 -> true
+            2 -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) parent.layoutDirection==1 else false
+            3 -> resources.isRtl
+            else -> false
+        }
 
         val defaultBackground = TypedValue()
         context.theme.resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, defaultBackground, true)
