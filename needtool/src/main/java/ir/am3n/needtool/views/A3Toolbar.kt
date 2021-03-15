@@ -105,7 +105,7 @@ class A3Toolbar : RelativeLayout {
         imgbBack = AppCompatImageButton(context)
         addView(imgbBack)
 
-        txtTitle = AppCompatTextView(context, attrs, defStyleAttr)
+        txtTitle = AppCompatTextView(context)
         addView(txtTitle)
 
         if (optionsMenu != null) {
@@ -145,7 +145,10 @@ class A3Toolbar : RelativeLayout {
                 addRule(if (isRtl) ALIGN_PARENT_LEFT else ALIGN_PARENT_RIGHT, 0)
             }
             addRule(if (isRtl) ALIGN_PARENT_RIGHT else ALIGN_PARENT_LEFT, 1)
-            updateMargins(left = 4.iDp2Px, right = 4.iDp2Px)
+            if (isRtl)
+                updateMargins(right = 4.iDp2Px)
+            else
+                updateMargins(left = 4.iDp2Px)
         }
         if (imgbBackPadding != null && imgbBackPadding!! > 0)
             imgbBack?.setPadding(imgbBackPadding!!)
