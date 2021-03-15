@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.updateLayoutParams
 import ir.am3n.needtool.R
 import ir.am3n.needtool.isRtl
@@ -56,6 +57,10 @@ class A3ImageView : AppCompatImageView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
         if (square > 0 && squareSize == -1) {
+            try {
+                if (square == 1 && measuredWidth == drawable.minimumWidth) return
+                if (square == 2 && measuredHeight == drawable.minimumHeight) return
+            } catch (t: Throwable) {}
             val size = if (square == 1) measuredWidth else measuredHeight
             if (lastSize < size) {
                 lastSize = size

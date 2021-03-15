@@ -75,6 +75,7 @@
 
 
     <ir.am3n.needtool.views.A3RelativeLayout
+        android:id="@+id/rlv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt"
@@ -91,6 +92,19 @@
             app:srcCompat="@drawable/ic_launcher_background"/>
 
     </ir.am3n.needtool.views.A3RelativeLayout>
+
+
+
+    <ir.am3n.needtool.views.A3ImageView
+        android:id="@+id/img2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlv"
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="180dp"
+        android:layout_marginLeft="180dp"
+        app:srcCompat="@drawable/img_logout"
+        app:a3_square="width"/>
 
 
 </RelativeLayout>

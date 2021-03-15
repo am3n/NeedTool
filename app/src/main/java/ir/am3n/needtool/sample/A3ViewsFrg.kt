@@ -13,7 +13,7 @@ class A3ViewsFrg : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.frg_a3views, container, false)
+        return inflater.inflate(R.layout.frg_profile, container, false)
     }
 
 }

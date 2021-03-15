@@ -56,6 +56,10 @@ class A3ImageButton : AppCompatImageButton {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
         if (square > 0 && squareSize == -1) {
+            try {
+                if (square == 1 && measuredWidth == drawable.minimumWidth) return
+                if (square == 2 && measuredHeight == drawable.minimumHeight) return
+            } catch (t: Throwable) {}
             val size = if (square == 1) measuredWidth else measuredHeight
             if (lastSize < size) {
                 lastSize = size
