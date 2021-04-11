@@ -1,6 +1,7 @@
 package ir.am3n.needtool
 
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
+import java.util.*
 
 /**
  * 1      18:30 - 7:30
@@ -31,19 +32,22 @@ fun isDay(): Boolean {
     val u_19_30 = u_19_00 + (30 * 60 * 1000)
 
     val c = PersianCalendar()
-    val unix = c.persianUnixtime()
+    val unixOfDay = (c[Calendar.HOUR_OF_DAY] * 60 * 60 * 1000) +
+            (c[Calendar.MINUTE] * 60 * 1000) +
+            (c[Calendar.SECOND] * 1000) +
+            (c[Calendar.MILLISECOND])
 
     return when (c.persianMonth) {
-        1 -> unix in (u_07_30 + 1) until u_18_30
-        2 -> unix in (u_06_30 + 1) until u_19_00
-        3, 4 -> unix in (u_06_00 + 1) until u_19_30
-        5 -> unix in (u_06_30 + 1) until u_19_00
-        6 -> unix in (u_07_30 + 1) until u_18_30
-        7 -> unix in (u_06_30 + 1) until u_17_00
-        8 -> unix in (u_07_00 + 1) until u_16_30
-        9, 10 -> unix in (u_07_30 + 1) until u_16_00
-        11 -> unix in (u_07_00 + 1) until u_16_30
-        12 -> unix in (u_06_30 + 1) until u_17_00
+        1 -> unixOfDay in (u_07_30 + 1) until u_18_30
+        2 -> unixOfDay in (u_06_30 + 1) until u_19_00
+        3, 4 -> unixOfDay in (u_06_00 + 1) until u_19_30
+        5 -> unixOfDay in (u_06_30 + 1) until u_19_00
+        6 -> unixOfDay in (u_07_30 + 1) until u_18_30
+        7 -> unixOfDay in (u_06_30 + 1) until u_17_00
+        8 -> unixOfDay in (u_07_00 + 1) until u_16_30
+        9, 10 -> unixOfDay in (u_07_30 + 1) until u_16_00
+        11 -> unixOfDay in (u_07_00 + 1) until u_16_30
+        12 -> unixOfDay in (u_06_30 + 1) until u_17_00
         else -> true
     }
 
