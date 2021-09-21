@@ -1,14 +1,14 @@
-plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'kotlin-android-extensions'
-    id 'maven-publish'
-}
+//plugins {
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'maven-publish'
+//}
 
 group = 'com.github.am3n'
 
-project.afterEvaluate {
+/*project.afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
@@ -16,7 +16,7 @@ project.afterEvaluate {
             }
         }
     }
-}
+}*/
 
 android {
 
@@ -33,12 +33,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
     androidExtensions {
