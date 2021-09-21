@@ -1,6 +1,5 @@
 package ir.am3n.needtool
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.PendingIntent
 import android.content.*
@@ -48,54 +47,55 @@ object AppShortcut {
         }
     }
 
-    @SuppressLint("NewApi")
     private fun postApi26CreateShortcut(
         activity: Activity?,
         scClass: Class<*>,
         appName: String,
         appIcon: Int
     ) {
-        val sm = activity?.getSystemService(ShortcutManager::class.java)
-        if (sm != null && sm.isRequestPinShortcutSupported) {
-            var shortcutExists = false
-            // We create the shortcut multiple times if given the
-            // opportunity.  If the shortcut exists, put up
-            // a toast message and exit.
-            val shortcuts = sm.pinnedShortcuts
-            for (i in 0 until shortcuts.size) {
-                shortcutExists = shortcuts[i].id == appName
-                if (shortcutExists)
-                    break
-            }
-            if (!shortcutExists) {
-                // this intent is used to wake up the broadcast receiver.
-                // I couldn't get createShortcutResultIntent to work but
-                // just a simple intent as used for a normal broadcast
-                // intent works fine.
-                val broadcastIntent = Intent(appName)
-                broadcastIntent.putExtra("msg", "approve");
-                // wait up to N seconds for user input, then continue
-                // on assuming user's choice was deny.
-                val waitFor = WaitFor(activity, 10).execute()
-                // create an anonymous broadcaster.  Unregister when done.
-                activity.registerReceiver(object : BroadcastReceiver() {
-                    override fun onReceive(context: Context?, intent: Intent?) {
-                        activity.unregisterReceiver(this)
-                        waitFor.cancel(true)
-                    }
-                }, IntentFilter(appName))
-                // this is the intent that actually creates the shortcut.
-                val shortcutIntent = Intent(activity, scClass)
-                shortcutIntent.action = appName
-                val shortcutInfo = ShortcutInfo
-                    .Builder(activity, appName)
-                    .setShortLabel(appName)
-                    .setIcon(IconCompat.createWithResource(activity, appIcon).toIcon(activity))
-                    .setIntent(shortcutIntent)
-                    .build()
-                val successCallback = PendingIntent.getBroadcast(activity, 99, broadcastIntent, 0)
-                // Shortcut gets created here.
-                sm.requestPinShortcut(shortcutInfo, successCallback.intentSender)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val sm = activity?.getSystemService(ShortcutManager::class.java)
+            if (sm != null && sm.isRequestPinShortcutSupported) {
+                var shortcutExists = false
+                // We create the shortcut multiple times if given the
+                // opportunity.  If the shortcut exists, put up
+                // a toast message and exit.
+                val shortcuts = sm.pinnedShortcuts
+                for (i in 0 until shortcuts.size) {
+                    shortcutExists = shortcuts[i].id == appName
+                    if (shortcutExists)
+                        break
+                }
+                if (!shortcutExists) {
+                    // this intent is used to wake up the broadcast receiver.
+                    // I couldn't get createShortcutResultIntent to work but
+                    // just a simple intent as used for a normal broadcast
+                    // intent works fine.
+                    val broadcastIntent = Intent(appName)
+                    broadcastIntent.putExtra("msg", "approve")
+                    // wait up to N seconds for user input, then continue
+                    // on assuming user's choice was deny.
+                    val waitFor = WaitFor(activity, 10).execute()
+                    // create an anonymous broadcaster.  Unregister when done.
+                    activity.registerReceiver(object : BroadcastReceiver() {
+                        override fun onReceive(context: Context?, intent: Intent?) {
+                            activity.unregisterReceiver(this)
+                            waitFor.cancel(true)
+                        }
+                    }, IntentFilter(appName))
+                    // this is the intent that actually creates the shortcut.
+                    val shortcutIntent = Intent(activity, scClass)
+                    shortcutIntent.action = appName
+                    val shortcutInfo = ShortcutInfo
+                        .Builder(activity, appName)
+                        .setShortLabel(appName)
+                        .setIcon(IconCompat.createWithResource(activity, appIcon).toIcon(activity))
+                        .setIntent(shortcutIntent)
+                        .build()
+                    val successCallback = PendingIntent.getBroadcast(activity, 99, broadcastIntent, 0)
+                    // Shortcut gets created here.
+                    sm.requestPinShortcut(shortcutInfo, successCallback.intentSender)
+                }
             }
         }
     }

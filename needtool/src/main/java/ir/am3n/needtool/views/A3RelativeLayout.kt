@@ -115,72 +115,20 @@ class A3RelativeLayout : RelativeLayout {
             for (i in 0 until childCount) {
                 getChildAt(i).updateLayoutParams<LayoutParams> {
 
-                    if (rules[ALIGN_PARENT_RIGHT] != 0) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            removeRule(ALIGN_PARENT_RIGHT)
-                        } else {
-                            addRule(ALIGN_PARENT_RIGHT, 0)
-                        }
-                        addRule(ALIGN_PARENT_LEFT, 1)
-                    } else if (rules[ALIGN_PARENT_LEFT] != 0) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            removeRule(ALIGN_PARENT_LEFT)
-                        } else {
-                            addRule(ALIGN_PARENT_LEFT, 0)
-                        }
-                        addRule(ALIGN_PARENT_RIGHT, 1)
-                    }
+                    val alignParentRight = rules[ALIGN_PARENT_RIGHT]
+                    val alignParentLeft = rules[ALIGN_PARENT_LEFT]
+                    addRule(ALIGN_PARENT_LEFT, alignParentRight)
+                    addRule(ALIGN_PARENT_RIGHT, alignParentLeft)
 
-                    if (rules[LEFT_OF] != 0) {
-                        val leftOf = rules[LEFT_OF]
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            removeRule(LEFT_OF)
-                        } else {
-                            addRule(LEFT_OF, 0)
-                        }
-                        addRule(RIGHT_OF, leftOf)
-                    } else if (rules[RIGHT_OF] != 0) {
-                        val rightOf = rules[RIGHT_OF]
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            removeRule(RIGHT_OF)
-                        } else {
-                            addRule(RIGHT_OF, 0)
-                        }
-                        addRule(LEFT_OF, rightOf)
-                    }
+                    val leftOf = rules[LEFT_OF]
+                    val rightOf = rules[RIGHT_OF]
+                    addRule(RIGHT_OF, leftOf)
+                    addRule(LEFT_OF, rightOf)
 
-                    if (rules[ALIGN_RIGHT] != 0 && rules[ALIGN_LEFT] != 0) {
-                        val alignRight = rules[ALIGN_RIGHT]
-                        val alignLeft = rules[ALIGN_LEFT]
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            removeRule(ALIGN_RIGHT)
-                        } else {
-                            addRule(ALIGN_RIGHT, 0)
-                        }
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            removeRule(ALIGN_LEFT)
-                        } else {
-                            addRule(ALIGN_LEFT, 0)
-                        }
-                        addRule(ALIGN_RIGHT, alignLeft)
-                        addRule(ALIGN_LEFT, alignRight)
-                    } else if (rules[ALIGN_RIGHT] != 0) {
-                        val alignRight = rules[ALIGN_RIGHT]
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            removeRule(ALIGN_RIGHT)
-                        } else {
-                            addRule(ALIGN_RIGHT, 0)
-                        }
-                        addRule(ALIGN_LEFT, alignRight)
-                    } else if (rules[ALIGN_LEFT] != 0) {
-                        val alignLeft = rules[ALIGN_LEFT]
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            removeRule(ALIGN_LEFT)
-                        } else {
-                            addRule(ALIGN_LEFT, 0)
-                        }
-                        addRule(ALIGN_RIGHT, alignLeft)
-                    }
+                    val alignRight = rules[ALIGN_RIGHT]
+                    val alignLeft = rules[ALIGN_LEFT]
+                    addRule(ALIGN_RIGHT, alignLeft)
+                    addRule(ALIGN_LEFT, alignRight)
 
                     if ((this.leftMargin > 0 || this.rightMargin > 0) && this.leftMargin != this.rightMargin) {
                         val leftMargin = this.leftMargin

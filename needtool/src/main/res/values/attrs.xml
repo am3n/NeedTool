@@ -17,8 +17,25 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="A3ImageViewBase">
+        <attr name="a3_square" />
+        <attr name="a3_squareSize" />
+        <attr name="a3_direction" />
+    </declare-styleable>
 
     <declare-styleable name="A3ImageButton">
+        <attr name="a3_square" />
+        <attr name="a3_squareSize" />
+        <attr name="a3_direction" />
+    </declare-styleable>
+
+    <declare-styleable name="A3ImageButtonBase">
+        <attr name="a3_square" />
+        <attr name="a3_squareSize" />
+        <attr name="a3_direction" />
+    </declare-styleable>
+
+    <declare-styleable name="A3ConstraintLayout">
         <attr name="a3_square" />
         <attr name="a3_squareSize" />
         <attr name="a3_direction" />
@@ -69,5 +86,128 @@
         <attr name="a3_optionsMenuIconTint" format="color" />
     </declare-styleable>
 
+
+    <declare-styleable name="A3TextInputLayout">
+        <attr name="a3_errorTextTypeface" format="reference" />
+    </declare-styleable>
+
+
+    <!-- ######################################################################################3 -->
+
+
+    <declare-styleable name="A3VerticalSeekBar">
+
+        <attr name="a3vsb_progress_on_touch" format="boolean" />
+
+        <attr name="a3vsb_bar_background" format="reference|color" />
+        <attr name="a3vsb_bar_background_gradient_start" format="color" />
+        <attr name="a3vsb_bar_background_gradient_end" format="color" />
+
+        <attr name="a3vsb_bar_progress" format="reference|color" />
+        <attr name="a3vsb_bar_progress_gradient_start" format="color" />
+        <attr name="a3vsb_bar_progress_gradient_end" format="color" />
+
+        <attr name="a3vsb_bar_stroke_width" format="dimension" />
+        <attr name="a3vsb_bar_stroke_color" format="color" />
+
+        <attr name="a3vsb_bar_corner_radius" format="dimension" />
+        <attr name="a3vsb_bar_width" format="dimension" />
+
+        <attr name="a3vsb_progress" format="integer" />
+        <attr name="a3vsb_min_value" format="integer" />
+        <attr name="a3vsb_max_value" format="integer" />
+
+        <attr name="a3vsb_min_placeholder_src" format="reference" />
+        <attr name="a3vsb_mid_placeholder_src" format="reference" />
+        <attr name="a3vsb_max_placeholder_src" format="reference" />
+
+        <attr name="a3vsb_min_placeholder_text" format="string" />
+        <attr name="a3vsb_mid_placeholder_text" format="string" />
+        <attr name="a3vsb_max_placeholder_text" format="string" />
+
+        <attr name="a3vsb_min_placeholder_text_color" format="color" />
+        <attr name="a3vsb_mid_placeholder_text_color" format="color" />
+        <attr name="a3vsb_max_placeholder_text_color" format="color" />
+
+        <attr name="android:layout_width" />
+        <attr name="android:layout_height" />
+
+    </declare-styleable>
+
+
+    <!-- ######################################################################################3 -->
+
+
+    <attr name="nsPickerStyle" format="reference" />
+
+    <declare-styleable name="NSPicker">
+        <attr name="nsp_width" format="dimension" />
+        <attr name="nsp_height" format="dimension" />
+        <attr name="nsp_accessibilityDescriptionEnabled" format="boolean" />
+        <attr name="nsp_divider" format="reference" />
+        <attr name="nsp_dividerType" format="enum">
+            <enum name="side_lines" value="0" />
+            <enum name="underline" value="1" />
+        </attr>
+        <attr name="nsp_dividerColor" format="color" />
+        <attr name="nsp_dividerDistance" format="dimension" />
+        <attr name="nsp_dividerLength" format="dimension" />
+        <attr name="nsp_dividerThickness" format="dimension" />
+        <attr name="nsp_fadingEdgeEnabled" format="boolean" />
+        <attr name="nsp_fadingEdgeStrength" format="float" />
+        <attr name="nsp_formatter" format="string" />
+        <attr name="nsp_hideWheelUntilFocused" format="boolean" />
+        <attr name="nsp_itemSpacing" format="dimension" />
+        <attr name="nsp_lineSpacingMultiplier" format="float" />
+        <attr name="nsp_max" format="integer" />
+        <attr name="nsp_maxFlingVelocityCoefficient" format="integer" />
+        <attr name="nsp_min" format="integer" />
+        <attr name="nsp_order" format="enum">
+            <enum name="ascending" value="0" />
+            <enum name="descending" value="1" />
+        </attr>
+        <attr name="nsp_orientation" format="enum">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+        <attr name="nsp_scrollerEnabled" format="boolean" />
+        <attr name="nsp_selectedTextAlign" format="enum">
+            <enum name="selectedTextAlignRight" value="0" />
+            <enum name="selectedTextAlignCenter" value="1" />
+            <enum name="selectedTextAlignLeft" value="2" />
+        </attr>
+        <attr name="nsp_selectedTextColor" format="color" />
+        <attr name="nsp_selectedTextSize" format="dimension" />
+        <attr name="nsp_selectedTextStrikeThru" format="boolean" />
+        <attr name="nsp_selectedTextUnderline" format="boolean" />
+        <attr name="nsp_selectedTypeface" format="reference" />
+        <attr name="nsp_textAlign" format="enum">
+            <enum name="textAlignRight" value="0" />
+            <enum name="textAlignCenter" value="1" />
+            <enum name="textAlignLeft" value="2" />
+        </attr>
+        <attr name="nsp_textColor" format="color" />
+        <attr name="nsp_textSize" format="dimension" />
+        <attr name="nsp_textStrikeThru" format="boolean" />
+        <attr name="nsp_textUnderline" format="boolean" />
+        <attr name="nsp_typeface" format="reference" />
+        <attr name="nsp_value" format="integer" />
+        <attr name="nsp_wheelItemCount" format="integer" />
+        <attr name="nsp_wrapSelectorWheel" format="boolean" />
+    </declare-styleable>
+
+
+    <!-- ######################################################################################3 -->
+
+
+    <declare-styleable name="CircleCheckBox">
+        <attr name="ccb_duration" format="integer" />
+        <attr name="ccb_strokeWidth" format="dimension" />
+        <attr name="ccb_colorTick" format="color" />
+        <attr name="ccb_colorChecked" format="color" />
+        <attr name="ccb_colorUnchecked" format="color" />
+        <attr name="ccb_colorUncheckedStroke" format="color" />
+        <attr name="ccb_smallTick" format="boolean" />
+    </declare-styleable>
 
 </resources>

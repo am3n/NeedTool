@@ -1,10 +1,10 @@
 package ir.am3n.needtool
 
 
-fun Char.toIntOrNull(): Int? {
+val Char.intOrNull: Int? get() {
     return toString().toIntOrNull()
 }
 
-fun Char.toIntOr0(): Int {
+val Char.intOr0: Int get() {
     return toString().toIntOrNull() ?:0
 }

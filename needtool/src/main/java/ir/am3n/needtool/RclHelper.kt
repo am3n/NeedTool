@@ -2,24 +2,23 @@ package ir.am3n.needtool
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
-import android.graphics.Rect
+import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.core.view.MotionEventCompat
+import androidx.recyclerview.widget.*
 import kotlinx.android.extensions.LayoutContainer
 import java.io.Serializable
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
 
 
@@ -214,6 +213,7 @@ abstract class RclAdapter<T, VH: RclVH<T>> : RecyclerView.Adapter<VH>() {
         }
     }
 
+
 }
 
 /*abstract class SecRclAdapter<T, VH: SecRclVH<T>> : RecyclerView.Adapter<VH>() {
@@ -229,6 +229,7 @@ annotation class BaseAdapter<>*/
 abstract class RclVH<T>(itemView: View) : RecyclerView.ViewHolder(itemView), BaseVH<T> {
 
     val ctx: Context? get() = itemView.context
+    val context: Context? get() = ctx
 
 }
 
@@ -504,7 +505,11 @@ class RtlStaggeredLayoutManager : StaggeredGridLayoutManager {
     constructor(spanCount: Int, orientation: Int
     ) : super(spanCount, orientation)
 
-    constructor(spanCount: Int, orientation: Int, rtlize: () -> Boolean, spanner: () -> Int
+    constructor(
+        spanCount: Int,
+        orientation: Int,
+        rtlize: () -> Boolean = { false },
+        spanner: () -> Int = { spanCount }
     ) : super(spanCount, orientation) { this.rtlize = rtlize; this.spanner = spanner }
 
     override fun onMeasure(recycler: RecyclerView.Recycler, state: RecyclerView.State, widthSpec: Int, heightSpec: Int) {
@@ -516,13 +521,187 @@ class RtlStaggeredLayoutManager : StaggeredGridLayoutManager {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getLayoutDirection(): Int {
         return when {
             rtlize == null -> super.getLayoutDirection()
-            rtlize?.invoke() == true -> View.LAYOUT_DIRECTION_RTL
-            else -> View.LAYOUT_DIRECTION_LTR
+            rtlize?.invoke() == true -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                View.LAYOUT_DIRECTION_RTL
+            } else {
+                0
+            }
+            else -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                View.LAYOUT_DIRECTION_LTR
+            } else {
+                0
+            }
         }
+    }
+
+}
+
+
+interface ItemTouchHelperViewHolder {
+    /**
+     * Called when the [ItemTouchHelper] first registers an item as being moved or swiped.
+     * Implementations should update the item view to indicate it's active state.
+     */
+    fun onItemSelected()
+    /**
+     * Called when the [ItemTouchHelper] has completed the move or swipe, and the active item
+     * state should be cleared.
+     */
+    fun onItemClear()
+}
+interface ItemTouchHelperAdapter {
+    fun isItemViewSwipeEnabled(): Boolean
+    fun isLongPressDragEnabled(): Boolean
+    /**
+     * Called when an item has been dragged far enough to trigger a move. This is called every time
+     * an item is shifted, and **not** at the end of a "drop" event.<br></br>
+     * <br></br>
+     * Implementations should call [RecyclerView.Adapter.notifyItemMoved] after
+     * adjusting the underlying data to reflect this move.
+     *
+     * @param fromPosition The start position of the moved item.
+     * @param toPosition   Then resolved position of the moved item.
+     * @return True if the item was moved to the new adapter position.
+     *
+     * @see RecyclerView.getAdapterPositionFor
+     * @see RecyclerView.ViewHolder.getAdapterPosition
+     */
+    fun onItemMove(fromPosition: Int, toPosition: Int): Boolean
+    /**
+     * Called when an item has been dismissed by a swipe.<br></br>
+     * <br></br>
+     * Implementations should call [RecyclerView.Adapter.notifyItemRemoved] after
+     * adjusting the underlying data to reflect this removal.
+     *
+     * @param position The position of the item dismissed.
+     *
+     * @see RecyclerView.getAdapterPositionFor
+     * @see RecyclerView.ViewHolder.getAdapterPosition
+     */
+    fun onItemDismiss(position: Int)
+}
+class SimpleItemTouchHelperCallback(adapter: ItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
+
+    private val mAdapter = adapter
+
+    override fun isItemViewSwipeEnabled(): Boolean {
+        return mAdapter.isItemViewSwipeEnabled()
+    }
+
+    override fun isLongPressDragEnabled(): Boolean {
+        return mAdapter.isLongPressDragEnabled()
+    }
+
+    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+        // Set movement flags based on the layout manager
+        return if (recyclerView.layoutManager is GridLayoutManager) {
+            val dragFlags: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            val swipeFlags = 0
+            makeMovementFlags(dragFlags, swipeFlags)
+        } else {
+            val dragFlags: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+            val swipeFlags: Int = ItemTouchHelper.START or ItemTouchHelper.END
+            makeMovementFlags(dragFlags, swipeFlags)
+        }
+    }
+
+    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+        if (viewHolder.itemViewType != target.itemViewType) {
+            return false
+        }
+        // Notify the adapter of the move
+        return mAdapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+    }
+
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        // Notify the adapter of the dismissal
+        mAdapter.onItemDismiss(viewHolder.adapterPosition)
+    }
+
+    override fun onChildDraw(
+        c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+        dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
+    ) {
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            // Fade out the view as it is swiped out of the parent's bounds
+            val alpha = ALPHA_FULL - Math.abs(dX) / viewHolder.itemView.width.toFloat()
+            viewHolder.itemView.alpha = alpha
+            viewHolder.itemView.translationX = dX
+        } else {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        }
+    }
+
+    override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+        // We only want the active item to change
+        if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+            if (viewHolder is ItemTouchHelperViewHolder) {
+                // Let the view holder know that this item is being moved or dragged
+                val itemViewHolder: ItemTouchHelperViewHolder = viewHolder
+                itemViewHolder.onItemSelected()
+            }
+        }
+        super.onSelectedChanged(viewHolder, actionState)
+    }
+
+    override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+        super.clearView(recyclerView, viewHolder)
+        viewHolder.itemView.alpha = ALPHA_FULL
+        if (viewHolder is ItemTouchHelperViewHolder) {
+            // Tell the view holder it's time to restore the idle state
+            val itemViewHolder: ItemTouchHelperViewHolder = viewHolder
+            itemViewHolder.onItemClear()
+        }
+    }
+
+    companion object {
+        const val ALPHA_FULL = 1.0f
+    }
+
+}
+@SuppressLint("ClickableViewAccessibility")
+abstract class RclMvVH<T>(
+    itemView: View,
+) : RclVH<T>(itemView), ItemTouchHelperViewHolder {
+    var itemTouchHelper: ItemTouchHelper? = null
+    fun initDargView(view: View) {
+        view.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                itemTouchHelper?.startDrag(this)
+            }
+            false
+        }
+    }
+}
+abstract class RclMvAdapter<T, VH: RclMvVH<T>>(
+    rcl: RecyclerView
+) : RclAdapter<T, VH>(), ItemTouchHelperAdapter {
+
+    private var mItemTouchHelper: ItemTouchHelper? = null
+
+    init {
+        val callback: ItemTouchHelper.Callback = SimpleItemTouchHelperCallback(this@RclMvAdapter)
+        mItemTouchHelper = ItemTouchHelper(callback)
+        mItemTouchHelper?.attachToRecyclerView(rcl)
+    }
+
+    override fun onBindViewHolder(holder: VH, position: Int) {
+        super.onBindViewHolder(holder, position)
+        holder.itemTouchHelper = mItemTouchHelper
+    }
+
+    override fun onItemDismiss(position: Int) {
+        list.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
+        Collections.swap(list, fromPosition, toPosition)
+        notifyItemMoved(fromPosition, toPosition)
+        return true
     }
 
 }

@@ -1,6 +1,7 @@
 package ir.am3n.needtool
 
 import androidx.core.util.Predicate
+import org.json.JSONArray
 
 
 inline fun <reified T> List<*>.asListOf(): List<T>? =
@@ -30,3 +31,7 @@ fun <T> List<T>?.removeIF(filter: Predicate<T>): List<T> {
 fun <T, U> List<T>.intersect(uList: List<U>?, filterPredicate : (T, U) -> Boolean) =
     filter { m -> uList?.any { filterPredicate(m, it)} == true }
 
+
+fun <T> List<T>.asJsonArray(): JSONArray {
+    return JSONArray(this)
+}

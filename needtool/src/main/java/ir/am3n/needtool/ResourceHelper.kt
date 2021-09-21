@@ -10,10 +10,8 @@ import android.view.View.LAYOUT_DIRECTION_RTL
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.text.layoutDirection
-
 import java.lang.reflect.Field
 import java.util.*
 
@@ -42,6 +40,29 @@ fun getResId(resName: String?, c: Class<*>): Int {
     }
 }
 
+
+fun Context.getIdentifierId(strId: String): Int {
+    return resources.getIdentifier(strId, "id", packageName)
+}
+
+
+enum class LD {
+    LD_LTR,
+    LD_RTL,
+    LD_INHERIT,
+    LD_LOCALE
+}
+
+var defaultRtl = false
+
+val Locale.ld: LD get() {
+    return when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 -> LD.values()[layoutDirection]
+        defaultRtl -> LD.LD_RTL
+        else -> LD.LD_LTR
+    }
+}
+
 fun Resources.currentLocale(): Locale {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         configuration.locales[0]
@@ -50,11 +71,12 @@ fun Resources.currentLocale(): Locale {
     }
 }
 
-val Resources.isRtl: Boolean get() = currentLocale().layoutDirection == LAYOUT_DIRECTION_RTL
+val Resources.isRtl: Boolean get() = currentLocale().ld == LD.LD_RTL
 
 
-fun String.lc(context: Context): String =
-    toLowerCase(context.resources?.currentLocale()?: Locale.US)
 
-fun String.lc(resources: Resources): String =
-    toLowerCase(resources.currentLocale())
+fun String.lc(context: Context?): String =
+    lowercase(context?.resources?.currentLocale()?: Locale.US)
+
+fun String.lc(resources: Resources?): String =
+    lowercase(resources?.currentLocale()?: Locale.US)

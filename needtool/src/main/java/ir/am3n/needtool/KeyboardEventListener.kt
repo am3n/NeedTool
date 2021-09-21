@@ -1,5 +1,6 @@
 package ir.am3n.needtool
 
+import android.os.Build
 import android.view.ViewTreeObserver
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
@@ -52,6 +53,10 @@ class KeyboardEventListener(
     }
 
     private fun unregisterKeyboardListener() {
-        activity.rootView.viewTreeObserver.removeOnGlobalLayoutListener(listener)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            activity.rootView.viewTreeObserver.removeOnGlobalLayoutListener(listener)
+        } else {
+            activity.rootView.viewTreeObserver.removeGlobalOnLayoutListener(listener)
+        }
     }
 }

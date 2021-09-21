@@ -2,13 +2,14 @@ package ir.am3n.needtool
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.fragment.app.Fragment
 
 
-fun Context.sh(name: String): SharedPreferences {
-    return sh(name, Context.MODE_PRIVATE)
-}
-fun Context.sh(name: String, mode: Int): SharedPreferences {
+fun Context.sh(name: String, mode: Int = Context.MODE_PRIVATE): SharedPreferences {
     return getSharedPreferences(name, mode)
+}
+fun Fragment.sh(name: String, mode: Int = Context.MODE_PRIVATE): SharedPreferences? {
+    return context?.getSharedPreferences(name, mode)
 }
 fun SharedPreferences.str(name: String, def: String = ""): String {
     return getString(name, def) ?:def

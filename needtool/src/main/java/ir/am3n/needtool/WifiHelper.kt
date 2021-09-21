@@ -206,6 +206,7 @@ fun Activity.wifiEnableAsync(
 
 private val wifiScanReceiver = object : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        try { context.unregisterReceiver(this) } catch (t: Throwable) {}
         val success = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false)
         } else {
@@ -214,7 +215,6 @@ private val wifiScanReceiver = object : BroadcastReceiver() {
         onIO {
             scanCallback?.invoke(if (success) context.wifiManager?.scanResults else null)
         }
-        try { context.unregisterReceiver(this) } catch (t: Throwable) {}
     }
 }
 
@@ -224,47 +224,51 @@ private var tryed = 0
 
 
 private val lifecycleCallback = object : Application.ActivityLifecycleCallbacks {
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-
-    }
-    override fun onActivityStarted(activity: Activity) {
-
-    }
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
+    override fun onActivityStarted(activity: Activity) {}
     override fun onActivityResumed(activity: Activity) {
-        try { activity.unregisterActivityLifecycleCallbacks(this) } catch (t: Throwable) {}
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                activity.unregisterActivityLifecycleCallbacks(this)
+            }
+        } catch (t: Throwable) {}
         if (pending && activity.isWifiEnabled) {
             try {
-                pending = false
                 tryed = 0
+                pending = false
                 val intentFilter = IntentFilter()
                 intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
                 activity.registerReceiver(wifiScanReceiver, intentFilter)
                 activity.wifiManager?.startScan()
             } catch (t: Throwable) {
                 t.printStackTrace()
+                scanCallback?.invoke(null)
             }
         } else {
-            scanCallback?.invoke(null)
-            pending = false
             tryed = 0
+            pending = false
+            scanCallback?.invoke(null)
         }
     }
-    override fun onActivityPaused(activity: Activity) {
-
-    }
-    override fun onActivityStopped(activity: Activity) {
-
-    }
-    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-
-    }
+    override fun onActivityPaused(activity: Activity) {}
+    override fun onActivityStopped(activity: Activity) {}
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
     override fun onActivityDestroyed(activity: Activity) {
-
+        try {
+            tryed = 0
+            pending = false
+            scanCallback?.invoke(null)
+        } catch (t: Throwable) {
+            t.printStackTrace()
+        }
     }
 }
 
 @Synchronized
 fun Activity.scanWifi(callback: ((List<ScanResult>?) -> Unit)? = {}, onNeedShowChangeWifiConnectivityPermission: Runnable? = null) {
+    /*if (callback != null) {
+        return callback(emptyList())
+    }*/
     scanCallback = callback
     if (pending) return
     pending = true
@@ -299,7 +303,7 @@ fun Activity.scanWifi(callback: ((List<ScanResult>?) -> Unit)? = {}, onNeedShowC
                 val intentFilter = IntentFilter()
                 intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
                 registerReceiver(wifiScanReceiver, intentFilter)
-                wifiManager?.startScan()
+                wifiManager!!.startScan()
             }
         } catch (t: Throwable) {
             t.printStackTrace()

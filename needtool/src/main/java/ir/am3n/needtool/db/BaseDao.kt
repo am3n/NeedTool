@@ -33,16 +33,16 @@ abstract class BaseDao<T> {
 
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    abstract fun insertAll(vararg entities: T?): List<Long?>?
+    abstract fun insert(vararg entities: T?): List<Long?>?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    abstract fun insertAll(entities: List<T?>?): List<Long?>?
+    abstract fun insert(entities: List<T?>?): List<Long?>?
     
     @JvmOverloads
-    fun insertAllAsync(entities: List<T?>?, observer: Observer<List<Long?>?>? = null) {
+    fun insertAsync(entities: List<T?>?, observer: Observer<List<Long?>?>? = null) {
         Thread {
             android.os.Process.setThreadPriority(priority)
-            val ids = insertAll(entities)
+            val ids = insert(entities)
             observer?.onChanged(ids)
         }.start()
     }
@@ -67,13 +67,13 @@ abstract class BaseDao<T> {
     }
 
     @Update
-    abstract fun updateAllSync(entity: List<T?>?): Int?
+    abstract fun updateSync(entity: List<T?>?): Int?
 
     @JvmOverloads
-    fun updateAllAsync(entity: List<T?>?, observer: Observer<Boolean?>? = null) {
+    fun updateAsync(entity: List<T?>?, observer: Observer<Boolean?>? = null) {
         Thread {
             android.os.Process.setThreadPriority(priority)
-            val bool = (updateAllSync(entity) ?:0) > 0
+            val bool = (updateSync(entity) ?:0) > 0
             observer?.onChanged(bool)
         }.start()
     }
@@ -83,25 +83,25 @@ abstract class BaseDao<T> {
     // -------------- update or insert ------------------------
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun updateOrInsertSync(entity: T?): Long?
+    abstract fun upsertSync(entity: T?): Long?
 
     @JvmOverloads
-    fun updateOrInsertAsync(entity: T?, observer: Observer<Long?>? = null) {
+    fun upsertAsync(entity: T?, observer: Observer<Long?>? = null) {
         Thread {
             android.os.Process.setThreadPriority(priority)
-            val id = updateOrInsertSync(entity)
+            val id = upsertSync(entity)
             observer?.onChanged(id)
         }.start()
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun updateOrInsertAllSync(entity: List<T?>?): List<Long?>?
+    abstract fun upsertSync(entity: List<T?>?): List<Long?>?
 
     @JvmOverloads
-    fun updateOrInsertAllAsync(entity: List<T?>?, observer: Observer<List<Long?>?>? = null) {
+    fun upsertAsync(entity: List<T?>?, observer: Observer<List<Long?>?>? = null) {
         Thread {
             android.os.Process.setThreadPriority(priority)
-            val ids = updateOrInsertAllSync(entity)
+            val ids = upsertSync(entity)
             observer?.onChanged(ids)
         }.start()
     }
@@ -123,13 +123,13 @@ abstract class BaseDao<T> {
     }
 
     @Delete
-    abstract fun deleteAll(entities: List<T?>?): Int?
+    abstract fun delete(entities: List<T?>?): Int?
 
     @JvmOverloads
-    fun deleteAllAsync(entities: List<T?>?, observer: Observer<DeletionResult?>? = null) {
+    fun deleteAsync(entities: List<T?>?, observer: Observer<DeletionResult?>? = null) {
         Thread {
             android.os.Process.setThreadPriority(priority)
-            val dCount = deleteAll(entities)
+            val dCount = delete(entities)
             observer?.onChanged(
                 when {
                     dCount == entities?.size -> DeletionResult.COMPLETE

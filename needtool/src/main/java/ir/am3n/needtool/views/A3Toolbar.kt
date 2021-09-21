@@ -119,7 +119,7 @@ class A3Toolbar : RelativeLayout {
 
     }
 
-    private fun refresh() {
+    fun refresh() {
 
         if (layoutParams?.height == null) return
 
@@ -232,6 +232,10 @@ class A3Toolbar : RelativeLayout {
                 onItemClick(index, menu?.get(index)?.itemId, button)
             }
         }
+    }
+
+    fun setTitle(title: String) {
+        txtTitle?.text = title
     }
 
 }

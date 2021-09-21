@@ -6,12 +6,14 @@ import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import androidx.annotation.Size
+import androidx.core.animation.doOnEnd
 import kotlin.math.abs
 
 abstract class CCFAnimator protected constructor(fromColor: Int, toColor: Int) {
 
     interface OnNewColorListener {
         fun onNewColor(@ColorInt color: Int)
+        fun onEnd()
     }
 
     /**
@@ -26,6 +28,9 @@ abstract class CCFAnimator protected constructor(fromColor: Int, toColor: Int) {
         animator.addUpdateListener { animation ->
             val fraction = animation.animatedFraction
             onNewColorListener.onNewColor(getColor(fraction))
+        }
+        animator.doOnEnd {
+            onNewColorListener.onEnd()
         }
         return animator
     }
@@ -107,11 +112,7 @@ abstract class CCFAnimator protected constructor(fromColor: Int, toColor: Int) {
 
         private val mFromH: Float = fromHSV[0]
         private val mDiff: Float = 360f - abs(toHSV[0] - fromHSV[0])
-        private val mFromIsBigger: Boolean
-
-        init {
-            mFromIsBigger = mFromH.compareTo(toHSV[0]) > 0
-        }
+        private val mFromIsBigger: Boolean = mFromH.compareTo(toHSV[0]) > 0
 
         override fun getHue(fraction: Float): Float {
             val evaluated = mDiff * fraction
@@ -132,11 +133,7 @@ abstract class CCFAnimator protected constructor(fromColor: Int, toColor: Int) {
     protected class ConcatAnimator(private val mAnimators: Array<CCFAnimator?>) : CCFAnimator(0, 0) {
 
         private val mLength: Int = mAnimators.size
-        private val mFractionStep: Float
-
-        init {
-            mFractionStep = 1f / mLength
-        }
+        private val mFractionStep: Float = 1f / mLength
 
         override fun getColor(fraction: Float): Int {
             var index: Int
@@ -237,8 +234,7 @@ abstract class CCFAnimator protected constructor(fromColor: Int, toColor: Int) {
         ): CCFAnimator {
             val fromAlpha = extractAlpha(fromColor)
             val toAlpha = extractAlpha(toColor)
-            val alphaEvaluator: AlphaEvaluator?
-            alphaEvaluator = if (fromAlpha != toAlpha) {
+            val alphaEvaluator: AlphaEvaluator? = if (fromAlpha != toAlpha) {
                 AlphaEvaluatorImpl(fromAlpha, toAlpha)
             } else {
                 null

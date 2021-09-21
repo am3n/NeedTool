@@ -8,8 +8,6 @@ import android.net.*
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import androidx.annotation.RequiresApi
 
 class NetworkStateReceiver(
     private var context: Context?,
@@ -39,7 +37,7 @@ class NetworkStateReceiver(
     private var handler: Handler? = Handler(Looper.getMainLooper())
     private var runnable = Runnable {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            listener?.onChanged(state)
+            listener?.onChanged(state, null)
         } else {
             onReceive(context, null)
         }
@@ -55,7 +53,7 @@ class NetworkStateReceiver(
 
     }
 
-    private val allTransportTypes @RequiresApi(Build.VERSION_CODES.LOLLIPOP) get() =
+    private val allTransportTypes get() =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
                 arrayOf(
@@ -78,13 +76,17 @@ class NetworkStateReceiver(
                 )
             }
         } else {
-            arrayOf(
-                    NetworkCapabilities.TRANSPORT_BLUETOOTH,
-                    NetworkCapabilities.TRANSPORT_CELLULAR,
-                    NetworkCapabilities.TRANSPORT_ETHERNET,
-                    NetworkCapabilities.TRANSPORT_VPN,
-                    NetworkCapabilities.TRANSPORT_WIFI
-            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                arrayOf(
+                        NetworkCapabilities.TRANSPORT_BLUETOOTH,
+                        NetworkCapabilities.TRANSPORT_CELLULAR,
+                        NetworkCapabilities.TRANSPORT_ETHERNET,
+                        NetworkCapabilities.TRANSPORT_VPN,
+                        NetworkCapabilities.TRANSPORT_WIFI
+                )
+            } else {
+                arrayOf()
+            }
         }
     private var networkCallback : ConnectivityManager.NetworkCallback? = null
 
@@ -99,7 +101,7 @@ class NetworkStateReceiver(
             if (networkInfo != null && networkInfo!!.isConnected) {
                 state = State.AVAILABLE
                 try {
-                    listener?.onChanged(state)
+                    listener?.onChanged(state, null)
                 } catch (t: Throwable) {
                     listener?.onChangedOnLowApi(state)
                 }
@@ -108,7 +110,7 @@ class NetworkStateReceiver(
             } else if (networkInfo == null || intent?.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false) == true) {
                 state = State.LOST
                 try {
-                    listener?.onChanged(state)
+                    listener?.onChanged(state, null)
                 } catch (t: Throwable) {
                     listener?.onChangedOnLowApi(state)
                 }
@@ -144,7 +146,7 @@ class NetworkStateReceiver(
                         //Log.d("Me-NetStateReceiver", "onUnavailable()")
                         if (state != State.UNAVAILABLE) {
                             state = State.UNAVAILABLE
-                            listener?.onChanged(state)
+                            listener?.onChanged(state, null)
                             handler?.removeCallbacks(runnable)
                         }
                     }
@@ -162,7 +164,9 @@ class NetworkStateReceiver(
                         }
                     }
                 }
-                connectivityManager?.registerNetworkCallback(builder.build(), networkCallback)
+                connectivityManager?.registerNetworkCallback(builder.build(),
+                    networkCallback as ConnectivityManager.NetworkCallback
+                )
 
             } else {
                 context?.registerReceiver(this, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
@@ -175,7 +179,7 @@ class NetworkStateReceiver(
     fun stop() {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                connectivityManager?.unregisterNetworkCallback(networkCallback)
+                connectivityManager?.unregisterNetworkCallback(networkCallback!!)
             } else {
                 context?.unregisterReceiver(this)
             }

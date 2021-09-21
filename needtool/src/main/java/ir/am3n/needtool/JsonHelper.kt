@@ -1,5 +1,6 @@
 package ir.am3n.needtool
 
+import com.google.gson.Gson
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -49,11 +50,24 @@ fun objectToValue(obj: Any, conv: String) {
 fun String.isJson(): Boolean {
     try {
         val obj = JSONObject(this)
-        return obj!=null
+        return true
     } catch (t: Throwable) {}
     try {
         val arr = JSONArray(this)
-        return arr!=null
+        return true
     } catch (t: Throwable) {}
     return false
+}
+
+fun String.isJsonObj(): JSONObject? {
+    try {
+        return JSONObject(this)
+    } catch (t: Throwable) {}
+    return null
+}
+fun String.isJsonArr(): JSONArray? {
+    try {
+        return JSONArray(this)
+    } catch (t: Throwable) {}
+    return null
 }

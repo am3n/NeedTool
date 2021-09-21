@@ -114,7 +114,7 @@ private class SynchronizedCachedImpl<T>(initializer: () -> T, lock: Any? = null)
  */
 
 class ResettableLazyManager {
-    val managedDelegates = LinkedList<Resettable>()
+    private val managedDelegates = LinkedList<Resettable>()
     fun register(managed: Resettable) {
         synchronized (managedDelegates) {
             managedDelegates.add(managed)
@@ -132,7 +132,7 @@ interface Resettable {
     fun reset()
 }
 
-class ResettableLazy<PROPTYPE>(val manager: ResettableLazyManager, val init: ()->PROPTYPE): Resettable {
+class ResettableLazy<PROPTYPE>(private val manager: ResettableLazyManager, val init: () -> PROPTYPE): Resettable {
     @Volatile var lazyHolder = makeInitBlock()
     operator fun getValue(thisRef: Any?, property: KProperty<*>): PROPTYPE {
         return lazyHolder.value
@@ -140,7 +140,7 @@ class ResettableLazy<PROPTYPE>(val manager: ResettableLazyManager, val init: ()-
     override fun reset() {
         lazyHolder = makeInitBlock()
     }
-    fun makeInitBlock(): Lazy<PROPTYPE> {
+    private fun makeInitBlock(): Lazy<PROPTYPE> {
         return lazy {
             manager.register(this)
             init()

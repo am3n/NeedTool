@@ -11,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.*
 import ir.am3n.needtool.R
 import ir.am3n.needtool.isRtl
+import ir.am3n.needtool.persianLetter
 
 class A3TextView : AppCompatTextView {
 
@@ -24,7 +25,7 @@ class A3TextView : AppCompatTextView {
         build(context, attrs, 0)
     }
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        build(context, attrs, 0)
+        build(context, attrs, defStyleAttr)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

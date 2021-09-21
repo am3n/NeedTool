@@ -196,6 +196,8 @@ open class RelativePopupWindow : PopupWindow() {
             circularReveal(anchor!!, false) {
                 super.dismiss()
             }
+        } else {
+            super.dismiss()
         }
     }
 

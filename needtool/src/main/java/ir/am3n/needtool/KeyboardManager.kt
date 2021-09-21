@@ -1,14 +1,14 @@
 package ir.am3n.needtool
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Rect
+import android.os.Build
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.lifecycle.LiveData
 import java.lang.ref.WeakReference
+import kotlin.math.abs
 
-@SuppressLint("StaticFieldLeak")
 class KeyboardManager private constructor() : LiveData<KeyboardManager.KeyboardStatus>() {
 
     companion object {
@@ -54,7 +54,7 @@ class KeyboardManager private constructor() : LiveData<KeyboardManager.KeyboardS
                 val keypadHeight = screenHeight - rect.bottom
 
                 // 0.15 ratio is perhaps enough to determine keypad height.
-                if (Math.abs(keypadHeight) > screenHeight * 0.05) {
+                if (abs(keypadHeight) > screenHeight * 0.05) {
                     postValue(KeyboardStatus.OPEN)
                 } else {
                     postValue(KeyboardStatus.CLOSED)
@@ -65,7 +65,11 @@ class KeyboardManager private constructor() : LiveData<KeyboardManager.KeyboardS
     }
 
     private fun removeOnGlobalLayoutListener() {
-        rootView?.viewTreeObserver?.removeOnGlobalLayoutListener(globalLayoutListener)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            rootView?.viewTreeObserver?.removeOnGlobalLayoutListener(globalLayoutListener)
+        } else {
+            rootView?.viewTreeObserver?.removeGlobalOnLayoutListener(globalLayoutListener)
+        }
         rootView = null
         globalLayoutListener = null
     }

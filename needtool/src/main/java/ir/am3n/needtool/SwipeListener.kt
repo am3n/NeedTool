@@ -1,13 +1,11 @@
 package ir.am3n.needtool
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import kotlin.math.abs
 
-@SuppressLint("ClickableViewAccessibility")
 class SwipeListener(
     ctx: Context?,
     private val onSwipe: (Direction) -> Unit

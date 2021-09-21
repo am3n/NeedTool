@@ -8,8 +8,8 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import ir.am3n.needtool.R
 import ir.am3n.needtool.isRtl
 
@@ -30,6 +30,13 @@ class A3ImageView : AppCompatImageView {
             }
             field = value
             scaleX = if (isRtl) -1f else 1f
+            if (isRtl) {
+                if ((paddingLeft > 0 || paddingRight > 0) && paddingLeft != paddingRight) {
+                    val leftPadding = paddingLeft
+                    val rightPadding = paddingRight
+                    updatePadding(left = rightPadding, right = leftPadding)
+                }
+            }
         }
 
 
@@ -53,6 +60,13 @@ class A3ImageView : AppCompatImageView {
             else -> false
         }
         scaleX = if (isRtl) -1f else 1f
+        if (isRtl) {
+            if ((paddingLeft > 0 || paddingRight > 0) && paddingLeft != paddingRight) {
+                val leftPadding = paddingLeft
+                val rightPadding = paddingRight
+                updatePadding(left = rightPadding, right = leftPadding)
+            }
+        }
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 

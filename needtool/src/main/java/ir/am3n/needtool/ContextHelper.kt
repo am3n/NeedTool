@@ -61,23 +61,19 @@ val Context.wifiManager: WifiManager?
 val Context.teleManager: TelephonyManager?
     get() = applicationContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager?
 
-val Context.ssid: String?
-    @SuppressLint("MissingPermission")
-    get() {
-        val info = wifiManager?.connectionInfo
-        return info?.ssid
-    }
+val Context.ssid: String? get() {
+    val info = wifiManager?.connectionInfo
+    return info?.ssid
+}
 
 
 
-@SuppressLint("HardwareIds")
 fun Context.deviceId(): String {
     return Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
 }
 
 
-val serialDevice: String 
-    @SuppressLint("MissingPermission", "HardwareIds") 
+val serialDevice: String
     get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { 
         try {
             Build.getSerial()

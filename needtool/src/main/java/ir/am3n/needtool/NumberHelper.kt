@@ -1,6 +1,8 @@
 package ir.am3n.needtool
 
+import android.content.Context
 import java.util.*
+import kotlin.experimental.and
 
 class Num2Persian(private val value: Any) {
 
@@ -23,6 +25,7 @@ class Num2Persian(private val value: Any) {
     private val decimalSuffixes: Array<String> = arrayOf(
         "", "دهم", "صدم", "هزارم", "ده‌هزارم", "صد‌هزارم", "میلیونوم", "ده‌میلیونوم", "صدمیلیونوم", "میلیاردم", "ده‌میلیاردم", "صد‌‌میلیاردم"
     )
+
 
     private fun prepareNumber(num: Any): List<String> {
         var out: Any = num
@@ -158,6 +161,13 @@ fun Number.persianNth(): String = this.toString().persianNth()
 
 val String.d2: String get() = String.format(Locale.US, "%02d", this.toInt())
 val Int.d2: String get() = String.format(Locale.US, "%02d", this)
+
+
+fun String.rtlSignNum(context: Context?): String {
+    return if (context?.resources?.isRtl == true && this.intOr0 < 0)
+        this.replace("-", "") + "-"
+    else this
+}
 
 
 val String.persianOrArabicToEnglish: String get() {

@@ -9,6 +9,8 @@ import java.math.BigInteger
 
 val String.url2Host get() = replace(Regex(".*//"), "").replace(Regex("/.*"), "").replace("www.", "")
 
+fun String.firstCap() = replaceFirstChar { it.uppercase() }
+
 fun String.isNumeric() = toLongOrNull() != null
 
 fun String.isAlphabet() = matches(Regex("[a-zA-Z]+"))
@@ -16,9 +18,9 @@ fun String.isAlphabet() = matches(Regex("[a-zA-Z]+"))
 fun String.isAlphabetAndNumber() = matches(Regex("[a-zA-Z0-9]+")) && !isNumeric() && !isAlphabet()
 
 fun String.isPhoneNumber() = isNumeric() &&
-        ((startsWith("09") && length == 11) ||
-                (startsWith("989") && length == 12) ||
-                (startsWith("+989") && length == 13))
+    ((startsWith("09") && length == 11) ||
+        (startsWith("989") && length == 12) ||
+        (startsWith("+989") && length == 13))
 
 fun String.replaceLast(delimiter: String, replace: String): String {
     val index = lastIndexOf(delimiter)
@@ -29,7 +31,8 @@ fun String.replaceLast(delimiter: String, replace: String): String {
 fun String?.asUri(): Uri? {
     try {
         return Uri.parse(this)
-    } catch (e: Exception) {}
+    } catch (e: Exception) {
+    }
     return null
 }
 
@@ -71,4 +74,9 @@ inline fun <reified T : Any> String.removeNoneNumeric(): T {
 fun change2by2(str: String): ByteArray {
     return change2by2(str.toByteArray(Charsets.UTF_8))
 }
+
+
+val String.intOr0: Int get() = toIntOrNull() ?: 0
+
+val String.intOr0Str: String get() = intOr0.toString()
 
