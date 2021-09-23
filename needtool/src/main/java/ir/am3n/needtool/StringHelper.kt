@@ -80,3 +80,20 @@ val String.intOr0: Int get() = toIntOrNull() ?: 0
 
 val String.intOr0Str: String get() = intOr0.toString()
 
+
+
+fun String.optSubString(startIndex: Int, endIndex: Int): String {
+    return try {
+        substring(startIndex, endIndex) + ".."
+    } catch (t: Throwable) {
+        this
+    }
+}
+
+fun String.optSubString(range: IntRange): String {
+    return try {
+        substring(range) + ".."
+    } catch (t: Throwable) {
+        this
+    }
+}
