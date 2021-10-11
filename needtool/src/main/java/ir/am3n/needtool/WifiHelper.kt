@@ -11,6 +11,7 @@ import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 
 
 fun Context.wifiDisconnect(onNeedShowChangeWifiConnectivityPermission: Runnable? = null): Boolean? {
@@ -206,14 +207,21 @@ fun Activity.wifiEnableAsync(
 
 private val wifiScanReceiver = object : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        Log.d("NeedTool-WifiHelper", "WifiScanReceiver onReceive()")
         try { context.unregisterReceiver(this) } catch (t: Throwable) {}
         val success = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false)
         } else {
             intent.action == WifiManager.SCAN_RESULTS_AVAILABLE_ACTION
         }
+        Log.d("NeedTool-WifiHelper", "WifiScanReceiver onReceive() success=$success")
         onIO {
-            scanCallback?.invoke(if (success) context.wifiManager?.scanResults else null)
+            try {
+                scanCallback!!.invoke(if (success) context.wifiManager!!.scanResults else null)
+                Log.d("NeedTool-WifiHelper", "WifiScanReceiver onReceive() success=$success > invoke callback")
+            } catch (t: Throwable) {
+                Log.e("NeedTool-WifiHelper", "WifiScanReceiver onReceive()", t)
+            }
         }
     }
 }
@@ -224,14 +232,20 @@ private var tryed = 0
 
 
 private val lifecycleCallback = object : Application.ActivityLifecycleCallbacks {
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
-    override fun onActivityStarted(activity: Activity) {}
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+        Log.d("NeedTool-WifiHelper", "ActivityLifecycle onActivityCreated()")
+    }
+    override fun onActivityStarted(activity: Activity) {
+        Log.d("NeedTool-WifiHelper", "ActivityLifecycle onActivityStarted()")
+    }
     override fun onActivityResumed(activity: Activity) {
+        Log.d("NeedTool-WifiHelper", "ActivityLifecycle onActivityResumed()")
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 activity.unregisterActivityLifecycleCallbacks(this)
             }
         } catch (t: Throwable) {}
+        Log.d("NeedTool-WifiHelper", "ActivityLifecycle onActivityResumed() > pending=$pending   isWifiEnabled=${activity.isWifiEnabled}")
         if (pending && activity.isWifiEnabled) {
             try {
                 tryed = 0
@@ -239,33 +253,51 @@ private val lifecycleCallback = object : Application.ActivityLifecycleCallbacks 
                 val intentFilter = IntentFilter()
                 intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
                 activity.registerReceiver(wifiScanReceiver, intentFilter)
-                activity.wifiManager?.startScan()
+                activity.wifiManager!!.startScan()
+                Log.d("NeedTool-WifiHelper", "ActivityLifecycle onActivityResumed()  pending=$pending  isWifiEnabled=${activity.isWifiEnabled} > wifiManager.startScan()")
             } catch (t: Throwable) {
-                t.printStackTrace()
-                scanCallback?.invoke(null)
+                try {
+                    Log.e("NeedTool-WifiHelper", "ActivityLifecycle onActivityResumed()  pending=$pending  isWifiEnabled=${activity.isWifiEnabled}", t)
+                    scanCallback!!.invoke(null)
+                } catch (t: Throwable) {
+                    Log.e("NeedTool-WifiHelper", "ActivityLifecycle onActivityResumed()  pending=$pending   isWifiEnabled=${activity.isWifiEnabled}", t)
+                }
             }
         } else {
-            tryed = 0
-            pending = false
-            scanCallback?.invoke(null)
+            try {
+                tryed = 0
+                pending = false
+                scanCallback!!.invoke(null)
+                Log.d("NeedTool-WifiHelper", "ActivityLifecycle onActivityResumed()  callback with null")
+            } catch (t: Throwable) {
+                Log.e("NeedTool-WifiHelper", "ActivityLifecycle onActivityResumed()", t)
+            }
         }
     }
-    override fun onActivityPaused(activity: Activity) {}
-    override fun onActivityStopped(activity: Activity) {}
-    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
+    override fun onActivityPaused(activity: Activity) {
+        Log.d("NeedTool-WifiHelper", "ActivityLifecycle onActivityPaused()")
+    }
+    override fun onActivityStopped(activity: Activity) {
+        Log.d("NeedTool-WifiHelper", "ActivityLifecycle onActivityStoped()")
+    }
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+        Log.d("NeedTool-WifiHelper", "ActivityLifecycle onActivitySaveInstanceState()")
+    }
     override fun onActivityDestroyed(activity: Activity) {
         try {
             tryed = 0
             pending = false
-            scanCallback?.invoke(null)
+            scanCallback!!.invoke(null)
+            Log.d("NeedTool-WifiHelper", "ActivityLifecycle onActivityDestroyed()")
         } catch (t: Throwable) {
-            t.printStackTrace()
+            Log.e("NeedTool-WifiHelper", "ActivityLifecycle onActivityDestroyed()", t)
         }
     }
 }
 
 @Synchronized
 fun Activity.scanWifi(callback: ((List<ScanResult>?) -> Unit)? = {}, onNeedShowChangeWifiConnectivityPermission: Runnable? = null) {
+    Log.d("NeedTool-WifiHelper", "scanWifi()  pending=$pending")
     /*if (callback != null) {
         return callback(emptyList())
     }*/
@@ -275,24 +307,29 @@ fun Activity.scanWifi(callback: ((List<ScanResult>?) -> Unit)? = {}, onNeedShowC
     try { unregisterReceiver(wifiScanReceiver) } catch (t: Throwable) {}
     onIO {
         try {
+            Log.d("NeedTool-WifiHelper", "scanWifi()  pending=$pending  isWifiEnabled=$isWifiEnabled")
             if (!isWifiEnabled) {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     try { unregisterActivityLifecycleCallbacks(lifecycleCallback) } catch (t: Throwable) {}
                     registerActivityLifecycleCallbacks(lifecycleCallback)
                     startActivity(Intent(Settings.Panel.ACTION_WIFI))
+                    Log.d("NeedTool-WifiHelper", "scanWifi()  pending=$pending  > call startActivity(..)")
 
                 } else {
+                    Log.d("NeedTool-WifiHelper", "scanWifi()  pending=$pending  > call wifiEnable()  tryed=$tryed")
                     wifiEnable(onNeedShowChangeWifiConnectivityPermission)
                     if (tryed > 6) {
                         pending = false
                         tryed = 0
-                        scanCallback?.invoke(null)
+                        scanCallback!!.invoke(null)
+                        Log.d("NeedTool-WifiHelper", "scanWifi()  pending=$pending  tryed=$tryed  invoke scanCallback")
                     } else {
                         onIO({
                             tryed++
                             pending = false
                             scanWifi(callback, onNeedShowChangeWifiConnectivityPermission)
+                            Log.d("NeedTool-WifiHelper", "scanWifi()  pending=$pending  tryed=$tryed  call scanWifi()")
                         }, 500)
                     }
                 }
@@ -304,12 +341,17 @@ fun Activity.scanWifi(callback: ((List<ScanResult>?) -> Unit)? = {}, onNeedShowC
                 intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
                 registerReceiver(wifiScanReceiver, intentFilter)
                 wifiManager!!.startScan()
+                Log.d("NeedTool-WifiHelper", "scanWifi()  pending=$pending  >  call wifiManager.startScan()")
             }
         } catch (t: Throwable) {
-            t.printStackTrace()
-            pending = false
-            tryed = 0
-            scanCallback?.invoke(null)
+            Log.e("NeedTool-WifiHelper", "scanWifi()", t)
+            try {
+                pending = false
+                tryed = 0
+                scanCallback!!.invoke(null)
+            } catch (t: Throwable) {
+                Log.e("NeedTool-WifiHelper", "scanWifi() > catch(t)", t)
+            }
         }
     }
 }

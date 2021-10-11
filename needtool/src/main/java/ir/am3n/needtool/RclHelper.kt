@@ -704,4 +704,8 @@ abstract class RclMvAdapter<T, VH: RclMvVH<T>>(
         return true
     }
 
+    fun attachToRecyclerView(recyclerView: RecyclerView) {
+        mItemTouchHelper?.attachToRecyclerView(recyclerView)
+    }
+
 }
