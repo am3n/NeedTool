@@ -682,6 +682,9 @@ abstract class RclMvAdapter<T, VH: RclMvVH<T>>(
 
     private var mItemTouchHelper: ItemTouchHelper? = null
 
+    var isDismissMode = false
+    var isMoveMode = false
+
     init {
         val callback: ItemTouchHelper.Callback = SimpleItemTouchHelperCallback(this@RclMvAdapter)
         mItemTouchHelper = ItemTouchHelper(callback)
@@ -702,6 +705,14 @@ abstract class RclMvAdapter<T, VH: RclMvVH<T>>(
         Collections.swap(list, fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
         return true
+    }
+
+    override fun isItemViewSwipeEnabled(): Boolean {
+        return isDismissMode
+    }
+
+    override fun isLongPressDragEnabled(): Boolean {
+        return isMoveMode
     }
 
     fun attachToRecyclerView(recyclerView: RecyclerView) {
