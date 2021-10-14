@@ -12,12 +12,17 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.text.layoutDirection
+import androidx.fragment.app.Fragment
 import java.lang.reflect.Field
 import java.util.*
 
 fun Context.drawable(@DrawableRes drawableResource: Int): Drawable? = ContextCompat.getDrawable(this, drawableResource)
 fun Context.color(@ColorRes color: Int) = ContextCompat.getColor(this, color)
 fun Context.string(@StringRes string: Int): String = getString(string)
+
+fun Fragment.drawable(@DrawableRes drawableResource: Int): Drawable? = try { ContextCompat.getDrawable(this.requireContext(), drawableResource) } catch (t: Throwable) { null }
+fun Fragment.color(@ColorRes color: Int) = try { ContextCompat.getColor(this.requireContext(), color) } catch (t: Throwable) { null }
+fun Fragment.string(@StringRes string: Int): String = getString(string)
 
 fun Resources.string(@StringRes string: Int): String = getString(string)
 
@@ -44,7 +49,9 @@ fun getResId(resName: String?, c: Class<*>): Int {
 fun Context.getIdentifierId(strId: String): Int {
     return resources.getIdentifier(strId, "id", packageName)
 }
-
+fun Fragment.getIdentifierId(strId: String): Int {
+    return resources.getIdentifier(strId, "id", context?.packageName)
+}
 
 enum class LD {
     LD_LTR,
