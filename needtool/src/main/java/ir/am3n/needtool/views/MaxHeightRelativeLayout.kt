@@ -29,6 +29,7 @@ class MaxHeightRelativeLayout : RelativeLayout {
     fun setMaxHeightPx(maxHeightPx: Int) {
         this.maxHeightPx = maxHeightPx
         invalidate()
+        requestLayout()
     }
 
     fun setMaxHeightDp(maxHeightDp: Int) {
