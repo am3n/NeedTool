@@ -6,7 +6,7 @@ import android.os.SystemClock;
 
 /**
  * This is a copy of {@link android.os.CountDownTimer} class that I changed a bit to solve
- * the problem of calling the {@link android.os.CountDownTimer#onFinish} method at the wrong time
+ * the problem of calling the {@link android.os.CountDownTimer#onFinish()} method at the wrong time
  */
 
 public abstract class CountDownTimer {

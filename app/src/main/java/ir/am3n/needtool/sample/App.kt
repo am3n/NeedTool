@@ -1,8 +1,11 @@
 package ir.am3n.needtool.sample
 
 import android.app.Application
+import android.graphics.Typeface
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -30,7 +33,7 @@ class App : Application(), LifecycleObserver {
             ).build()
         )
 
-        ToastHelper.defaultToastTypefaceRes = R.font.vazir_bold
+        ToastHelper.defaultToastTypeface = ResourcesCompat.getFont(this, R.font.vazir_bold)
 
     }
 
