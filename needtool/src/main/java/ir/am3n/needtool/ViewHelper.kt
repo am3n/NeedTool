@@ -11,6 +11,11 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.findViewTreeLifecycleOwner
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
+import okhttp3.Dispatcher
 
 fun ProgressBar.tintByColor(@ColorInt color: Int) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -32,3 +37,13 @@ fun ProgressBar.tintByRes(@ColorRes colorRes: Int) {
     }
 }
 
+fun View.delayOnLifecycle(
+    duration: Long,
+    dispatcher: CoroutineDispatcher = Main,
+    block: () -> Unit
+): Job? = findViewTreeLifecycleOwner()?.let { lifecycleOwner ->
+    lifecycleOwner.lifecycle.coroutineScope.launch(dispatcher) {
+        delay(duration)
+        block()
+    }
+}

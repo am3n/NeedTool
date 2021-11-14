@@ -33,6 +33,11 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         }
 
 
+        txt.delayOnLifecycle(4000) {
+            txt.text = "aaaaaaaaaaa"
+        }
+
+
         val device = device()
         Log.d("Me-MainAct", "onCreate() > device: $device")
 
@@ -43,7 +48,6 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         onUI({
             snack(actMain, "سلام, ${device["appVersion"]}", font = SnackFont.AUTO, actionText = "بزن بریم")
         }, 3000)
-
 
 
 
