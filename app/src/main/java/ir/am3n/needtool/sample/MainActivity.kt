@@ -1,6 +1,7 @@
 package ir.am3n.needtool.sample
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -92,6 +93,17 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
             "Helo", "aliiii", "dastamo", "sofre", "khoda"
         ))
         rcl?.adapter = adapter
+
+
+
+
+        btnDatabaseAct?.setSafeOnClickListener {
+            startActivity(Intent(this, DatabaseAct::class.java))
+        }
+        btnDatabaseV2Act?.setSafeOnClickListener {
+            startActivity(Intent(this, DatabaseV2Act::class.java))
+        }
+
 
 
     }

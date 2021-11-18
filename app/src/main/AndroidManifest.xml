@@ -31,6 +31,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".DatabaseAct" android:exported="true" />
+
+        <activity android:name=".DatabaseV2Act" android:exported="true" />
+
     </application>
 
 </manifest>

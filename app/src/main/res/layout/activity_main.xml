@@ -31,7 +31,24 @@
         android:id="@+id/btnTestVeiws"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnDatabaseAct"
         android:text="test views frg"/>
+
+    <Button
+        android:id="@+id/btnDatabaseAct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnDatabaseV2Act"
+        android:text="Database Activity"/>
+
+    <Button
+        android:id="@+id/btnDatabaseV2Act"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Database V2 Activity"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
