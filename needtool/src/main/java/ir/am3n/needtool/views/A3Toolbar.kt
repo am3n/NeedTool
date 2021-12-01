@@ -186,12 +186,18 @@ class A3Toolbar : RelativeLayout {
         txtTitle?.updatePadding(left = 4.iDp2Px, right = 4.iDp2Px)
         txtTitle?.gravity = (if (isRtl) Gravity.RIGHT else Gravity.LEFT) or Gravity.CENTER_VERTICAL
         txtTitle?.text = txtTitleText
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                txtTitle?.setTextAppearance(txtTitleAppearance!!)
+            } else {
+                txtTitle?.setTextAppearance(context, txtTitleAppearance!!)
+            }
+        } catch (t: Throwable) {}
         if (txtTitleColor != null)
             txtTitle?.setTextColor(txtTitleColor!!)
         if (txtTitleSize != null) {
             txtTitle?.setTextSize(TypedValue.COMPLEX_UNIT_PX, txtTitleSize!!)
         }
-        try { txtTitle?.setTextAppearance(context, txtTitleAppearance!!) } catch (t: Throwable) {}
 
 
         items.forEachIndexed { index, imgb ->
