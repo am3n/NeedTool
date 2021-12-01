@@ -61,7 +61,6 @@ abstract class BaseDaoV2<T: BaseModelV2>(
     // GET ALL
 
     fun getAllSync(): List<T>? {
-
         if (tableName.isEmpty())
             throw Error("Table name is empty")
         return runRawSelectQuery(SimpleSQLiteQuery(
