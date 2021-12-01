@@ -5,7 +5,23 @@
     android:id="@+id/actMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#222"
     tools:context=".MainActivity">
+
+    <ir.am3n.needtool.views.A3Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:a3_backTint="@color/gray9"
+        app:a3_direction="locale"
+        app:a3_titleColor="@color/white"
+        app:a3_titleText="عنوان"
+        app:a3_titleSize="20sp"
+        app:a3_optionsMenuIconTint="@color/graya" />
+
 
     <TextView
         android:id="@+id/txt"
@@ -21,7 +37,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         android:layoutDirection="rtl"
         app:layoutManager="ir.am3n.needtool.RtlStaggeredLayoutManager"
         tools:itemCount="5"
