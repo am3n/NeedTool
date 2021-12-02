@@ -1,40 +1,42 @@
 package ir.am3n.needtool
 
-class Counter(milliseconds: Int, interval: Int, var tickListener: TimerTickListener) : Thread() {
+class Counter(
+    var milliseconds: Long,
+    var interval: Long,
+    var onTick: (time: Long, finished: Boolean) -> Unit
+) : Thread() {
 
-    private lateinit var timer: CountDownTimer
-    internal var finished = true
-    internal var finishedTime: Long = 0
-    internal var milliseconds = 5000
-    internal var interval = 1000
+    private var timer: CountDownTimer? = null
+    private var finished = true
+    private var finishedTime: Long = 0
 
     val isRunning: Boolean get() = !isFinished
 
     val isFinished: Boolean get() = finished && System.currentTimeMillis() - finishedTime > 300
 
-    interface TimerTickListener {
-        fun onTick(l: Long)
-        fun onFinish()
-    }
-
-
     init {
-        this.milliseconds = milliseconds
-        this.interval = interval
         run()
     }
 
     override fun run() {
         super.run()
 
-        timer = object : CountDownTimer(milliseconds.toLong(), interval.toLong()) {
+        timer = object : CountDownTimer(milliseconds, interval) {
             override fun onTick(l: Long) {
-                tickListener.onTick(l)
+                try {
+                    onTick(l, finished)
+                } catch (t: Throwable) {
+                    t.printStackTrace()
+                }
             }
             override fun onFinish() {
-                tickListener.onFinish()
-                finished = true
-                finishedTime = System.currentTimeMillis()
+                try {
+                    finished = true
+                    finishedTime = System.currentTimeMillis()
+                    onTick(milliseconds, finished)
+                } catch (t: Throwable) {
+                    t.printStackTrace()
+                }
             }
         }
 
@@ -42,14 +44,14 @@ class Counter(milliseconds: Int, interval: Int, var tickListener: TimerTickListe
 
     fun stopTimer() {
         if (!finished)
-            timer.cancel()
+            timer?.cancel()
         finished = true
     }
 
     fun startTimer() {
         if (finished) {
             finished = false
-            timer.start()
+            timer?.start()
         }
     }
 

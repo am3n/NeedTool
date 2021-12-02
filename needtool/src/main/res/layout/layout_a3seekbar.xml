@@ -10,11 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
+        app:cardBackgroundColor="#0000"
         app:cardElevation="0dp">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#4000">
+            android:layout_height="match_parent">
             <View
                 android:id="@+id/barBackground"
                 android:layout_width="match_parent"

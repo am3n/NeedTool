@@ -14,6 +14,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import ir.am3n.needtool.*
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.Thread.sleep
 
 class MainActivity : AppCompatActivity(), LifecycleObserver {
 
@@ -104,6 +105,21 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
             startActivity(Intent(this, DatabaseV2Act::class.java))
         }
 
+
+        onIO {
+            sleep(1000)
+            var progress = 0
+            while (true) {
+                try {
+                    sleep(1)
+                    sb?.post { sb?.progress = progress++ }
+                    if (progress>=1000)
+                        break
+                } catch (t: Throwable) {
+                    t.printStackTrace()
+                }
+            }
+        }
 
 
     }

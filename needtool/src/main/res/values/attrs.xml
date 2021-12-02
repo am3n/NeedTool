@@ -95,39 +95,47 @@
     <!-- ######################################################################################3 -->
 
 
-    <declare-styleable name="A3VerticalSeekBar">
+    <declare-styleable name="A3SeekBar">
 
-        <attr name="a3vsb_progress_on_touch" format="boolean" />
+        <attr name="a3sb_orientation">
+            <enum name="vertical_ttb" value="0" />
+            <enum name="vertical_btt" value="1" />
+            <enum name="horizontal_ltr" value="2" />
+            <enum name="horizontal_rtl" value="3" />
+            <enum name="horizontal_locale" value="4" />
+        </attr>
 
-        <attr name="a3vsb_bar_background" format="reference|color" />
-        <attr name="a3vsb_bar_background_gradient_start" format="color" />
-        <attr name="a3vsb_bar_background_gradient_end" format="color" />
+        <attr name="a3sb_progress_on_touch" format="boolean" />
 
-        <attr name="a3vsb_bar_progress" format="reference|color" />
-        <attr name="a3vsb_bar_progress_gradient_start" format="color" />
-        <attr name="a3vsb_bar_progress_gradient_end" format="color" />
+        <attr name="a3sb_bar_background" format="reference|color" />
+        <attr name="a3sb_bar_background_gradient_start" format="color" />
+        <attr name="a3sb_bar_background_gradient_end" format="color" />
 
-        <attr name="a3vsb_bar_stroke_width" format="dimension" />
-        <attr name="a3vsb_bar_stroke_color" format="color" />
+        <attr name="a3sb_bar_progress" format="reference|color" />
+        <attr name="a3sb_bar_progress_gradient_start" format="color" />
+        <attr name="a3sb_bar_progress_gradient_end" format="color" />
 
-        <attr name="a3vsb_bar_corner_radius" format="dimension" />
-        <attr name="a3vsb_bar_width" format="dimension" />
+        <attr name="a3sb_bar_stroke_width" format="dimension" />
+        <attr name="a3sb_bar_stroke_color" format="color" />
 
-        <attr name="a3vsb_progress" format="integer" />
-        <attr name="a3vsb_min_value" format="integer" />
-        <attr name="a3vsb_max_value" format="integer" />
+        <attr name="a3sb_bar_corner_radius" format="dimension" />
+        <attr name="a3sb_bar_width" format="dimension" />
 
-        <attr name="a3vsb_min_placeholder_src" format="reference" />
-        <attr name="a3vsb_mid_placeholder_src" format="reference" />
-        <attr name="a3vsb_max_placeholder_src" format="reference" />
+        <attr name="a3sb_progress" format="integer" />
+        <attr name="a3sb_min_value" format="integer" />
+        <attr name="a3sb_max_value" format="integer" />
 
-        <attr name="a3vsb_min_placeholder_text" format="string" />
-        <attr name="a3vsb_mid_placeholder_text" format="string" />
-        <attr name="a3vsb_max_placeholder_text" format="string" />
+        <attr name="a3sb_min_placeholder_src" format="reference" />
+        <attr name="a3sb_mid_placeholder_src" format="reference" />
+        <attr name="a3sb_max_placeholder_src" format="reference" />
 
-        <attr name="a3vsb_min_placeholder_text_color" format="color" />
-        <attr name="a3vsb_mid_placeholder_text_color" format="color" />
-        <attr name="a3vsb_max_placeholder_text_color" format="color" />
+        <attr name="a3sb_min_placeholder_text" format="string" />
+        <attr name="a3sb_mid_placeholder_text" format="string" />
+        <attr name="a3sb_max_placeholder_text" format="string" />
+
+        <attr name="a3sb_min_placeholder_text_color" format="color" />
+        <attr name="a3sb_mid_placeholder_text_color" format="color" />
+        <attr name="a3sb_max_placeholder_text_color" format="color" />
 
         <attr name="android:layout_width" />
         <attr name="android:layout_height" />
