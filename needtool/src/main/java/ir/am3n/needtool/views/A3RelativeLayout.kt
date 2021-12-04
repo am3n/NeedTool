@@ -5,13 +5,11 @@ import android.content.res.TypedArray
 import android.os.Build
 import android.util.AttributeSet
 import android.view.Gravity
-import android.view.View
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.GravityCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
