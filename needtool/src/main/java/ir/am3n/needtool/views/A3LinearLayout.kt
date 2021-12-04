@@ -204,18 +204,18 @@ class A3LinearLayout : LinearLayoutCompat {
 
                 if (gravity != CENTER && gravity != CENTER_HORIZONTAL) {
                     when (gravity) {
-                        START -> gravity = RIGHT
-                        START or TOP -> gravity = RIGHT or TOP
-                        START or BOTTOM -> gravity = RIGHT or BOTTOM
-                        START or CENTER_VERTICAL -> gravity = RIGHT or CENTER_VERTICAL
+                        START -> gravity = END
+                        START or TOP -> gravity = END or TOP
+                        START or BOTTOM -> gravity = END or BOTTOM
+                        START or CENTER_VERTICAL -> gravity = END or CENTER_VERTICAL
                         LEFT -> gravity = RIGHT
                         LEFT or TOP -> gravity = RIGHT or TOP
                         LEFT or BOTTOM -> gravity = RIGHT or BOTTOM
                         LEFT or CENTER_VERTICAL -> gravity = RIGHT or CENTER_VERTICAL
-                        END -> gravity = LEFT
-                        END or TOP -> gravity = LEFT or TOP
-                        END or BOTTOM -> gravity = LEFT or BOTTOM
-                        END or CENTER_VERTICAL -> gravity = LEFT or CENTER_VERTICAL
+                        END -> gravity = START
+                        END or TOP -> gravity = START or TOP
+                        END or BOTTOM -> gravity = START or BOTTOM
+                        END or CENTER_VERTICAL -> gravity = START or CENTER_VERTICAL
                         RIGHT -> gravity = LEFT
                         RIGHT or TOP -> gravity = LEFT or TOP
                         RIGHT or BOTTOM -> gravity = LEFT or BOTTOM

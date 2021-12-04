@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.os.Build
 import android.util.AttributeSet
+import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.GravityCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
@@ -140,6 +142,29 @@ class A3RelativeLayout : RelativeLayout {
                         val leftPadding = getChildAt(i).paddingLeft
                         val rightPadding = getChildAt(i).paddingRight
                         getChildAt(i).updatePadding(left = rightPadding, right = leftPadding)
+                    }
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        if (gravity != Gravity.CENTER && gravity != Gravity.CENTER_HORIZONTAL) {
+                            when (gravity) {
+                                Gravity.START -> gravity = Gravity.END
+                                Gravity.START or Gravity.TOP -> gravity = Gravity.END or Gravity.TOP
+                                Gravity.START or Gravity.BOTTOM -> gravity = Gravity.END or Gravity.BOTTOM
+                                Gravity.START or Gravity.CENTER_VERTICAL -> gravity = Gravity.END or Gravity.CENTER_VERTICAL
+                                Gravity.LEFT -> gravity = Gravity.RIGHT
+                                Gravity.LEFT or Gravity.TOP -> gravity = Gravity.RIGHT or Gravity.TOP
+                                Gravity.LEFT or Gravity.BOTTOM -> gravity = Gravity.RIGHT or Gravity.BOTTOM
+                                Gravity.LEFT or Gravity.CENTER_VERTICAL -> gravity = Gravity.RIGHT or Gravity.CENTER_VERTICAL
+                                Gravity.END -> gravity = Gravity.START
+                                Gravity.END or Gravity.TOP -> gravity = Gravity.START or Gravity.TOP
+                                Gravity.END or Gravity.BOTTOM -> gravity = Gravity.START or Gravity.BOTTOM
+                                Gravity.END or Gravity.CENTER_VERTICAL -> gravity = Gravity.START or Gravity.CENTER_VERTICAL
+                                Gravity.RIGHT -> gravity = Gravity.LEFT
+                                Gravity.RIGHT or Gravity.TOP -> gravity = Gravity.LEFT or Gravity.TOP
+                                Gravity.RIGHT or Gravity.BOTTOM -> gravity = Gravity.LEFT or Gravity.BOTTOM
+                                Gravity.RIGHT or Gravity.CENTER_VERTICAL -> gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
+                            }
+                        }
                     }
 
                 }
