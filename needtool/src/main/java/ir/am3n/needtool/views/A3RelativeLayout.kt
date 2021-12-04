@@ -4,10 +4,14 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.os.Build
 import android.util.AttributeSet
+import android.view.Gravity
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.GravityCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
@@ -143,6 +147,37 @@ class A3RelativeLayout : RelativeLayout {
                     }
 
                 }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    try {
+                        if (getChildAt(i) is TextView) {
+                            val child = getChildAt(i) as TextView
+                            if (child.gravity != Gravity.CENTER && child.gravity != Gravity.CENTER_HORIZONTAL) {
+                                when (child.gravity) {
+                                    Gravity.START -> child.gravity = Gravity.END
+                                    Gravity.START or Gravity.TOP -> child.gravity = Gravity.END or Gravity.TOP
+                                    Gravity.START or Gravity.BOTTOM -> child.gravity = Gravity.END or Gravity.BOTTOM
+                                    Gravity.START or Gravity.CENTER_VERTICAL -> child.gravity = Gravity.END or Gravity.CENTER_VERTICAL
+                                    Gravity.LEFT -> child.gravity = Gravity.RIGHT
+                                    Gravity.LEFT or Gravity.TOP -> child.gravity = Gravity.RIGHT or Gravity.TOP
+                                    Gravity.LEFT or Gravity.BOTTOM -> child.gravity = Gravity.RIGHT or Gravity.BOTTOM
+                                    Gravity.LEFT or Gravity.CENTER_VERTICAL -> child.gravity = Gravity.RIGHT or Gravity.CENTER_VERTICAL
+                                    Gravity.END -> child.gravity = Gravity.START
+                                    Gravity.END or Gravity.TOP -> child.gravity = Gravity.START or Gravity.TOP
+                                    Gravity.END or Gravity.BOTTOM -> child.gravity = Gravity.START or Gravity.BOTTOM
+                                    Gravity.END or Gravity.CENTER_VERTICAL -> child.gravity = Gravity.START or Gravity.CENTER_VERTICAL
+                                    Gravity.RIGHT -> child.gravity = Gravity.LEFT
+                                    Gravity.RIGHT or Gravity.TOP -> child.gravity = Gravity.LEFT or Gravity.TOP
+                                    Gravity.RIGHT or Gravity.BOTTOM -> child.gravity = Gravity.LEFT or Gravity.BOTTOM
+                                    Gravity.RIGHT or Gravity.CENTER_VERTICAL -> child.gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
+                                }
+                            }
+                        }
+                    } catch (t: Throwable) {
+                        t.printStackTrace()
+                    }
+                }
+
             }
 
         }

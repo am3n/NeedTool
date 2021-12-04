@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ir.am3n.needtool.views.A3RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,6 +8,7 @@
     android:elevation="10dp"
     android:clickable="true"
     android:focusable="true"
+    app:a3_direction="locale"
     tools:ignore="HardcodedText">
 
     <ir.am3n.needtool.views.A3Toolbar
@@ -61,7 +62,6 @@
         android:text="@string/bottom_sheet_behavior"
         app:a3_direction="locale"/>
 
-
     <ir.am3n.needtool.views.A3ImageView
         android:id="@+id/img"
         android:layout_width="wrap_content"
@@ -74,11 +74,39 @@
 
 
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txt2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt"
+        android:paddingLeft="20dp"
+        android:layout_marginTop="32dp"
+        android:textSize="24sp"
+        android:text="Test Test Test Test Test Test Test Test Test Test "
+        android:gravity="left"/>
+
+    <ir.am3n.needtool.views.A3LinearLayout
+        android:id="@+id/linr2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt2"
+        android:orientation="vertical"
+        app:a3_direction="locale">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt"
+            android:paddingLeft="20dp"
+            android:textSize="24sp"
+            android:text="Test Test Test Test Test Test Test Test Test Test "
+            android:gravity="left"/>
+    </ir.am3n.needtool.views.A3LinearLayout>
+
     <ir.am3n.needtool.views.A3RelativeLayout
         android:id="@+id/rlv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txt"
+        android:layout_below="@+id/linr2"
         android:layout_marginTop="32dp"
         app:a3_square="width"
         app:a3_direction="locale">
@@ -107,4 +135,4 @@
         app:a3_square="width"/>
 
 
-</RelativeLayout>
+</ir.am3n.needtool.views.A3RelativeLayout>

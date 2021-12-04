@@ -8,6 +8,7 @@ import android.view.Gravity.*
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.*
@@ -158,38 +159,38 @@ class A3LinearLayout : LinearLayoutCompat {
                 val marginRight = child.marginRight
 
                 child.updateLayoutParams<LayoutParams> {
-
                     if (marginLeft != 0 || marginRight != 0) {
                         updateMargins(left = marginRight, right = marginLeft)
                     }
-
-                    if (this@A3LinearLayout.orientation == VERTICAL) {
-                        when (gravity) {
-                            START -> gravity = RIGHT
-                            START or TOP -> gravity = RIGHT or TOP
-                            START or BOTTOM -> gravity = RIGHT or BOTTOM
-                            START or CENTER_VERTICAL -> gravity = RIGHT or CENTER_VERTICAL
-                            LEFT -> gravity = RIGHT
-                            LEFT or TOP -> gravity = RIGHT or TOP
-                            LEFT or BOTTOM -> gravity = RIGHT or BOTTOM
-                            LEFT or CENTER_VERTICAL -> gravity = RIGHT or CENTER_VERTICAL
-                            END -> gravity = LEFT
-                            END or TOP -> gravity = LEFT or TOP
-                            END or BOTTOM -> gravity = LEFT or BOTTOM
-                            END or CENTER_VERTICAL -> gravity = LEFT or CENTER_VERTICAL
-                            RIGHT -> gravity = LEFT
-                            RIGHT or TOP -> gravity = LEFT or TOP
-                            RIGHT or BOTTOM -> gravity = LEFT or BOTTOM
-                            RIGHT or CENTER_VERTICAL -> gravity = LEFT or CENTER_VERTICAL
-                        }
-                    }
-
                 }
 
                 val paddingLeft = child.paddingLeft
                 val paddingRight = child.paddingRight
                 if (paddingLeft != 0 || paddingRight != 0) {
                     child.updatePadding(left = paddingRight, right = paddingLeft)
+                }
+
+                if (this@A3LinearLayout.orientation == VERTICAL) {
+                    if (child is TextView) {
+                        when (child.gravity) {
+                            START -> child.gravity = RIGHT
+                            START or TOP -> child.gravity = RIGHT or TOP
+                            START or BOTTOM -> child.gravity = RIGHT or BOTTOM
+                            START or CENTER_VERTICAL -> child.gravity = RIGHT or CENTER_VERTICAL
+                            LEFT -> child.gravity = RIGHT
+                            LEFT or TOP -> child.gravity = RIGHT or TOP
+                            LEFT or BOTTOM -> child.gravity = RIGHT or BOTTOM
+                            LEFT or CENTER_VERTICAL -> child.gravity = RIGHT or CENTER_VERTICAL
+                            END -> child.gravity = LEFT
+                            END or TOP -> child.gravity = LEFT or TOP
+                            END or BOTTOM -> child.gravity = LEFT or BOTTOM
+                            END or CENTER_VERTICAL -> child.gravity = LEFT or CENTER_VERTICAL
+                            RIGHT -> child.gravity = LEFT
+                            RIGHT or TOP -> child.gravity = LEFT or TOP
+                            RIGHT or BOTTOM -> child.gravity = LEFT or BOTTOM
+                            RIGHT or CENTER_VERTICAL -> child.gravity = LEFT or CENTER_VERTICAL
+                        }
+                    }
                 }
 
             }
@@ -204,18 +205,18 @@ class A3LinearLayout : LinearLayoutCompat {
 
                 if (gravity != CENTER && gravity != CENTER_HORIZONTAL) {
                     when (gravity) {
-                        START -> gravity = RIGHT
-                        START or TOP -> gravity = RIGHT or TOP
-                        START or BOTTOM -> gravity = RIGHT or BOTTOM
-                        START or CENTER_VERTICAL -> gravity = RIGHT or CENTER_VERTICAL
+                        START -> gravity = END
+                        START or TOP -> gravity = END or TOP
+                        START or BOTTOM -> gravity = END or BOTTOM
+                        START or CENTER_VERTICAL -> gravity = END or CENTER_VERTICAL
                         LEFT -> gravity = RIGHT
                         LEFT or TOP -> gravity = RIGHT or TOP
                         LEFT or BOTTOM -> gravity = RIGHT or BOTTOM
                         LEFT or CENTER_VERTICAL -> gravity = RIGHT or CENTER_VERTICAL
-                        END -> gravity = LEFT
-                        END or TOP -> gravity = LEFT or TOP
-                        END or BOTTOM -> gravity = LEFT or BOTTOM
-                        END or CENTER_VERTICAL -> gravity = LEFT or CENTER_VERTICAL
+                        END -> gravity = START
+                        END or TOP -> gravity = START or TOP
+                        END or BOTTOM -> gravity = START or BOTTOM
+                        END or CENTER_VERTICAL -> gravity = START or CENTER_VERTICAL
                         RIGHT -> gravity = LEFT
                         RIGHT or TOP -> gravity = LEFT or TOP
                         RIGHT or BOTTOM -> gravity = LEFT or BOTTOM
