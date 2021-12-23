@@ -7,13 +7,16 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.FontRes
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.updateLayoutParams
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -30,7 +33,7 @@ enum class SnackFont {
 
 
 fun Context.snack(
-    view: View?, text: String?, duration: Int = Snackbar.LENGTH_LONG,
+    view: View?, text: String?, duration: Int = Snackbar.LENGTH_LONG, gravity: Int = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM,
     font: SnackFont = SnackFont.CALLI, fontPath: String? = null, @FontRes fontRes: Int? = null,
     @ColorRes textColor: Int = 0, textSizeSp: Float = 0f,
     @ColorRes backgroundColor: Int = 0,
@@ -78,6 +81,10 @@ fun Context.snack(
         }
     }
 
+    snackbar.view.updateLayoutParams<FrameLayout.LayoutParams> {
+        this.gravity = gravity
+    }
+
     ViewCompat.setLayoutDirection(snackbar.view, ViewCompat.LAYOUT_DIRECTION_RTL)
 
     snackbar.show()
@@ -86,7 +93,7 @@ fun Context.snack(
 }
 
 fun snack(
-    view: View?, text: String?, duration: Int = Snackbar.LENGTH_LONG,
+    view: View?, text: String?, duration: Int = Snackbar.LENGTH_LONG, gravity: Int = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM,
     font: SnackFont = SnackFont.CALLI, fontPath: String? = null, @FontRes fontRes: Int? = null,
     @ColorInt textColor: Int = 0, textSizeSp: Float = 0f,
     @ColorInt backgroundColor: Int = 0,
@@ -133,6 +140,10 @@ fun snack(
             snackbarView.findViewById<TextView?>(com.google.android.material.R.id.snackbar_text)?.typeface = typeface
             snackbarView.findViewById<TextView?>(com.google.android.material.R.id.snackbar_action)?.typeface = typeface
         }
+    }
+
+    snackbar.view.updateLayoutParams<FrameLayout.LayoutParams> {
+        this.gravity = gravity
     }
 
     ViewCompat.setLayoutDirection(snackbar.view, ViewCompat.LAYOUT_DIRECTION_RTL)

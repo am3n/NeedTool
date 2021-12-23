@@ -87,11 +87,6 @@
     </declare-styleable>
 
 
-    <declare-styleable name="A3TextInputLayout">
-        <attr name="a3_errorTextTypeface" format="reference" />
-    </declare-styleable>
-
-
     <!-- ######################################################################################3 -->
 
 
