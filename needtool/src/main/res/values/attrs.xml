@@ -145,6 +145,9 @@
     <declare-styleable name="MaxHeightRelativeLayout">
         <attr name="android:maxHeight"/>
     </declare-styleable>
+    <declare-styleable name="MaxHeightLinearLayout">
+        <attr name="android:maxHeight"/>
+    </declare-styleable>
 
 
     <!-- ######################################################################################3 -->
