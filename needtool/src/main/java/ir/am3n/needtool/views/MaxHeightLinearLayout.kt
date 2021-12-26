@@ -4,12 +4,13 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.os.Build
 import android.util.AttributeSet
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
 import ir.am3n.needtool.R
 import ir.am3n.needtool.iDp2Px
 
-class MaxHeightLinearLayout : RelativeLayout {
+class MaxHeightLinearLayout : LinearLayout {
 
     private var maxHeightPx = -1
 
