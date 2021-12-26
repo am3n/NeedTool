@@ -42,52 +42,6 @@ class A3ImageViewBase : ImageView {
             }
         }
 
-    /*constructor(context: Context?, square: Int, lastSize: Int, squareSize: Int, direction: Int?) : super(context) {
-        this.square = square
-        this.lastSize = lastSize
-        this.squareSize = squareSize
-        this.direction = direction
-    }
-
-    constructor(context: Context?, attrs: AttributeSet?, square: Int, lastSize: Int, squareSize: Int, direction: Int?) : super(context, attrs) {
-        this.square = square
-        this.lastSize = lastSize
-        this.squareSize = squareSize
-        this.direction = direction
-    }
-
-    constructor(
-        context: Context?,
-        attrs: AttributeSet?,
-        defStyleAttr: Int,
-        square: Int,
-        lastSize: Int,
-        squareSize: Int,
-        direction: Int?
-    ) : super(context, attrs, defStyleAttr) {
-        this.square = square
-        this.lastSize = lastSize
-        this.squareSize = squareSize
-        this.direction = direction
-    }
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(
-        context: Context?,
-        attrs: AttributeSet?,
-        defStyleAttr: Int,
-        defStyleRes: Int,
-        square: Int,
-        lastSize: Int,
-        squareSize: Int,
-        direction: Int?
-    ) : super(context, attrs, defStyleAttr, defStyleRes) {
-        this.square = square
-        this.lastSize = lastSize
-        this.squareSize = squareSize
-        this.direction = direction
-    }*/
-
 
     constructor(context: Context) : super(context)
 

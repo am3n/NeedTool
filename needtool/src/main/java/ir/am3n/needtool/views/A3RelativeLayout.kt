@@ -30,11 +30,11 @@ class A3RelativeLayout : RelativeLayout {
         build(context, attrs, 0)
     }
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        build(context, attrs, 0)
+        build(context, attrs, defStyleAttr)
     }
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
-        build(context, attrs, 0)
+        build(context, attrs, defStyleAttr)
     }
 
 
@@ -47,7 +47,7 @@ class A3RelativeLayout : RelativeLayout {
             if (lastSize < size) {
                 lastSize = size
                 try {
-                    updateLayoutParams<RelativeLayout.LayoutParams> { width = size; height = size }
+                    updateLayoutParams<LayoutParams> { width = size; height = size }
                 } catch (t: Throwable) {
                     try {
                         updateLayoutParams<LinearLayout.LayoutParams> { width = size; height = size }
@@ -67,7 +67,7 @@ class A3RelativeLayout : RelativeLayout {
 
         if (squareSize > 0) {
             try {
-                updateLayoutParams<RelativeLayout.LayoutParams> { width = squareSize; height = squareSize }
+                updateLayoutParams<LayoutParams> { width = squareSize; height = squareSize }
             } catch (t: Throwable) {
                 try {
                     updateLayoutParams<LinearLayout.LayoutParams> { width = squareSize; height = squareSize }

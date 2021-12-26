@@ -47,7 +47,7 @@ class A3Toolbar : RelativeLayout {
         init(context, attrs, 0, 0)
     }
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        init(context, attrs, defStyleAttr, 0)
+        init(context, attrs, defStyleAttr, defStyleAttr)
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)

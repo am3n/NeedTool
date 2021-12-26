@@ -22,77 +22,82 @@
         app:a3_titleSize="20sp"
         app:a3_optionsMenuIconTint="@color/graya" />
 
-    <LinearLayout
+    <ir.am3n.needtool.views.MaxHeightRelativeLayout
         android:id="@+id/vsb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:maxHeight="320dp"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintLeft_toLeftOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <ir.am3n.needtool.views.A3SeekBar
-            android:id="@+id/sb"
-            android:layout_width="180dp"
-            android:layout_height="80dp"
-            android:layout_margin="16dp"
-            app:a3sb_orientation="horizontal_ltr"
-            app:a3sb_bar_background="#ff0"
-            app:a3sb_bar_corner_radius="21dp"
-            app:a3sb_bar_progress="@color/colorPrimary"
-            app:a3sb_max_value="1000"
-            app:a3sb_min_value="0"
-            app:a3sb_progress="20" />
+            <ir.am3n.needtool.views.A3SeekBar
+                android:id="@+id/sb"
+                android:layout_width="180dp"
+                android:layout_height="80dp"
+                android:layout_margin="16dp"
+                app:a3sb_orientation="horizontal_ltr"
+                app:a3sb_bar_background="#ff0"
+                app:a3sb_bar_corner_radius="21dp"
+                app:a3sb_bar_progress="@color/colorPrimary"
+                app:a3sb_max_value="1000"
+                app:a3sb_min_value="0"
+                app:a3sb_progress="20" />
 
-        <ir.am3n.needtool.views.A3SeekBar
-            android:layout_width="180dp"
-            android:layout_height="80dp"
-            android:layout_margin="16dp"
-            app:a3sb_orientation="horizontal_rtl"
-            app:a3sb_bar_background="#ff0"
-            app:a3sb_bar_corner_radius="21dp"
-            app:a3sb_bar_progress="@color/colorPrimary"
-            app:a3sb_max_value="100"
-            app:a3sb_min_value="0"
-            app:a3sb_progress="20" />
+            <ir.am3n.needtool.views.A3SeekBar
+                android:layout_width="180dp"
+                android:layout_height="80dp"
+                android:layout_margin="16dp"
+                app:a3sb_orientation="horizontal_rtl"
+                app:a3sb_bar_background="#ff0"
+                app:a3sb_bar_corner_radius="21dp"
+                app:a3sb_bar_progress="@color/colorPrimary"
+                app:a3sb_max_value="100"
+                app:a3sb_min_value="0"
+                app:a3sb_progress="20" />
 
-        <ir.am3n.needtool.views.A3SeekBar
-            android:layout_width="180dp"
-            android:layout_height="80dp"
-            android:layout_margin="16dp"
-            app:a3sb_orientation="horizontal_locale"
-            app:a3sb_bar_background="#ff0"
-            app:a3sb_bar_corner_radius="21dp"
-            app:a3sb_bar_progress="@color/colorPrimary"
-            app:a3sb_max_value="100"
-            app:a3sb_min_value="0"
-            app:a3sb_progress="20" />
+            <ir.am3n.needtool.views.A3SeekBar
+                android:layout_width="180dp"
+                android:layout_height="80dp"
+                android:layout_margin="16dp"
+                app:a3sb_orientation="horizontal_locale"
+                app:a3sb_bar_background="#ff0"
+                app:a3sb_bar_corner_radius="21dp"
+                app:a3sb_bar_progress="@color/colorPrimary"
+                app:a3sb_max_value="100"
+                app:a3sb_min_value="0"
+                app:a3sb_progress="20" />
 
-        <ir.am3n.needtool.views.A3SeekBar
-            android:layout_width="80dp"
-            android:layout_height="180dp"
-            android:layout_margin="16dp"
-            app:a3sb_orientation="vertical_ttb"
-            app:a3sb_bar_background="#ff0"
-            app:a3sb_bar_corner_radius="21dp"
-            app:a3sb_bar_progress="@color/colorPrimary"
-            app:a3sb_max_value="100"
-            app:a3sb_min_value="0"
-            app:a3sb_progress="20" />
+            <ir.am3n.needtool.views.A3SeekBar
+                android:layout_width="80dp"
+                android:layout_height="180dp"
+                android:layout_margin="16dp"
+                app:a3sb_orientation="vertical_ttb"
+                app:a3sb_bar_background="#ff0"
+                app:a3sb_bar_corner_radius="21dp"
+                app:a3sb_bar_progress="@color/colorPrimary"
+                app:a3sb_max_value="100"
+                app:a3sb_min_value="0"
+                app:a3sb_progress="20" />
 
-        <ir.am3n.needtool.views.A3SeekBar
-            android:layout_width="80dp"
-            android:layout_height="180dp"
-            android:layout_margin="16dp"
-            app:a3sb_orientation="vertical_btt"
-            app:a3sb_bar_background="#ff0"
-            app:a3sb_bar_corner_radius="21dp"
-            app:a3sb_bar_progress="@color/colorPrimary"
-            app:a3sb_max_value="100"
-            app:a3sb_min_value="0"
-            app:a3sb_progress="20" />
+            <ir.am3n.needtool.views.A3SeekBar
+                android:layout_width="80dp"
+                android:layout_height="180dp"
+                android:layout_margin="16dp"
+                app:a3sb_orientation="vertical_btt"
+                app:a3sb_bar_background="#ff0"
+                app:a3sb_bar_corner_radius="21dp"
+                app:a3sb_bar_progress="@color/colorPrimary"
+                app:a3sb_max_value="100"
+                app:a3sb_min_value="0"
+                app:a3sb_progress="20" />
 
 
-    </LinearLayout>
+        </LinearLayout>
+    </ir.am3n.needtool.views.MaxHeightRelativeLayout>
 
     <TextView
         android:id="@+id/txt"

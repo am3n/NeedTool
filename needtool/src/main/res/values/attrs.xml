@@ -141,7 +141,16 @@
     <!-- ######################################################################################3 -->
 
 
-    <attr name="nsPickerStyle" format="reference" />
+
+    <declare-styleable name="MaxHeightRelativeLayout">
+        <attr name="android:maxHeight"/>
+    </declare-styleable>
+
+
+    <!-- ######################################################################################3 -->
+
+
+    <!--<attr name="nsPickerStyle" format="reference" />-->
 
     <declare-styleable name="NSPicker">
         <attr name="nsp_width" format="dimension" />

@@ -3,11 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Android/Projects/Am3n/NeedToolSample/app/src/main/res/layout/activity_main.xml" value="0.18888888888888888" />
-        <entry key="..\:/Android/Projects/Am3n/NeedToolSample/app/src/main/res/layout/frg_a3views.xml" value="0.33" />
-        <entry key="..\:/Android/Projects/Am3n/NeedToolSample/app/src/main/res/layout/frg_profile.xml" value="0.18888888888888888" />
-        <entry key="..\:/Android/Projects/Am3n/NeedToolSample/needtool/src/main/res/layout/layout_a3seekbar.xml" value="0.18888888888888888" />
-        <entry key="..\:/Android/Projects/Am3n/NeedToolSample/needtool/src/main/res/layout/ns_picker_material.xml" value="0.1" />
+        <entry key="..\:/Users/am3n/StudioProjects/Am3n/NeedToolSample/app/src/main/res/layout/activity_main.xml" value="0.25" />
       </map>
     </option>
   </component>
