@@ -210,7 +210,6 @@ class A3Toolbar : RelativeLayout {
         imgbBack?.scaleX = if (isRtl) -1f else 1f
 
 
-
         txtTitle?.updateLayoutParams<LayoutParams> {
             width = LayoutParams.MATCH_PARENT
             height = layoutParams.height
@@ -291,6 +290,25 @@ class A3Toolbar : RelativeLayout {
     }
 
     //**************************************************************************************************
+
+    fun setBackIcon(@DrawableRes iconResource: Int?) {
+        if (iconResource != null) {
+            imgbBackIcon = iconResource
+            imgbBack?.setImageResource(imgbBackIcon!!)
+        }
+    }
+
+    fun setBackIconTint(@ColorInt tint: Int?) {
+        if (imgbBack != null && tint != null) {
+            imgbBackTint = tint
+            ImageViewCompat.setImageTintList(imgbBack!!, imgbBackTint!!.asStateList)
+        }
+    }
+
+    fun setBackIconPadding(padding: Int) {
+        imgbBackPadding = padding
+        imgbBack?.setPadding(imgbBackPadding!!)
+    }
 
     fun setTitle(title: String) {
         txtTitle?.text = title
