@@ -65,6 +65,8 @@ class A3Toolbar : RelativeLayout {
     private var menu: MutableList<Menu> = mutableListOf()
     private var menuBtns: MutableList<AppCompatImageButton> = mutableListOf()
 
+    private var onItemClick: ((index: Int, id: Int?, view: View?) -> Unit)? = null
+
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
         init(context, attrs, 0, 0)
@@ -282,6 +284,9 @@ class A3Toolbar : RelativeLayout {
             if (optionsMenuTint != null)
                 ImageViewCompat.setImageTintList(menuBtns[index], optionsMenuTint!!.asStateList)
             menuBtns[index].setBackgroundResource(defaultBackground.resourceId)
+            menuBtns[index].setOnClickListener {
+                onItemClick?.invoke(index, item.id, menuBtns[index])
+            }
         }
     }
 
@@ -308,11 +313,7 @@ class A3Toolbar : RelativeLayout {
     }
 
     fun onItemClick(onItemClick: (index: Int, id: Int?, view: View?) -> Unit) {
-        menu.forEachIndexed { index, item ->
-            menuBtns[index].setOnClickListener {
-                onItemClick(index, item.id, menuBtns[index])
-            }
-        }
+        this.onItemClick = onItemClick
     }
 
 }
