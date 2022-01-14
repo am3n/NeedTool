@@ -2,17 +2,20 @@ package ir.am3n.needtool.sample
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import ir.am3n.needtool.*
+import ir.am3n.needtool.views.A3Toolbar
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.Thread.sleep
 
@@ -26,6 +29,10 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
         Log.d("Me-MainAct", "onCreate() isDataEnabled: $isDataEnabled  -  isSimCardExists: $isSimCardExists")
 
+
+        toolbar.setMenu(listOf(
+            A3Toolbar.Menu.create(R.id.sawtooth, "", R.drawable.ic_baseline_arrow_back_ios_new_24, null)
+        ))
 
         btnTestVeiws?.setSafeOnClickListener {
             supportFragmentManager.beginTransaction()
