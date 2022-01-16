@@ -97,6 +97,6 @@ dependencies {
     api 'com.sun.mail:android-activation:1.6.7'
 
     /** persian date picker */
-    api 'com.github.aliab:Persian-Date-Picker-Dialog:1.6.1'
+    api 'com.github.aliab:Persian-Date-Picker-Dialog:1.7.1'
 
 }
