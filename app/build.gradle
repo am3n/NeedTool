@@ -74,8 +74,8 @@ dependencies {
     implementation 'io.github.inflationx:viewpump:2.0.3'
     implementation 'io.github.inflationx:calligraphy3:3.1.1'
 
-    implementation 'androidx.room:room-ktx:2.3.0'
-    kapt 'androidx.room:room-compiler:2.3.0'
+    implementation 'androidx.room:room-ktx:2.4.1'
+    kapt 'androidx.room:room-compiler:2.4.1'
 
     api project(path: ':needtool')
 
