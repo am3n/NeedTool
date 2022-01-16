@@ -37,10 +37,22 @@ fun ProgressBar.tintByRes(@ColorRes colorRes: Int) {
     }
 }
 
+
 fun View.delayOnLifecycle(
     duration: Long,
     dispatcher: CoroutineDispatcher = Main,
     block: () -> Unit
+): Job? = findViewTreeLifecycleOwner()?.let { lifecycleOwner ->
+    lifecycleOwner.lifecycle.coroutineScope.launch(dispatcher) {
+        delay(duration)
+        block()
+    }
+}
+
+fun View.delayOnLifecycleSuspended(
+    duration: Long,
+    dispatcher: CoroutineDispatcher = Main,
+    block: suspend () -> Unit
 ): Job? = findViewTreeLifecycleOwner()?.let { lifecycleOwner ->
     lifecycleOwner.lifecycle.coroutineScope.launch(dispatcher) {
         delay(duration)

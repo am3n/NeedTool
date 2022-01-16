@@ -44,6 +44,14 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
         txt.delayOnLifecycle(4000) {
             txt.text = "aaaaaaaaaaa"
+            Log.d("Meeeeeeeee", "delay on lifecycle")
+        }
+        txt.delayOnLifecycleSuspended(4000) {
+            txt.text = "aaaaaaaaaaa"
+            Log.d("Meeeeeeeee", "delay on lifecycle suspended")
+        }
+        onUI(4000) {
+            Log.d("Meeeeeeeee", "delay on ui thread")
         }
 
 
