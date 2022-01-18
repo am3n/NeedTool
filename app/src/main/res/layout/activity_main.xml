@@ -19,8 +19,7 @@
         app:a3_direction="locale"
         app:a3_titleColor="@color/white"
         app:a3_titleText="عنوان"
-        app:a3_titleSize="20sp"
-        app:a3_optionsMenuIconTint="@color/graya" />
+        app:a3_titleSize="20sp" />
 
     <ir.am3n.needtool.views.MaxHeightRelativeLayout
         android:id="@+id/vsb"
@@ -116,7 +115,7 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@+id/vsb"
         android:layoutDirection="rtl"
-        app:layoutManager="ir.am3n.needtool.RtlStaggeredLayoutManager"
+        app:layoutManager="ir.am3n.needtool.views.recyclerview.RtlStaggeredLayoutManager"
         tools:itemCount="5"
         tools:listitem="@layout/itm_user"/>
 

@@ -286,6 +286,7 @@ class A3Toolbar : RelativeLayout {
             menuBtns[index].setOnClickListener {
                 onItemClick?.invoke(index, item.id, menuBtns[index])
             }
+            menuBtns[index].scaleType = ImageView.ScaleType.CENTER_INSIDE
         }
     }
 

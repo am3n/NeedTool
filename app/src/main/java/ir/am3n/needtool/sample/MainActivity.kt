@@ -16,6 +16,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import ir.am3n.needtool.*
 import ir.am3n.needtool.views.A3Toolbar
+import ir.am3n.needtool.views.recyclerview.RtlStaggeredLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.Thread.sleep
 

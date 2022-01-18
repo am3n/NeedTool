@@ -1,9 +1,8 @@
-package ir.am3n.needtool.popup
+package ir.am3n.needtool.views.popup
 
 import android.animation.Animator
 import android.annotation.TargetApi
 import android.os.Build
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewAnimationUtils
