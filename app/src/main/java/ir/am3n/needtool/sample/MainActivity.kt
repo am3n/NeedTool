@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
 
         toolbar.setMenu(listOf(
-            A3Toolbar.Menu.create(R.id.sawtooth, "", R.drawable.ic_baseline_arrow_back_ios_new_24, null)
+            A3Toolbar.Menu.create(R.id.sawtooth, "", R.drawable.ic_baseline_arrow_back_ios_new_24, null, 24.iDp2Px)
         ))
 
         btnTestVeiws?.setSafeOnClickListener {

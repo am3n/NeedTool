@@ -2,11 +2,9 @@ package ir.am3n.needtool.views
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
 import android.graphics.Color
-import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
@@ -34,14 +32,15 @@ class A3Toolbar : RelativeLayout {
         val title: String,
         val iconDrawable: Drawable?,
         @DrawableRes val iconResource: Int?,
-        val tint: ColorStateList? = null
+        val iconTint: ColorStateList? = null,
+        val iconPadding: Int = 0
     ) {
         companion object {
-            fun create(@IdRes id: Int, title: String, iconDrawable: Drawable?, tint: ColorStateList? = null): Menu {
-                return Menu(id, title, iconDrawable, null, tint)
+            fun create(@IdRes id: Int, title: String, iconDrawable: Drawable?, iconTint: ColorStateList? = null, iconPadding: Int = 0): Menu {
+                return Menu(id, title, iconDrawable, null, iconTint, iconPadding)
             }
-            fun create(@IdRes id: Int, title: String, @DrawableRes iconResource: Int?, tint: ColorStateList? = null): Menu {
-                return Menu(id, title, null, iconResource, tint)
+            fun create(@IdRes id: Int, title: String, @DrawableRes iconResource: Int?, iconTint: ColorStateList? = null, iconPadding: Int = 0): Menu {
+                return Menu(id, title, null, iconResource, iconTint, iconPadding)
             }
         }
     }
@@ -287,6 +286,7 @@ class A3Toolbar : RelativeLayout {
                 onItemClick?.invoke(index, item.id, menuBtns[index])
             }
             menuBtns[index].scaleType = ImageView.ScaleType.CENTER_INSIDE
+            menuBtns[index].setPadding(item.iconPadding)
         }
     }
 
