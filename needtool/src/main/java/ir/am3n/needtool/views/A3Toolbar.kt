@@ -27,7 +27,7 @@ import ir.am3n.needtool.*
 
 class A3Toolbar : RelativeLayout {
 
-    data class Menu internal constructor(
+    open class Menu internal constructor(
         @IdRes val id: Int,
         val title: String,
         val iconDrawable: Drawable?,
@@ -36,14 +36,37 @@ class A3Toolbar : RelativeLayout {
         val iconPadding: Int = 0
     ) {
         companion object {
-            fun create(@IdRes id: Int, title: String, iconDrawable: Drawable?, iconTint: ColorStateList? = null, iconPadding: Int = 0): Menu {
+            fun create(
+                @IdRes id: Int,
+                title: String,
+                iconDrawable: Drawable?,
+                iconTint: ColorStateList? = null,
+                iconPadding: Int = 0
+            ): Menu {
                 return Menu(id, title, iconDrawable, null, iconTint, iconPadding)
             }
-            fun create(@IdRes id: Int, title: String, @DrawableRes iconResource: Int?, iconTint: ColorStateList? = null, iconPadding: Int = 0): Menu {
+
+            fun create(
+                @IdRes id: Int,
+                title: String,
+                @DrawableRes iconResource: Int?,
+                iconTint: ColorStateList? = null,
+                iconPadding: Int = 0
+            ): Menu {
                 return Menu(id, title, null, iconResource, iconTint, iconPadding)
             }
         }
     }
+
+    class ToolbarMenu(
+        id: Int,
+        title: String,
+        iconDrawable: Drawable?,
+        iconResource: Int?,
+        iconTint: ColorStateList? = null,
+        iconPadding: Int = 0,
+        val view: AppCompatImageButton
+    ) : Menu(id, title, iconDrawable, iconResource, iconTint, iconPadding)
 
     private var direction: Int? = null
 
@@ -317,6 +340,20 @@ class A3Toolbar : RelativeLayout {
 
     fun onBackClick(onBackClick: () -> Unit) {
         imgbBack?.setOnClickListener { onBackClick.invoke() }
+    }
+
+    fun getMenu(): List<ToolbarMenu> {
+        return menu.mapIndexed { index, menu ->
+            ToolbarMenu(
+                menu.id,
+                menu.title,
+                menu.iconDrawable,
+                menu.iconResource,
+                menu.iconTint,
+                menu.iconPadding,
+                menuBtns[index]
+            )
+        }
     }
 
     fun setMenu(menu: List<Menu>) {
