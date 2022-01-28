@@ -305,7 +305,7 @@ class A3Toolbar : RelativeLayout {
             if (optionsMenuTint != null)
                 ImageViewCompat.setImageTintList(menuBtns[index], optionsMenuTint!!.asStateList)
             menuBtns[index].setBackgroundResource(defaultBackground.resourceId)
-            menuBtns[index].setOnClickListener {
+            menuBtns[index].setSafeOnClickListener {
                 onItemClick?.invoke(index, item.id, menuBtns[index])
             }
             menuBtns[index].scaleType = ImageView.ScaleType.CENTER_INSIDE
