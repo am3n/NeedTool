@@ -6,13 +6,13 @@ import java.io.Serializable
 
 interface BaseVH<T> : LayoutContainer, Serializable {
 
-    var isSelected: Boolean
-
     override val containerView: View?
 
     val clickView: View?
 
     val longClickView: View?
+
+    var isSelected: Boolean
 
     fun bind(item: T, position: Int)
 

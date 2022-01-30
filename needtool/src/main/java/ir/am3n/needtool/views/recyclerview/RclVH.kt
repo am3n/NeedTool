@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 abstract class RclVH<T>(itemView: View) : RecyclerView.ViewHolder(itemView), BaseVH<T> {
 
-    val ctx: Context? get() = itemView.context
-    val context: Context? get() = ctx
+    val context: Context? get() = itemView.context
 
 }

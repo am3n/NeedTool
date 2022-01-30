@@ -2,11 +2,11 @@ package ir.am3n.needtool.views.recyclerview
 
 import android.view.View
 
-interface RclListener {
+interface RclListener<T> {
 
-    fun onClick(itemPosition: Int, clickedView: View? = null)
+    fun onClick(position: Int, item: T, clickedView: View? = null)
 
-    fun onLongClick(itemPosition: Int, clickedView: View? = null): Boolean
+    fun onLongClick(position: Int, item: T, clickedView: View? = null): Boolean
 
 }
 

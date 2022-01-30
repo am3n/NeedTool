@@ -13,7 +13,7 @@ abstract class RclAdapter<T, VH: RclVH<T>> : RecyclerView.Adapter<VH>() {
 
     val isSelectMode: Boolean get() = list.any { isSelected(it) }
 
-    open var listener: RclListener? = null
+    open var listener: RclListener<T>? = null
 
     open val animate = false
     private var onAttach = true
@@ -29,9 +29,11 @@ abstract class RclAdapter<T, VH: RclVH<T>> : RecyclerView.Adapter<VH>() {
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.bind(list[position], position)
-        holder.clickView?.setSafeOnClickListener { listener?.onClick(holder.adapterPosition, it) }
+        holder.clickView?.setSafeOnClickListener {
+            listener?.onClick(holder.adapterPosition, list[holder.adapterPosition], it)
+        }
         holder.longClickView?.setOnLongClickListener {
-            return@setOnLongClickListener listener?.onLongClick(holder.adapterPosition, it) ?: true
+            return@setOnLongClickListener listener?.onLongClick(holder.adapterPosition, list[holder.adapterPosition], it) ?: true
         }
         if (animate)
             animate(holder.itemView, position)
