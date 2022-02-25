@@ -1,18 +1,18 @@
 package ir.am3n.needtool.sample
 
+import android.app.Application
 import android.util.Log
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.multidex.MultiDexApplication
 import io.github.inflationx.calligraphy3.CalligraphyConfig
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
 import io.github.inflationx.viewpump.ViewPump
 import ir.am3n.needtool.ToastHelper
 
-class App : MultiDexApplication(), LifecycleObserver {
+class App : Application(), LifecycleObserver {
 
     override fun onCreate() {
         super.onCreate()

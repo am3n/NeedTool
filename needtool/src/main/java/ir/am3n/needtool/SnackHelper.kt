@@ -8,16 +8,21 @@ import android.graphics.Typeface
 import android.os.Build
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.FontRes
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 
 
 /**
@@ -32,13 +37,170 @@ enum class SnackFont {
 }
 
 
-fun Context.snack(
+private fun Context.rtlSnack(
     view: View?, text: String?, duration: Int = Snackbar.LENGTH_LONG, gravity: Int = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM,
+    font: SnackFont = SnackFont.CALLI, fontPath: String? = null, @FontRes fontRes: Int? = null,
+    @ColorRes textColor: Int = 0, textSizeSp: Float = 0f,
+    @ColorRes backgroundColor: Int = 0,
+    actionText: String? = null, @ColorRes actionTextColor: Int = 0, action: () -> Unit = {}
+): Snackbar? {
+    if (view == null || text == null) return null
+
+    val absFontPath =
+        if (font == SnackFont.PATH && fontPath != null) fontPath else if (font == SnackFont.AUTO) fetchFontPath(view.context) else null
+
+    val snackbar = Snackbar.make(view, text, duration)
+
+    if (backgroundColor != 0)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            snackbar.view.backgroundTintList = ColorStateList.valueOf(color(backgroundColor))
+        else
+            snackbar.view.setBackgroundColor(color(backgroundColor))
+
+    snackbar.view.updateLayoutParams<FrameLayout.LayoutParams> {
+        this.gravity = gravity
+    }
+
+    val layout = snackbar.view as SnackbarLayout
+    (layout.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView).visibility = View.INVISIBLE
+    (layout.findViewById<View>(com.google.android.material.R.id.snackbar_action) as Button).visibility = View.INVISIBLE
+
+    val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    val snackView: View = inflater.inflate(R.layout.layout_rtl_snackbar, null)
+
+    val txt = snackView.findViewById<View>(R.id.snackbar_text) as TextView
+    txt.text = text
+    if (textColor != 0)
+        txt.setTextColor(color(textColor))
+    if (textSizeSp != 0f)
+        txt.textSize = textSizeSp
+
+
+    val btn = snackView.findViewById<View>(R.id.snackbar_action) as Button
+    if (actionText == null) {
+        btn.isVisible = false
+    } else {
+        btn.isVisible = true
+        btn.text = actionText
+        if (actionTextColor != 0)
+            btn.setTextColor(
+                when {
+                    actionTextColor != 0 -> color(actionTextColor)
+                    else -> fetchAccentColor(this) ?: Color.CYAN
+                }
+            )
+        btn.setSafeOnClickListener { action.invoke() }
+    }
+
+
+    absFontPath?.let {
+        Typeface.createFromAsset(assets, it)?.let { typeface ->
+            txt.typeface = typeface
+            btn.typeface = typeface
+        }
+    }
+    if (fontRes != null) {
+        ResourcesCompat.getFont(view.context, fontRes)?.let { typeface ->
+            txt.typeface = typeface
+            btn.typeface = typeface
+        }
+    }
+
+
+    layout.addView(snackView, 0)
+    snackbar.show()
+
+    return snackbar
+}
+
+private fun rtlSnack(
+    view: View?, text: String?, duration: Int = Snackbar.LENGTH_LONG, gravity: Int = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM,
+    font: SnackFont = SnackFont.CALLI, fontPath: String? = null, @FontRes fontRes: Int? = null,
+    @ColorInt textColor: Int = 0, textSizeSp: Float = 0f,
+    @ColorInt backgroundColor: Int = 0,
+    actionText: String? = "", @ColorInt actionTextColor: Int = 0, action: () -> Unit = {}
+): Snackbar? {
+    if (view == null || text == null) return null
+    val context = view.context
+
+    val absFontPath =
+        if (font == SnackFont.PATH && fontPath != null) fontPath else if (font == SnackFont.AUTO) fetchFontPath(view.context) else null
+
+    val snackbar = Snackbar.make(view, text, duration)
+
+    if (backgroundColor != 0)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            snackbar.view.backgroundTintList = ColorStateList.valueOf(backgroundColor)
+        else
+            snackbar.view.setBackgroundColor(backgroundColor)
+
+    snackbar.view.updateLayoutParams<FrameLayout.LayoutParams> {
+        this.gravity = gravity
+    }
+
+    val layout = snackbar.view as SnackbarLayout
+    (layout.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView).visibility = View.INVISIBLE
+    (layout.findViewById<View>(com.google.android.material.R.id.snackbar_action) as Button).visibility = View.INVISIBLE
+
+    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    val snackView: View = inflater.inflate(R.layout.layout_rtl_snackbar, null)
+
+    val txt = snackView.findViewById<View>(R.id.snackbar_text) as TextView
+    txt.text = text
+    if (textColor != 0)
+        txt.setTextColor(textColor)
+    if (textSizeSp != 0f)
+        txt.textSize = textSizeSp
+
+
+    val btn = snackView.findViewById<View>(R.id.snackbar_action) as Button
+    if (actionText == null) {
+        btn.isVisible = false
+    } else {
+        btn.isVisible = true
+        btn.text = actionText
+        if (actionTextColor != 0)
+            btn.setTextColor(
+                when {
+                    actionTextColor != 0 -> actionTextColor
+                    else -> fetchAccentColor(context) ?: Color.CYAN
+                }
+            )
+        btn.setSafeOnClickListener { action.invoke() }
+    }
+
+
+    absFontPath?.let {
+        Typeface.createFromAsset(context.assets, it)?.let { typeface ->
+            txt.typeface = typeface
+            btn.typeface = typeface
+        }
+    }
+    if (fontRes != null) {
+        ResourcesCompat.getFont(view.context, fontRes)?.let { typeface ->
+            txt.typeface = typeface
+            btn.typeface = typeface
+        }
+    }
+
+
+    layout.addView(snackView, 0)
+    snackbar.show()
+
+    return snackbar
+}
+
+
+fun Context.snack(
+    view: View?, rtl: Boolean = false, text: String?, duration: Int = Snackbar.LENGTH_LONG, gravity: Int = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM,
     font: SnackFont = SnackFont.CALLI, fontPath: String? = null, @FontRes fontRes: Int? = null,
     @ColorRes textColor: Int = 0, textSizeSp: Float = 0f,
     @ColorRes backgroundColor: Int = 0,
     actionText: String? = "", @ColorRes actionTextColor: Int = 0, action: () -> Unit = {}
 ): Snackbar? {
+
+    if (rtl) return rtlSnack(view, text, duration, gravity, font, fontPath, fontRes, textColor, textSizeSp, backgroundColor, actionText, actionTextColor, action)
+
     if (view == null || text == null) return null
 
     val snackbar = Snackbar.make(view, text, duration)
@@ -93,12 +255,15 @@ fun Context.snack(
 }
 
 fun snack(
-    view: View?, text: String?, duration: Int = Snackbar.LENGTH_LONG, gravity: Int = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM,
+    view: View?, rtl: Boolean = false, text: String?, duration: Int = Snackbar.LENGTH_LONG, gravity: Int = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM,
     font: SnackFont = SnackFont.CALLI, fontPath: String? = null, @FontRes fontRes: Int? = null,
     @ColorInt textColor: Int = 0, textSizeSp: Float = 0f,
     @ColorInt backgroundColor: Int = 0,
     actionText: String? = "", @ColorInt actionTextColor: Int = 0, action: () -> Unit = {}
 ): Snackbar? {
+
+    if (rtl) return rtlSnack(view, text, duration, gravity, font, fontPath, fontRes, textColor, textSizeSp, backgroundColor, actionText, actionTextColor, action)
+
     if (view == null || text == null) return null
 
     val snackbar = Snackbar.make(view, text, duration)
@@ -128,7 +293,7 @@ fun snack(
             textSize = textSizeSp
     }
 
-    (if (font==SnackFont.PATH && fontPath!=null) fontPath else if (font==SnackFont.AUTO) fetchFontPath(view.context) else null)?.let {
+    (if (font == SnackFont.PATH && fontPath != null) fontPath else if (font == SnackFont.AUTO) fetchFontPath(view.context) else null)?.let {
         Typeface.createFromAsset(view.context.assets, it)?.let { typeface ->
             snackbarView.findViewById<TextView?>(com.google.android.material.R.id.snackbar_action)?.typeface = typeface
             snackbarView.findViewById<TextView?>(com.google.android.material.R.id.snackbar_text)?.typeface = typeface
@@ -154,7 +319,6 @@ fun snack(
 }
 
 
-
 private fun fetchFontPath(context: Context): String? {
     try {
         val list = context.assets.list("fonts/")
@@ -177,6 +341,7 @@ private fun fetchAccentColor(context: Context): Int? {
         val color = a.getColor(0, 0)
         a.recycle()
         return color
-    } catch (t: Throwable) {}
+    } catch (t: Throwable) {
+    }
     return null
 }
