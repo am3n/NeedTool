@@ -12,11 +12,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.FontRes
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
@@ -57,8 +57,14 @@ private fun Context.rtlSnack(
         else
             snackbar.view.setBackgroundColor(color(backgroundColor))
 
-    snackbar.view.updateLayoutParams<FrameLayout.LayoutParams> {
-        this.gravity = gravity
+    if (snackbar.view.layoutParams is CoordinatorLayout.LayoutParams) {
+        snackbar.view.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+            this.gravity = gravity
+        }
+    } else if (snackbar.view.layoutParams is FrameLayout.LayoutParams) {
+        snackbar.view.updateLayoutParams<FrameLayout.LayoutParams> {
+            this.gravity = gravity
+        }
     }
 
     val layout = snackbar.view as SnackbarLayout
@@ -134,8 +140,14 @@ private fun rtlSnack(
         else
             snackbar.view.setBackgroundColor(backgroundColor)
 
-    snackbar.view.updateLayoutParams<FrameLayout.LayoutParams> {
-        this.gravity = gravity
+    if (snackbar.view.layoutParams is CoordinatorLayout.LayoutParams) {
+        snackbar.view.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+            this.gravity = gravity
+        }
+    } else if (snackbar.view.layoutParams is FrameLayout.LayoutParams) {
+        snackbar.view.updateLayoutParams<FrameLayout.LayoutParams> {
+            this.gravity = gravity
+        }
     }
 
     val layout = snackbar.view as SnackbarLayout
@@ -243,8 +255,14 @@ fun Context.snack(
         }
     }
 
-    snackbar.view.updateLayoutParams<FrameLayout.LayoutParams> {
-        this.gravity = gravity
+    if (snackbar.view.layoutParams is CoordinatorLayout.LayoutParams) {
+        snackbar.view.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+            this.gravity = gravity
+        }
+    } else if (snackbar.view.layoutParams is FrameLayout.LayoutParams) {
+        snackbar.view.updateLayoutParams<FrameLayout.LayoutParams> {
+            this.gravity = gravity
+        }
     }
 
     ViewCompat.setLayoutDirection(snackbar.view, ViewCompat.LAYOUT_DIRECTION_RTL)
@@ -307,8 +325,14 @@ fun snack(
         }
     }
 
-    snackbar.view.updateLayoutParams<FrameLayout.LayoutParams> {
-        this.gravity = gravity
+    if (snackbar.view.layoutParams is CoordinatorLayout.LayoutParams) {
+        snackbar.view.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+            this.gravity = gravity
+        }
+    } else if (snackbar.view.layoutParams is FrameLayout.LayoutParams) {
+        snackbar.view.updateLayoutParams<FrameLayout.LayoutParams> {
+            this.gravity = gravity
+        }
     }
 
     ViewCompat.setLayoutDirection(snackbar.view, ViewCompat.LAYOUT_DIRECTION_RTL)
