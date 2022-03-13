@@ -51,6 +51,10 @@ private fun Context.rtlSnack(
 
     val snackbar = Snackbar.make(view, text, duration)
 
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        snackbar.view.translationZ = 100.fDp2Px
+    }
+
     if (backgroundColor != 0)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             snackbar.view.backgroundTintList = ColorStateList.valueOf(color(backgroundColor))
@@ -116,6 +120,8 @@ private fun Context.rtlSnack(
     layout.addView(snackView, 0)
     snackbar.show()
 
+
+
     return snackbar
 }
 
@@ -133,6 +139,10 @@ private fun rtlSnack(
         if (font == SnackFont.PATH && fontPath != null) fontPath else if (font == SnackFont.AUTO) fetchFontPath(view.context) else null
 
     val snackbar = Snackbar.make(view, text, duration)
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        snackbar.view.translationZ = 100.fDp2Px
+    }
 
     if (backgroundColor != 0)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -217,6 +227,10 @@ fun Context.snack(
 
     val snackbar = Snackbar.make(view, text, duration)
 
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        snackbar.view.translationZ = 100.fDp2Px
+    }
+
     if (actionText?.isNotEmpty() == true) {
         snackbar.setAction(actionText) { action.invoke() }
         snackbar.setActionTextColor(
@@ -285,6 +299,10 @@ fun snack(
     if (view == null || text == null) return null
 
     val snackbar = Snackbar.make(view, text, duration)
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        snackbar.view.translationZ = 100.fDp2Px
+    }
 
     if (actionText?.isNotEmpty() == true) {
         snackbar.setAction(actionText) { action.invoke() }
