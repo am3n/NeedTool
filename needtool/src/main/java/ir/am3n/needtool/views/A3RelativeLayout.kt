@@ -129,30 +129,24 @@ open class A3RelativeLayout : RelativeLayout {
             for (i in 0 until childCount) {
                 getChildAt(i).updateLayoutParams<LayoutParams> {
 
-                    val alignParentStart = rules[ALIGN_PARENT_START]
-                    val alignParentEnd = rules[ALIGN_PARENT_END]
                     val alignParentLeft = rules[ALIGN_PARENT_LEFT]
                     val alignParentRight = rules[ALIGN_PARENT_RIGHT]
-                    addRule(ALIGN_PARENT_START, alignParentEnd)
-                    addRule(ALIGN_PARENT_END, alignParentStart)
+                    addRule(ALIGN_PARENT_START, alignParentRight)
+                    addRule(ALIGN_PARENT_END, alignParentLeft)
                     addRule(ALIGN_PARENT_LEFT, alignParentRight)
                     addRule(ALIGN_PARENT_RIGHT, alignParentLeft)
 
-                    val startOf = rules[START_OF]
-                    val endOf = rules[END_OF]
                     val leftOf = rules[LEFT_OF]
                     val rightOf = rules[RIGHT_OF]
-                    addRule(START_OF, endOf)
-                    addRule(END_OF, startOf)
+                    addRule(START_OF, rightOf)
+                    addRule(END_OF, leftOf)
                     addRule(LEFT_OF, rightOf)
                     addRule(RIGHT_OF, leftOf)
 
-                    val alignStart = rules[ALIGN_START]
-                    val alignEnd = rules[ALIGN_END]
                     val alignLeft = rules[ALIGN_LEFT]
                     val alignRight = rules[ALIGN_RIGHT]
-                    addRule(ALIGN_START, alignEnd)
-                    addRule(ALIGN_END, alignStart)
+                    addRule(ALIGN_START, alignRight)
+                    addRule(ALIGN_END, alignLeft)
                     addRule(ALIGN_LEFT, alignRight)
                     addRule(ALIGN_RIGHT, alignLeft)
 
