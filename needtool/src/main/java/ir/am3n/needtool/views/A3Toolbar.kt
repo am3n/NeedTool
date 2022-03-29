@@ -68,8 +68,6 @@ class A3Toolbar : RelativeLayout {
         val view: AppCompatImageButton
     ) : Menu(id, title, iconDrawable, iconResource, iconTint, iconPadding)
 
-    private var direction: Int? = null
-
     private var imgbBack: AppCompatImageButton? = null
     private var imgbBackIcon: Int? = null
     private var imgbBackTint: Int? = null
@@ -88,6 +86,12 @@ class A3Toolbar : RelativeLayout {
     private var menuBtns: MutableList<AppCompatImageButton> = mutableListOf()
 
     private var onItemClick: ((index: Int, id: Int?, view: View?) -> Unit)? = null
+
+    var direction: Int? = null
+        set(value) {
+            field = value
+            requestLayout()
+        }
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {

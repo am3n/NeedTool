@@ -10,19 +10,15 @@ import androidx.annotation.RequiresApi
 import ir.am3n.needtool.R
 import ir.am3n.needtool.iDp2Px
 
-class MaxHeightLinearLayout : LinearLayout {
+class MaxHeightLinearLayout : A3LinearLayout {
 
     private var maxHeightPx = -1
 
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         build(context, attrs, 0)
     }
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        build(context, attrs, defStyleAttr)
-    }
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         build(context, attrs, defStyleAttr)
     }
 
@@ -45,6 +41,21 @@ class MaxHeightLinearLayout : LinearLayout {
         if (ta.hasValue(R.styleable.MaxHeightLinearLayout_android_maxHeight))
             maxHeightPx = ta.getDimensionPixelSize(
                 R.styleable.MaxHeightLinearLayout_android_maxHeight, 0)
+
+        if (ta.hasValue(R.styleable.MaxHeightLinearLayout_a3_square) && square == -1)
+            square = ta.getInt(R.styleable.MaxHeightLinearLayout_a3_square, 0)
+        if (square < 0) square = 0
+
+        if (ta.hasValue(R.styleable.MaxHeightLinearLayout_a3_squareSize) && squareSize == -1)
+            squareSize = ta.getDimensionPixelSize(R.styleable.MaxHeightLinearLayout_a3_squareSize, 0)
+
+        if (ta.hasValue(R.styleable.MaxHeightLinearLayout_a3_direction))
+            direction = ta.getInt(R.styleable.MaxHeightLinearLayout_a3_direction, 0)
+
+        if (ta.hasValue(R.styleable.MaxHeightLinearLayout_a3_paddingMiddle))
+            paddingMiddle = ta.getDimensionPixelSize(R.styleable.MaxHeightLinearLayout_a3_paddingMiddle, 0).toFloat()
+
+        needRefresh = true
 
     }
 

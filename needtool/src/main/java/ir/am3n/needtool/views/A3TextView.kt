@@ -16,10 +16,15 @@ import ir.am3n.needtool.persianLetter
 
 class A3TextView : AppCompatTextView {
 
-    private var direction: Int? = null
     private var rtlized = false
 
     private var needRefresh = false
+
+    var direction: Int? = null
+        set(value) {
+            field = value
+            requestLayout()
+        }
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {

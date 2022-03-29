@@ -16,17 +16,21 @@ import ir.am3n.needtool.R
 import ir.am3n.needtool.isRtl
 import kotlin.math.roundToInt
 
-class A3LinearLayout : LinearLayoutCompat {
+open class A3LinearLayout : LinearLayoutCompat {
 
-    private var square: Int = -1
+    protected var square: Int = -1
     private var lastSize = 0
-    private var squareSize: Int = -1
+    protected var squareSize: Int = -1
 
-    private var direction: Int? = null
+    protected var paddingMiddle: Float? = null
 
-    private var paddingMiddle: Float? = null
+    protected var needRefresh = false
 
-    private var needRefresh = false
+    var direction: Int? = null
+        set(value) {
+            field = value
+            requestLayout()
+        }
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {

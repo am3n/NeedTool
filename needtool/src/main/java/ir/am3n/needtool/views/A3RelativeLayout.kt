@@ -8,6 +8,7 @@ import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.annotation.CallSuper
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
@@ -16,14 +17,19 @@ import androidx.core.view.updatePadding
 import ir.am3n.needtool.R
 import ir.am3n.needtool.isRtl
 
-class A3RelativeLayout : RelativeLayout {
+open class A3RelativeLayout : RelativeLayout {
 
-    private var square: Int = -1
+    protected var square: Int = -1
     private var lastSize = 0
-    private var squareSize: Int = -1
+    protected var squareSize: Int = -1
 
-    private var direction: Int? = null
     private var rtlized = false
+
+    var direction: Int? = null
+        set(value) {
+            field = value
+            requestLayout()
+        }
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {

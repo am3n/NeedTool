@@ -19,8 +19,13 @@ class A3ConstraintLayout : ConstraintLayout {
     private var lastSize = 0
     private var squareSize: Int = -1
 
-    private var direction: Int? = null
     private var rtlized = false
+
+    var direction: Int? = null
+        set(value) {
+            field = value
+            requestLayout()
+        }
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -45,7 +50,7 @@ class A3ConstraintLayout : ConstraintLayout {
                         updateLayoutParams<LinearLayout.LayoutParams> { width = size; height = size }
                     } catch (t: Throwable) {
                         try {
-                            updateLayoutParams<ConstraintLayout.LayoutParams> { width = size; height = size }
+                            updateLayoutParams<LayoutParams> { width = size; height = size }
                         } catch (t: Throwable) {
                         }
                     }
@@ -66,7 +71,7 @@ class A3ConstraintLayout : ConstraintLayout {
                     updateLayoutParams<LinearLayout.LayoutParams> { width = squareSize; height = squareSize }
                 } catch (t: Throwable) {
                     try {
-                        updateLayoutParams<ConstraintLayout.LayoutParams> { width = squareSize; height = squareSize }
+                        updateLayoutParams<LayoutParams> { width = squareSize; height = squareSize }
                     } catch (t: Throwable) {
                     }
                 }
@@ -108,7 +113,7 @@ class A3ConstraintLayout : ConstraintLayout {
         if (isRtl) {
 
             for (i in 0 until childCount) {
-                getChildAt(i).updateLayoutParams<ConstraintLayout.LayoutParams> {
+                getChildAt(i).updateLayoutParams<LayoutParams> {
 
                     val _startToStart = startToStart
                     val _endToEnd = endToEnd

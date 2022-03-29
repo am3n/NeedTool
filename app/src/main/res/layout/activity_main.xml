@@ -22,16 +22,19 @@
         app:a3_titleSize="20sp" />
 
     <ir.am3n.needtool.views.MaxHeightRelativeLayout
-        android:id="@+id/vsb"
+        android:id="@+id/mhrlv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxHeight="320dp"
+        app:a3_direction="rtl"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintLeft_toLeftOf="parent">
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_alignParentLeft="true"
+            android:orientation="vertical"
+            tools:ignore="RtlHardcoded">
 
             <ir.am3n.needtool.views.A3SeekBar
                 android:id="@+id/sb"
@@ -113,7 +116,7 @@
         android:id="@+id/rcl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/vsb"
+        app:layout_constraintTop_toBottomOf="@+id/mhrlv"
         android:layoutDirection="rtl"
         app:layoutManager="ir.am3n.needtool.views.recyclerview.RtlStaggeredLayoutManager"
         tools:itemCount="5"

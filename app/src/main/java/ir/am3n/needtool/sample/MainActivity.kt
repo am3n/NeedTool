@@ -35,6 +35,8 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
             A3Toolbar.Menu.create(R.id.sawtooth, "", R.drawable.ic_baseline_arrow_back_ios_new_24, null, 24.iDp2Px)
         ))
 
+        mhrlv.direction = View.LAYOUT_DIRECTION_RTL
+
         btnTestVeiws?.setSafeOnClickListener {
             supportFragmentManager.beginTransaction()
                 .add(R.id.actMain, A3ViewsFrg(), "A3ViewsFrg")

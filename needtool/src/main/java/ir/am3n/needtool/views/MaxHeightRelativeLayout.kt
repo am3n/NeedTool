@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi
 import ir.am3n.needtool.R
 import ir.am3n.needtool.iDp2Px
 
-class MaxHeightRelativeLayout : RelativeLayout {
+class MaxHeightRelativeLayout : A3RelativeLayout {
 
     private var maxHeightPx = -1
 
@@ -44,6 +44,16 @@ class MaxHeightRelativeLayout : RelativeLayout {
         if (ta.hasValue(R.styleable.MaxHeightRelativeLayout_android_maxHeight))
             maxHeightPx = ta.getDimensionPixelSize(
                 R.styleable.MaxHeightRelativeLayout_android_maxHeight, 0)
+
+        if (ta.hasValue(R.styleable.MaxHeightRelativeLayout_a3_square) && square == -1)
+            square = ta.getInt(R.styleable.MaxHeightRelativeLayout_a3_square, 0)
+        if (square < 0) square = 0
+
+        if (ta.hasValue(R.styleable.MaxHeightRelativeLayout_a3_squareSize) && squareSize == -1)
+            squareSize = ta.getDimensionPixelSize(R.styleable.MaxHeightRelativeLayout_a3_squareSize, 0)
+
+        if (ta.hasValue(R.styleable.MaxHeightRelativeLayout_a3_direction))
+            direction = ta.getInt(R.styleable.MaxHeightRelativeLayout_a3_direction, 0)
 
     }
 

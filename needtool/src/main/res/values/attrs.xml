@@ -141,12 +141,18 @@
     <!-- ######################################################################################3 -->
 
 
-
     <declare-styleable name="MaxHeightRelativeLayout">
-        <attr name="android:maxHeight"/>
+        <attr name="android:maxHeight" />
+        <attr name="a3_square" />
+        <attr name="a3_squareSize" />
+        <attr name="a3_direction" />
     </declare-styleable>
     <declare-styleable name="MaxHeightLinearLayout">
-        <attr name="android:maxHeight"/>
+        <attr name="android:maxHeight" />
+        <attr name="a3_square" />
+        <attr name="a3_squareSize" />
+        <attr name="a3_direction" />
+        <attr name="a3_paddingMiddle" />
     </declare-styleable>
 
 
