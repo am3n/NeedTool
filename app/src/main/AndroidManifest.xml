@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ir.am3n.needtool.sample">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -23,22 +23,26 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,HardcodedDebugMode">
 
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"></activity>
+
+        <activity
+            android:name=".A3ViewsActivity"
+            android:exported="true"></activity>
+
+        <activity
+            android:name=".DatabaseAct"
+            android:exported="true"></activity>
+
+        <activity
+            android:name=".DatabaseV2Act"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".A3ViewsActivity"
-            android:exported="true">
-
-        </activity>
-
-        <activity android:name=".DatabaseAct" android:exported="true" />
-
-        <activity android:name=".DatabaseV2Act" android:exported="true" />
 
     </application>
 

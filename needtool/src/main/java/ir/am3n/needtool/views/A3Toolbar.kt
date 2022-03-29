@@ -194,7 +194,7 @@ class A3Toolbar : RelativeLayout {
         val isRtl = when (direction) {
             0 -> false
             1 -> true
-            2 -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) parent.layoutDirection == 1 else false
+            2 -> parent.layoutDirection == 1
             3 -> resources.isRtl
             else -> false
         }
@@ -207,11 +207,7 @@ class A3Toolbar : RelativeLayout {
         imgbBack?.updateLayoutParams<LayoutParams> {
             height = layoutParams.height
             width = layoutParams.height
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                removeRule(if (isRtl) ALIGN_PARENT_LEFT else ALIGN_PARENT_RIGHT)
-            } else {
-                addRule(if (isRtl) ALIGN_PARENT_LEFT else ALIGN_PARENT_RIGHT, 0)
-            }
+            removeRule(if (isRtl) ALIGN_PARENT_LEFT else ALIGN_PARENT_RIGHT)
             addRule(if (isRtl) ALIGN_PARENT_RIGHT else ALIGN_PARENT_LEFT, 1)
             if (isRtl)
                 updateMargins(right = 4.iDp2Px)
@@ -240,11 +236,7 @@ class A3Toolbar : RelativeLayout {
             width = LayoutParams.MATCH_PARENT
             height = layoutParams.height
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                removeRule(if (isRtl) RIGHT_OF else LEFT_OF)
-            } else {
-                addRule(if (isRtl) RIGHT_OF else LEFT_OF, 0)
-            }
+            removeRule(if (isRtl) RIGHT_OF else LEFT_OF)
             addRule(if (isRtl) LEFT_OF else RIGHT_OF, imgbBack!!.id)
             gravity = (if (isRtl) Gravity.RIGHT else Gravity.LEFT) or Gravity.CENTER_VERTICAL
 
@@ -276,7 +268,7 @@ class A3Toolbar : RelativeLayout {
         val isRtl = when (direction) {
             0 -> false
             1 -> true
-            2 -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) parent.layoutDirection == 1 else false
+            2 -> parent.layoutDirection == 1
             3 -> resources.isRtl
             else -> false
         }
@@ -289,11 +281,7 @@ class A3Toolbar : RelativeLayout {
                 height = layoutParams.height
                 width = layoutParams.height
                 if (index == 0) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        removeRule(if (isRtl) ALIGN_PARENT_RIGHT else ALIGN_PARENT_LEFT)
-                    } else {
-                        addRule(if (isRtl) ALIGN_PARENT_RIGHT else ALIGN_PARENT_LEFT, 0)
-                    }
+                    removeRule(if (isRtl) ALIGN_PARENT_RIGHT else ALIGN_PARENT_LEFT)
                     addRule(if (isRtl) ALIGN_PARENT_LEFT else ALIGN_PARENT_RIGHT, 1)
                     updateMargins(left = if (isRtl) 10.iDp2Px else 4.iDp2Px, right = if (isRtl) 4.iDp2Px else 10.iDp2Px)
                 } else {

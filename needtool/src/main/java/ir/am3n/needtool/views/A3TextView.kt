@@ -2,7 +2,6 @@ package ir.am3n.needtool.views
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.os.Build
 import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.LinearLayout
@@ -12,7 +11,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.*
 import ir.am3n.needtool.R
 import ir.am3n.needtool.isRtl
-import ir.am3n.needtool.persianLetter
 
 class A3TextView : AppCompatTextView {
 
@@ -39,7 +37,7 @@ class A3TextView : AppCompatTextView {
         val isRtl = when (direction) {
             0 -> false
             1 -> true
-            2 -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) parent.layoutDirection==1 else false
+            2 -> parent.layoutDirection==1
             3 -> resources.isRtl
             else -> false
         }

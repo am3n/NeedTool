@@ -2,7 +2,6 @@ package ir.am3n.needtool.views
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.os.Build
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -81,7 +80,7 @@ class A3ConstraintLayout : ConstraintLayout {
         val isRtl = when (direction) {
             0 -> false
             1 -> true
-            2 -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) parent.layoutDirection == 1 else false
+            2 -> parent.layoutDirection == 1
             3 -> resources.isRtl
             else -> false
         }
@@ -139,7 +138,10 @@ class A3ConstraintLayout : ConstraintLayout {
                         updateMargins(left = rightMargin, right = leftMargin)
                     }
 
-                    if ((getChildAt(i).paddingLeft > 0 || getChildAt(i).paddingRight > 0) && getChildAt(i).paddingLeft != getChildAt(i).paddingRight) {
+                    if ((getChildAt(i).paddingLeft > 0 || getChildAt(i).paddingRight > 0) && getChildAt(i).paddingLeft != getChildAt(
+                            i
+                        ).paddingRight
+                    ) {
                         val leftPadding = getChildAt(i).paddingLeft
                         val rightPadding = getChildAt(i).paddingRight
                         getChildAt(i).updatePadding(left = rightPadding, right = leftPadding)

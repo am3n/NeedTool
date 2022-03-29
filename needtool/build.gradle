@@ -1,34 +1,22 @@
-/*plugins {
+plugins {
     id 'com.android.library'
-    id 'kotlin-android'
+    id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'kotlin-android-extensions'
-    id 'maven-publish'
-    id 'com.github.dcendents.android-maven'
-}*/
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-//apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'maven-publish'
-apply plugin: 'com.github.dcendents.android-maven'
-
-group = 'com.github.am3n'
+}
 
 android {
 
-    compileSdkVersion 31
+    compileSdk 32
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 31
+        minSdk 21
+        targetSdk 32
         multiDexEnabled true
     }
 
     buildTypes {
         release {
-            debuggable false
-            useProguard false
             minifyEnabled false
         }
     }
@@ -44,19 +32,6 @@ android {
 
     androidExtensions {
         experimental = true
-    }
-
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/LICENSE.md'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/NOTICE.md'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/ASL2.0'
     }
 
 }
@@ -77,32 +52,21 @@ dependencies {
 
     
     /** retrofit */
-    api ("com.squareup.retrofit2:retrofit:2.9.0") {
-        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
-        exclude group: 'com.squareup.okhttp3', module: 'logging-interceptor'
-    }
-    api ("com.squareup.retrofit2:converter-gson:2.9.0") {
-        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
-        exclude group: 'com.squareup.okhttp3', module: 'logging-interceptor'
-    }
-    //noinspection GradleDependency
-    implementation 'com.squareup.okhttp3:okhttp:3.12.13'
-    //noinspection GradleDependency
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.13'
+    api "com.squareup.retrofit2:retrofit:2.9.0"
+    api "com.squareup.retrofit2:converter-gson:2.9.0"
+    api 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.5'
 
 
     /** room */
-    api 'androidx.room:room-runtime:2.4.1'
-    //kapt 'androidx.room:room-compiler:2.4.1'
+    api 'androidx.room:room-runtime:2.4.2'
+
 
     /** device name */
     api 'com.github.am3n:AndroidDeviceNames:2.0.3'
 
-    /** gmailsender */
-    api 'com.sun.mail:android-mail:1.6.7'
-    api 'com.sun.mail:android-activation:1.6.7'
 
     /** persian date picker */
-    api 'com.github.aliab:Persian-Date-Picker-Dialog:1.7.1'
+    api 'com.github.aliab:Persian-Date-Picker-Dialog:1.8.0'
+
 
 }

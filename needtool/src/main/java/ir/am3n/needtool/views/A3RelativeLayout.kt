@@ -8,7 +8,6 @@ import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.annotation.CallSuper
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
@@ -35,11 +34,18 @@ open class A3RelativeLayout : RelativeLayout {
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
         build(context, attrs, 0)
     }
+
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         build(context, attrs, defStyleAttr)
     }
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(
+        context,
+        attrs,
+        defStyleAttr,
+        defStyleRes
+    ) {
         build(context, attrs, defStyleAttr)
     }
 
@@ -60,7 +66,8 @@ open class A3RelativeLayout : RelativeLayout {
                     } catch (t: Throwable) {
                         try {
                             updateLayoutParams<ConstraintLayout.LayoutParams> { width = size; height = size }
-                        } catch (t: Throwable) {}
+                        } catch (t: Throwable) {
+                        }
                     }
                 }
             }
@@ -80,7 +87,8 @@ open class A3RelativeLayout : RelativeLayout {
                 } catch (t: Throwable) {
                     try {
                         updateLayoutParams<ConstraintLayout.LayoutParams> { width = squareSize; height = squareSize }
-                    } catch (t: Throwable) {}
+                    } catch (t: Throwable) {
+                    }
                 }
             }
         }
@@ -88,7 +96,7 @@ open class A3RelativeLayout : RelativeLayout {
         val isRtl = when (direction) {
             0 -> false
             1 -> true
-            2 -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) parent.layoutDirection==1 else false
+            2 -> parent.layoutDirection == 1
             3 -> resources.isRtl
             else -> false
         }
@@ -144,7 +152,10 @@ open class A3RelativeLayout : RelativeLayout {
                         updateMargins(left = rightMargin, right = leftMargin)
                     }
 
-                    if ((getChildAt(i).paddingLeft > 0 || getChildAt(i).paddingRight > 0) && getChildAt(i).paddingLeft != getChildAt(i).paddingRight) {
+                    if ((getChildAt(i).paddingLeft > 0 || getChildAt(i).paddingRight > 0) && getChildAt(i).paddingLeft != getChildAt(
+                            i
+                        ).paddingRight
+                    ) {
                         val leftPadding = getChildAt(i).paddingLeft
                         val rightPadding = getChildAt(i).paddingRight
                         getChildAt(i).updatePadding(left = rightPadding, right = leftPadding)
@@ -152,34 +163,34 @@ open class A3RelativeLayout : RelativeLayout {
 
                 }
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    try {
-                        if (getChildAt(i) is TextView) {
-                            val child = getChildAt(i) as TextView
-                            if (child.gravity != Gravity.CENTER && child.gravity != Gravity.CENTER_HORIZONTAL) {
-                                when (child.gravity) {
-                                    Gravity.START -> child.gravity = Gravity.END
-                                    Gravity.START or Gravity.TOP -> child.gravity = Gravity.END or Gravity.TOP
-                                    Gravity.START or Gravity.BOTTOM -> child.gravity = Gravity.END or Gravity.BOTTOM
-                                    Gravity.START or Gravity.CENTER_VERTICAL -> child.gravity = Gravity.END or Gravity.CENTER_VERTICAL
-                                    Gravity.LEFT -> child.gravity = Gravity.RIGHT
-                                    Gravity.LEFT or Gravity.TOP -> child.gravity = Gravity.RIGHT or Gravity.TOP
-                                    Gravity.LEFT or Gravity.BOTTOM -> child.gravity = Gravity.RIGHT or Gravity.BOTTOM
-                                    Gravity.LEFT or Gravity.CENTER_VERTICAL -> child.gravity = Gravity.RIGHT or Gravity.CENTER_VERTICAL
-                                    Gravity.END -> child.gravity = Gravity.START
-                                    Gravity.END or Gravity.TOP -> child.gravity = Gravity.START or Gravity.TOP
-                                    Gravity.END or Gravity.BOTTOM -> child.gravity = Gravity.START or Gravity.BOTTOM
-                                    Gravity.END or Gravity.CENTER_VERTICAL -> child.gravity = Gravity.START or Gravity.CENTER_VERTICAL
-                                    Gravity.RIGHT -> child.gravity = Gravity.LEFT
-                                    Gravity.RIGHT or Gravity.TOP -> child.gravity = Gravity.LEFT or Gravity.TOP
-                                    Gravity.RIGHT or Gravity.BOTTOM -> child.gravity = Gravity.LEFT or Gravity.BOTTOM
-                                    Gravity.RIGHT or Gravity.CENTER_VERTICAL -> child.gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
-                                }
+                try {
+                    if (getChildAt(i) is TextView) {
+                        val child = getChildAt(i) as TextView
+                        if (child.gravity != Gravity.CENTER && child.gravity != Gravity.CENTER_HORIZONTAL) {
+                            when (child.gravity) {
+                                Gravity.START -> child.gravity = Gravity.END
+                                Gravity.START or Gravity.TOP -> child.gravity = Gravity.END or Gravity.TOP
+                                Gravity.START or Gravity.BOTTOM -> child.gravity = Gravity.END or Gravity.BOTTOM
+                                Gravity.START or Gravity.CENTER_VERTICAL -> child.gravity = Gravity.END or Gravity.CENTER_VERTICAL
+                                Gravity.LEFT -> child.gravity = Gravity.RIGHT
+                                Gravity.LEFT or Gravity.TOP -> child.gravity = Gravity.RIGHT or Gravity.TOP
+                                Gravity.LEFT or Gravity.BOTTOM -> child.gravity = Gravity.RIGHT or Gravity.BOTTOM
+                                Gravity.LEFT or Gravity.CENTER_VERTICAL -> child.gravity =
+                                    Gravity.RIGHT or Gravity.CENTER_VERTICAL
+                                Gravity.END -> child.gravity = Gravity.START
+                                Gravity.END or Gravity.TOP -> child.gravity = Gravity.START or Gravity.TOP
+                                Gravity.END or Gravity.BOTTOM -> child.gravity = Gravity.START or Gravity.BOTTOM
+                                Gravity.END or Gravity.CENTER_VERTICAL -> child.gravity = Gravity.START or Gravity.CENTER_VERTICAL
+                                Gravity.RIGHT -> child.gravity = Gravity.LEFT
+                                Gravity.RIGHT or Gravity.TOP -> child.gravity = Gravity.LEFT or Gravity.TOP
+                                Gravity.RIGHT or Gravity.BOTTOM -> child.gravity = Gravity.LEFT or Gravity.BOTTOM
+                                Gravity.RIGHT or Gravity.CENTER_VERTICAL -> child.gravity =
+                                    Gravity.LEFT or Gravity.CENTER_VERTICAL
                             }
                         }
-                    } catch (t: Throwable) {
-                        t.printStackTrace()
                     }
+                } catch (t: Throwable) {
+                    t.printStackTrace()
                 }
 
             }

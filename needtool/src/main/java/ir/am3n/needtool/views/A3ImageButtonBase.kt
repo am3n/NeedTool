@@ -3,12 +3,10 @@ package ir.am3n.needtool.views
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.TypedArray
-import android.os.Build
 import android.util.AttributeSet
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
 import ir.am3n.needtool.R
@@ -26,7 +24,7 @@ class A3ImageButtonBase : ImageButton {
             val isRtl = when (value) {
                 0 -> false
                 1 -> true
-                2 -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) parent.layoutDirection==1 else false
+                2 -> parent.layoutDirection == 1
                 3 -> resources.isRtl
                 else -> false
             }
@@ -50,7 +48,7 @@ class A3ImageButtonBase : ImageButton {
         val isRtl = when (direction) {
             0 -> false
             1 -> true
-            2 -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) parent.layoutDirection==1 else false
+            2 -> parent.layoutDirection == 1
             3 -> resources.isRtl
             else -> false
         }
@@ -62,7 +60,8 @@ class A3ImageButtonBase : ImageButton {
             try {
                 if (square == 1 && measuredWidth == drawable.minimumWidth) return
                 if (square == 2 && measuredHeight == drawable.minimumHeight) return
-            } catch (t: Throwable) {}
+            } catch (t: Throwable) {
+            }
             val size = if (square == 1) measuredWidth else measuredHeight
             if (lastSize < size) {
                 lastSize = size
@@ -74,7 +73,8 @@ class A3ImageButtonBase : ImageButton {
                     } catch (t: Throwable) {
                         try {
                             updateLayoutParams<ConstraintLayout.LayoutParams> { width = size; height = size }
-                        } catch (t: Throwable) {}
+                        } catch (t: Throwable) {
+                        }
                     }
                 }
             }
@@ -94,7 +94,8 @@ class A3ImageButtonBase : ImageButton {
                 } catch (t: Throwable) {
                     try {
                         updateLayoutParams<ConstraintLayout.LayoutParams> { width = squareSize; height = squareSize }
-                    } catch (t: Throwable) {}
+                    } catch (t: Throwable) {
+                    }
                 }
             }
         }

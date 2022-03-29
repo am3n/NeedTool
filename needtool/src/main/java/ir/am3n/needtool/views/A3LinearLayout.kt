@@ -2,7 +2,6 @@ package ir.am3n.needtool.views
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.os.Build
 import android.util.AttributeSet
 import android.view.Gravity.*
 import android.view.View
@@ -150,7 +149,7 @@ open class A3LinearLayout : LinearLayoutCompat {
         val isRtl = when (direction) {
             0 -> false
             1 -> true
-            2 -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) parent.layoutDirection == 1 else false
+            2 -> parent.layoutDirection == 1
             3 -> resources.isRtl
             else -> false
         }
