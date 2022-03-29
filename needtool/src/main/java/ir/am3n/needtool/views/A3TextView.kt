@@ -39,7 +39,7 @@ class A3TextView : AppCompatTextView {
             else -> false
         }
         if (!rtlized && isRtl && needRefresh) {
-            rtlize()
+            rtlize(isRtl)
         }
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -55,13 +55,13 @@ class A3TextView : AppCompatTextView {
         needRefresh = true
     }
 
-    private fun rtlize() {
+    private fun rtlize(isRtl: Boolean) {
 
-        if (context == null || resources == null) return
+        if (context == null) return
         rtlized = true
         needRefresh = false
 
-        if (resources.isRtl) {
+        if (isRtl) {
 
             val leftMargin = marginLeft
             val rightMargin = marginRight

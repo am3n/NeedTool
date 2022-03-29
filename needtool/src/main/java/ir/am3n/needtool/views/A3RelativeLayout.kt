@@ -88,7 +88,7 @@ class A3RelativeLayout : RelativeLayout {
         }
         if (!rtlized && isRtl) {
             rtlized = true
-            rtlize()
+            rtlize(isRtl)
         }
 
     }
@@ -111,8 +111,8 @@ class A3RelativeLayout : RelativeLayout {
 
     }
 
-    private fun rtlize() {
-        if (resources.isRtl) {
+    private fun rtlize(isRtl: Boolean) {
+        if (isRtl) {
 
             for (i in 0 until childCount) {
                 getChildAt(i).updateLayoutParams<LayoutParams> {

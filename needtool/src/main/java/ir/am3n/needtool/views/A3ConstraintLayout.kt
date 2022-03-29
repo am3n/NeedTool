@@ -82,7 +82,7 @@ class A3ConstraintLayout : ConstraintLayout {
         }
         if (!rtlized && isRtl) {
             rtlized = true
-            rtlize()
+            rtlize(isRtl)
         }
 
     }
@@ -104,8 +104,8 @@ class A3ConstraintLayout : ConstraintLayout {
     }
 
     @Synchronized
-    private fun rtlize() {
-        if (resources.isRtl) {
+    private fun rtlize(isRtl: Boolean) {
+        if (isRtl) {
 
             for (i in 0 until childCount) {
                 getChildAt(i).updateLayoutParams<ConstraintLayout.LayoutParams> {
