@@ -10,9 +10,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.updateLayoutParams
-import androidx.core.view.updateMargins
-import androidx.core.view.updatePadding
+import androidx.core.view.*
 import ir.am3n.needtool.R
 import ir.am3n.needtool.isRtl
 
@@ -131,31 +129,52 @@ open class A3RelativeLayout : RelativeLayout {
             for (i in 0 until childCount) {
                 getChildAt(i).updateLayoutParams<LayoutParams> {
 
-                    val alignParentRight = rules[ALIGN_PARENT_RIGHT]
+                    val alignParentStart = rules[ALIGN_PARENT_START]
+                    val alignParentEnd = rules[ALIGN_PARENT_END]
                     val alignParentLeft = rules[ALIGN_PARENT_LEFT]
+                    val alignParentRight = rules[ALIGN_PARENT_RIGHT]
+                    addRule(ALIGN_PARENT_START, alignParentEnd)
+                    addRule(ALIGN_PARENT_END, alignParentStart)
                     addRule(ALIGN_PARENT_LEFT, alignParentRight)
                     addRule(ALIGN_PARENT_RIGHT, alignParentLeft)
 
+                    val startOf = rules[START_OF]
+                    val endOf = rules[END_OF]
                     val leftOf = rules[LEFT_OF]
                     val rightOf = rules[RIGHT_OF]
-                    addRule(RIGHT_OF, leftOf)
+                    addRule(START_OF, endOf)
+                    addRule(END_OF, startOf)
                     addRule(LEFT_OF, rightOf)
+                    addRule(RIGHT_OF, leftOf)
 
-                    val alignRight = rules[ALIGN_RIGHT]
+                    val alignStart = rules[ALIGN_START]
+                    val alignEnd = rules[ALIGN_END]
                     val alignLeft = rules[ALIGN_LEFT]
-                    addRule(ALIGN_RIGHT, alignLeft)
+                    val alignRight = rules[ALIGN_RIGHT]
+                    addRule(ALIGN_START, alignEnd)
+                    addRule(ALIGN_END, alignStart)
                     addRule(ALIGN_LEFT, alignRight)
+                    addRule(ALIGN_RIGHT, alignLeft)
 
+                    if ((this.marginStart > 0 || this.marginEnd > 0) && this.marginStart != this.marginEnd) {
+                        val startMargin = this.marginStart
+                        val endMargin = this.marginEnd
+                        updateMarginsRelative(start = endMargin, end = startMargin)
+                    }
                     if ((this.leftMargin > 0 || this.rightMargin > 0) && this.leftMargin != this.rightMargin) {
                         val leftMargin = this.leftMargin
                         val rightMargin = this.rightMargin
                         updateMargins(left = rightMargin, right = leftMargin)
                     }
 
-                    if ((getChildAt(i).paddingLeft > 0 || getChildAt(i).paddingRight > 0) && getChildAt(i).paddingLeft != getChildAt(
-                            i
-                        ).paddingRight
-                    ) {
+                    if ((getChildAt(i).paddingStart > 0 || getChildAt(i).paddingEnd > 0)
+                        && getChildAt(i).paddingStart != getChildAt(i).paddingEnd) {
+                        val startPadding = getChildAt(i).paddingStart
+                        val endPadding = getChildAt(i).paddingEnd
+                        getChildAt(i).updatePaddingRelative(start = endPadding, end = startPadding)
+                    }
+                    if ((getChildAt(i).paddingLeft > 0 || getChildAt(i).paddingRight > 0)
+                        && getChildAt(i).paddingLeft != getChildAt(i).paddingRight) {
                         val leftPadding = getChildAt(i).paddingLeft
                         val rightPadding = getChildAt(i).paddingRight
                         getChildAt(i).updatePadding(left = rightPadding, right = leftPadding)

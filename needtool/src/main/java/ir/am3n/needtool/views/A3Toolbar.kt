@@ -207,12 +207,12 @@ class A3Toolbar : RelativeLayout {
         imgbBack?.updateLayoutParams<LayoutParams> {
             height = layoutParams.height
             width = layoutParams.height
-            removeRule(if (isRtl) ALIGN_PARENT_LEFT else ALIGN_PARENT_RIGHT)
-            addRule(if (isRtl) ALIGN_PARENT_RIGHT else ALIGN_PARENT_LEFT, 1)
+            removeRule(if (isRtl) ALIGN_PARENT_START else ALIGN_PARENT_END)
+            addRule(if (isRtl) ALIGN_PARENT_END else ALIGN_PARENT_START, 1)
             if (isRtl)
-                updateMargins(right = 4.iDp2Px)
+                updateMarginsRelative(end = 4.iDp2Px)
             else
-                updateMargins(left = 4.iDp2Px)
+                updateMarginsRelative(start = 4.iDp2Px)
         }
         if (imgbBackPadding != null && imgbBackPadding!! > 0)
             imgbBack?.setPadding(imgbBackPadding!!)
@@ -236,14 +236,14 @@ class A3Toolbar : RelativeLayout {
             width = LayoutParams.MATCH_PARENT
             height = layoutParams.height
 
-            removeRule(if (isRtl) RIGHT_OF else LEFT_OF)
-            addRule(if (isRtl) LEFT_OF else RIGHT_OF, imgbBack!!.id)
-            gravity = (if (isRtl) Gravity.RIGHT else Gravity.LEFT) or Gravity.CENTER_VERTICAL
+            removeRule(if (isRtl) END_OF else START_OF)
+            addRule(if (isRtl) START_OF else END_OF, imgbBack!!.id)
+            gravity = (if (isRtl) Gravity.END else Gravity.START) or Gravity.CENTER_VERTICAL
 
         }
         txtTitle?.isSingleLine = true
-        txtTitle?.updatePadding(left = 4.iDp2Px, right = 4.iDp2Px)
-        txtTitle?.gravity = (if (isRtl) Gravity.RIGHT else Gravity.LEFT) or Gravity.CENTER_VERTICAL
+        txtTitle?.updatePaddingRelative(start = 4.iDp2Px, end = 4.iDp2Px)
+        txtTitle?.gravity = (if (isRtl) Gravity.END else Gravity.START) or Gravity.CENTER_VERTICAL
         txtTitle?.text = txtTitleText
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -281,13 +281,13 @@ class A3Toolbar : RelativeLayout {
                 height = layoutParams.height
                 width = layoutParams.height
                 if (index == 0) {
-                    removeRule(if (isRtl) ALIGN_PARENT_RIGHT else ALIGN_PARENT_LEFT)
-                    addRule(if (isRtl) ALIGN_PARENT_LEFT else ALIGN_PARENT_RIGHT, 1)
-                    updateMargins(left = if (isRtl) 10.iDp2Px else 4.iDp2Px, right = if (isRtl) 4.iDp2Px else 10.iDp2Px)
+                    removeRule(if (isRtl) ALIGN_PARENT_END else ALIGN_PARENT_START)
+                    addRule(if (isRtl) ALIGN_PARENT_START else ALIGN_PARENT_END, 1)
+                    updateMarginsRelative(start = if (isRtl) 10.iDp2Px else 4.iDp2Px, end = if (isRtl) 4.iDp2Px else 10.iDp2Px)
                 } else {
-                    addRule(if (isRtl) LEFT_OF else RIGHT_OF)
-                    addRule(if (isRtl) RIGHT_OF else LEFT_OF, item.id)
-                    updateMargins(left = 4.iDp2Px, right = 4.iDp2Px)
+                    addRule(if (isRtl) START_OF else END_OF)
+                    addRule(if (isRtl) END_OF else START_OF, item.id)
+                    updateMarginsRelative(start = 4.iDp2Px, end = 4.iDp2Px)
                 }
             }
             if (item.iconDrawable != null)
