@@ -65,8 +65,4 @@ dependencies {
     api 'com.github.am3n:AndroidDeviceNames:2.0.3'
 
 
-    /** persian date picker */
-    api 'com.github.aliab:Persian-Date-Picker-Dialog:1.8.0'
-
-
 }
