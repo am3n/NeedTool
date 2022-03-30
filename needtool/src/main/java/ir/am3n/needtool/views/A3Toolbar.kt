@@ -68,6 +68,9 @@ class A3Toolbar : RelativeLayout {
         val view: AppCompatImageButton
     ) : Menu(id, title, iconDrawable, iconResource, iconTint, iconPadding)
 
+
+    private var initialized = true
+
     private var imgbBack: AppCompatImageButton? = null
     private var imgbBackIcon: Int? = null
     private var imgbBackTint: Int? = null
@@ -113,19 +116,25 @@ class A3Toolbar : RelativeLayout {
     }
 
     override fun onFinishInflate() {
-        super.onFinishInflate()
         refresh()
+        super.onFinishInflate()
     }
 
     override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
         refresh()
+        super.onAttachedToWindow()
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        refresh()
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
     @SuppressLint("RestrictedApi")
     private fun init(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) {
 
         if (context == null) return
+        initialized = false
 
         val ta: TypedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.A3Toolbar, defStyleAttr, 0)
 
@@ -185,6 +194,8 @@ class A3Toolbar : RelativeLayout {
             }
         }
 
+        initialized = true
+
     }
 
     fun refresh() {
@@ -207,12 +218,16 @@ class A3Toolbar : RelativeLayout {
         imgbBack?.updateLayoutParams<LayoutParams> {
             height = layoutParams.height
             width = layoutParams.height
-            removeRule(if (isRtl) ALIGN_PARENT_START else ALIGN_PARENT_END)
-            addRule(if (isRtl) ALIGN_PARENT_END else ALIGN_PARENT_START, 1)
-            if (isRtl)
-                updateMarginsRelative(end = 4.iDp2Px)
-            else
-                updateMarginsRelative(start = 4.iDp2Px)
+            removeRule(ALIGN_PARENT_START)
+            removeRule(ALIGN_PARENT_END)
+            removeRule(ALIGN_PARENT_LEFT)
+            removeRule(ALIGN_PARENT_RIGHT)
+            addRule(if (isRtl) ALIGN_PARENT_RIGHT else ALIGN_PARENT_LEFT, 1)
+            if (isRtl) {
+                updateMargins(right = 4.iDp2Px, left = 0)
+            } else {
+                updateMargins(left = 4.iDp2Px, right = 0)
+            }
         }
         if (imgbBackPadding != null && imgbBackPadding!! > 0)
             imgbBack?.setPadding(imgbBackPadding!!)
@@ -235,15 +250,15 @@ class A3Toolbar : RelativeLayout {
         txtTitle?.updateLayoutParams<LayoutParams> {
             width = LayoutParams.MATCH_PARENT
             height = layoutParams.height
-
-            removeRule(if (isRtl) END_OF else START_OF)
-            addRule(if (isRtl) START_OF else END_OF, imgbBack!!.id)
-            gravity = (if (isRtl) Gravity.END else Gravity.START) or Gravity.CENTER_VERTICAL
-
+            removeRule(START_OF)
+            removeRule(END_OF)
+            removeRule(LEFT_OF)
+            removeRule(RIGHT_OF)
+            addRule(if (isRtl) LEFT_OF else RIGHT_OF, imgbBack!!.id)
         }
+        txtTitle?.gravity = (if (isRtl) Gravity.RIGHT else Gravity.LEFT) or Gravity.CENTER_VERTICAL
         txtTitle?.isSingleLine = true
-        txtTitle?.updatePaddingRelative(start = 4.iDp2Px, end = 4.iDp2Px)
-        txtTitle?.gravity = (if (isRtl) Gravity.END else Gravity.START) or Gravity.CENTER_VERTICAL
+        txtTitle?.updatePadding(left = 4.iDp2Px, right = 4.iDp2Px)
         txtTitle?.text = txtTitleText
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -281,13 +296,19 @@ class A3Toolbar : RelativeLayout {
                 height = layoutParams.height
                 width = layoutParams.height
                 if (index == 0) {
-                    removeRule(if (isRtl) ALIGN_PARENT_END else ALIGN_PARENT_START)
-                    addRule(if (isRtl) ALIGN_PARENT_START else ALIGN_PARENT_END, 1)
-                    updateMarginsRelative(start = if (isRtl) 10.iDp2Px else 4.iDp2Px, end = if (isRtl) 4.iDp2Px else 10.iDp2Px)
+                    removeRule(ALIGN_PARENT_START)
+                    removeRule(ALIGN_PARENT_END)
+                    removeRule(ALIGN_PARENT_LEFT)
+                    removeRule(ALIGN_PARENT_RIGHT)
+                    addRule(if (isRtl) ALIGN_PARENT_LEFT else ALIGN_PARENT_RIGHT, 1)
+                    updateMargins(left = if (isRtl) 10.iDp2Px else 4.iDp2Px, right = if (isRtl) 4.iDp2Px else 10.iDp2Px)
                 } else {
-                    addRule(if (isRtl) START_OF else END_OF)
-                    addRule(if (isRtl) END_OF else START_OF, item.id)
-                    updateMarginsRelative(start = 4.iDp2Px, end = 4.iDp2Px)
+                    removeRule(START_OF)
+                    removeRule(END_OF)
+                    removeRule(LEFT_OF)
+                    removeRule(RIGHT_OF)
+                    addRule(if (isRtl) RIGHT_OF else LEFT_OF, menu[index-1].id)
+                    updateMargins(left = 4.iDp2Px, right = 4.iDp2Px)
                 }
             }
             if (item.iconDrawable != null)

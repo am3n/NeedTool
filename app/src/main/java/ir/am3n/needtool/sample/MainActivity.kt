@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.LayoutDirection
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
@@ -32,8 +33,13 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
 
         toolbar.setMenu(listOf(
-            A3Toolbar.Menu.create(R.id.sawtooth, "", R.drawable.ic_baseline_arrow_back_ios_new_24, null, 24.iDp2Px)
+            A3Toolbar.Menu.create(R.id.menuItem0, "", R.drawable.img_logout, null, 4.iDp2Px),
+            A3Toolbar.Menu.create(R.id.menuItem1, "", R.drawable.calendar, null, 4.iDp2Px)
         ))
+
+        onUI(3000) {
+            toolbar?.direction = LayoutDirection.LTR
+        }
 
         mhrlv.direction = View.LAYOUT_DIRECTION_RTL
 

@@ -14,7 +14,12 @@ import ir.am3n.needtool.isRtl
 
 class A3ImageButton : AppCompatImageButton {
 
-    private var square: Int = -1
+    var square: Int = -1
+        set(value) {
+            field = value
+            requestLayout()
+        }
+
     private var lastSize = 0
     private var squareSize: Int = -1
 
