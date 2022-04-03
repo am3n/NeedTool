@@ -127,83 +127,77 @@ open class A3RelativeLayout : RelativeLayout {
         if (isRtl) {
 
             for (i in 0 until childCount) {
-                getChildAt(i).updateLayoutParams<LayoutParams> {
 
-                    val alignParentLeft = rules[ALIGN_PARENT_LEFT]
-                    val alignParentRight = rules[ALIGN_PARENT_RIGHT]
-                    addRule(ALIGN_PARENT_START, alignParentRight)
-                    addRule(ALIGN_PARENT_END, alignParentLeft)
-                    addRule(ALIGN_PARENT_LEFT, alignParentRight)
-                    addRule(ALIGN_PARENT_RIGHT, alignParentLeft)
+                getChildAt(i).apply {
 
-                    val leftOf = rules[LEFT_OF]
-                    val rightOf = rules[RIGHT_OF]
-                    addRule(START_OF, rightOf)
-                    addRule(END_OF, leftOf)
-                    addRule(LEFT_OF, rightOf)
-                    addRule(RIGHT_OF, leftOf)
+                    updateLayoutParams<LayoutParams> {
 
-                    val alignLeft = rules[ALIGN_LEFT]
-                    val alignRight = rules[ALIGN_RIGHT]
-                    addRule(ALIGN_START, alignRight)
-                    addRule(ALIGN_END, alignLeft)
-                    addRule(ALIGN_LEFT, alignRight)
-                    addRule(ALIGN_RIGHT, alignLeft)
+                        val alignParentLeft = rules[ALIGN_PARENT_LEFT]
+                        val alignParentRight = rules[ALIGN_PARENT_RIGHT]
+                        addRule(ALIGN_PARENT_START, alignParentRight)
+                        addRule(ALIGN_PARENT_END, alignParentLeft)
+                        addRule(ALIGN_PARENT_LEFT, alignParentRight)
+                        addRule(ALIGN_PARENT_RIGHT, alignParentLeft)
 
-                    if ((this.marginStart > 0 || this.marginEnd > 0) && this.marginStart != this.marginEnd) {
-                        val startMargin = this.marginStart
-                        val endMargin = this.marginEnd
-                        updateMarginsRelative(start = endMargin, end = startMargin)
-                    }
-                    if ((this.leftMargin > 0 || this.rightMargin > 0) && this.leftMargin != this.rightMargin) {
-                        val leftMargin = this.leftMargin
-                        val rightMargin = this.rightMargin
-                        updateMargins(left = rightMargin, right = leftMargin)
-                    }
+                        val leftOf = rules[LEFT_OF]
+                        val rightOf = rules[RIGHT_OF]
+                        addRule(START_OF, rightOf)
+                        addRule(END_OF, leftOf)
+                        addRule(LEFT_OF, rightOf)
+                        addRule(RIGHT_OF, leftOf)
 
-                    if ((getChildAt(i).paddingStart > 0 || getChildAt(i).paddingEnd > 0)
-                        && getChildAt(i).paddingStart != getChildAt(i).paddingEnd) {
-                        val startPadding = getChildAt(i).paddingStart
-                        val endPadding = getChildAt(i).paddingEnd
-                        getChildAt(i).updatePaddingRelative(start = endPadding, end = startPadding)
-                    }
-                    if ((getChildAt(i).paddingLeft > 0 || getChildAt(i).paddingRight > 0)
-                        && getChildAt(i).paddingLeft != getChildAt(i).paddingRight) {
-                        val leftPadding = getChildAt(i).paddingLeft
-                        val rightPadding = getChildAt(i).paddingRight
-                        getChildAt(i).updatePadding(left = rightPadding, right = leftPadding)
+                        val alignLeft = rules[ALIGN_LEFT]
+                        val alignRight = rules[ALIGN_RIGHT]
+                        addRule(ALIGN_START, alignRight)
+                        addRule(ALIGN_END, alignLeft)
+                        addRule(ALIGN_LEFT, alignRight)
+                        addRule(ALIGN_RIGHT, alignLeft)
+
+                        if ((this.leftMargin > 0 || this.rightMargin > 0) && this.leftMargin != this.rightMargin) {
+                            val leftMargin = this.leftMargin
+                            val rightMargin = this.rightMargin
+                            updateMarginsRelative(start = rightMargin, end = leftMargin)
+                            updateMargins(left = rightMargin, right = leftMargin)
+                        }
+
                     }
 
-                }
+                    if ((paddingLeft > 0 || paddingRight > 0) && paddingLeft != paddingRight) {
+                        val leftPadding = paddingLeft
+                        val rightPadding = paddingRight
+                        updatePaddingRelative(start = rightPadding, end = leftPadding)
+                        updatePadding(left = rightPadding, right = leftPadding)
+                    }
 
-                try {
-                    if (getChildAt(i) is TextView) {
-                        val child = getChildAt(i) as TextView
-                        if (child.gravity != Gravity.CENTER && child.gravity != Gravity.CENTER_HORIZONTAL) {
-                            when (child.gravity) {
-                                Gravity.START -> child.gravity = Gravity.END
-                                Gravity.START or Gravity.TOP -> child.gravity = Gravity.END or Gravity.TOP
-                                Gravity.START or Gravity.BOTTOM -> child.gravity = Gravity.END or Gravity.BOTTOM
-                                Gravity.START or Gravity.CENTER_VERTICAL -> child.gravity = Gravity.END or Gravity.CENTER_VERTICAL
-                                Gravity.LEFT -> child.gravity = Gravity.RIGHT
-                                Gravity.LEFT or Gravity.TOP -> child.gravity = Gravity.RIGHT or Gravity.TOP
-                                Gravity.LEFT or Gravity.BOTTOM -> child.gravity = Gravity.RIGHT or Gravity.BOTTOM
-                                Gravity.LEFT or Gravity.CENTER_VERTICAL -> child.gravity =
-                                    Gravity.RIGHT or Gravity.CENTER_VERTICAL
-                                Gravity.END -> child.gravity = Gravity.START
-                                Gravity.END or Gravity.TOP -> child.gravity = Gravity.START or Gravity.TOP
-                                Gravity.END or Gravity.BOTTOM -> child.gravity = Gravity.START or Gravity.BOTTOM
-                                Gravity.END or Gravity.CENTER_VERTICAL -> child.gravity = Gravity.START or Gravity.CENTER_VERTICAL
-                                Gravity.RIGHT -> child.gravity = Gravity.LEFT
-                                Gravity.RIGHT or Gravity.TOP -> child.gravity = Gravity.LEFT or Gravity.TOP
-                                Gravity.RIGHT or Gravity.BOTTOM -> child.gravity = Gravity.LEFT or Gravity.BOTTOM
-                                Gravity.RIGHT or Gravity.CENTER_VERTICAL -> child.gravity =
-                                    Gravity.LEFT or Gravity.CENTER_VERTICAL
+                    try {
+                        if (this is TextView) {
+                            if (gravity != Gravity.CENTER && gravity != Gravity.CENTER_HORIZONTAL) {
+                                when (gravity) {
+                                    Gravity.START -> gravity = Gravity.END
+                                    Gravity.START or Gravity.TOP -> gravity = Gravity.END or Gravity.TOP
+                                    Gravity.START or Gravity.BOTTOM -> gravity = Gravity.END or Gravity.BOTTOM
+                                    Gravity.START or Gravity.CENTER_VERTICAL -> gravity = Gravity.END or Gravity.CENTER_VERTICAL
+                                    Gravity.LEFT -> gravity = Gravity.RIGHT
+                                    Gravity.LEFT or Gravity.TOP -> gravity = Gravity.RIGHT or Gravity.TOP
+                                    Gravity.LEFT or Gravity.BOTTOM -> gravity = Gravity.RIGHT or Gravity.BOTTOM
+                                    Gravity.LEFT or Gravity.CENTER_VERTICAL -> gravity =
+                                        Gravity.RIGHT or Gravity.CENTER_VERTICAL
+                                    Gravity.END -> gravity = Gravity.START
+                                    Gravity.END or Gravity.TOP -> gravity = Gravity.START or Gravity.TOP
+                                    Gravity.END or Gravity.BOTTOM -> gravity = Gravity.START or Gravity.BOTTOM
+                                    Gravity.END or Gravity.CENTER_VERTICAL -> gravity = Gravity.START or Gravity.CENTER_VERTICAL
+                                    Gravity.RIGHT -> gravity = Gravity.LEFT
+                                    Gravity.RIGHT or Gravity.TOP -> gravity = Gravity.LEFT or Gravity.TOP
+                                    Gravity.RIGHT or Gravity.BOTTOM -> gravity = Gravity.LEFT or Gravity.BOTTOM
+                                    Gravity.RIGHT or Gravity.CENTER_VERTICAL -> gravity =
+                                        Gravity.LEFT or Gravity.CENTER_VERTICAL
+                                }
                             }
                         }
+                    } catch (t: Throwable) {
+                        t.printStackTrace()
                     }
-                } catch (t: Throwable) {
-                    t.printStackTrace()
+
                 }
 
             }
