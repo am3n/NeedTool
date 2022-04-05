@@ -348,6 +348,7 @@ class A3Toolbar : RelativeLayout {
     }
 
     fun setTitle(title: String) {
+        txtTitleText = title
         txtTitle?.text = title
     }
 
