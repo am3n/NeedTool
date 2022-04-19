@@ -234,16 +234,28 @@ val String.toPersian: String get() {
 fun Int?.ifNullOrZero(defaultValue: Int): Int {
     return if (this == null || this == 0) defaultValue else this
 }
+fun Int?.ifNullOrZero(defaultValue: String): String {
+    return if (this == null || this == 0) defaultValue else this.toString()
+}
 
 fun Long?.ifNullOrZero(defaultValue: Long): Long {
     return if (this == null || this == 0L) defaultValue else this
+}
+fun Long?.ifNullOrZero(defaultValue: String): String {
+    return if (this == null || this == 0L) defaultValue else this.toString()
 }
 
 fun Float?.ifNullOrZero(defaultValue: Float): Float {
     return if (this == null || this == 0f) defaultValue else this
 }
+fun Float?.ifNullOrZero(defaultValue: String): String {
+    return if (this == null || this == 0f) defaultValue else this.toString()
+}
 
 fun Double?.ifNullOrZero(defaultValue: Double): Double {
     return if (this == null || this == 0.0) defaultValue else this
+}
+fun Double?.ifNullOrZero(defaultValue: String): String {
+    return if (this == null || this == 0.0) defaultValue else this.toString()
 }
 
