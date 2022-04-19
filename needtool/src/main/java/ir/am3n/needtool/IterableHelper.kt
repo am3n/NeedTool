@@ -1,6 +1,5 @@
 package ir.am3n.needtool
 
-import androidx.core.util.Predicate
 import java.io.BufferedReader
 
 
@@ -9,6 +8,12 @@ fun Iterable<String?>.filterNotEmpty(): MutableList<String> {
     for (element in this)
         if (element != null && element.toString().trim().isNotEmpty()) destination.add(element)
     return destination
+}
+
+
+fun <T> Iterable<T>.firstOrNullIndexed(predicate: (T) -> Boolean): IndexedValue<T>? {
+    withIndex().forEach { if (predicate(it.value)) return it }
+    return null
 }
 
 

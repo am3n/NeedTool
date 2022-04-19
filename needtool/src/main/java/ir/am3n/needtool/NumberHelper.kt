@@ -229,3 +229,21 @@ val String.toPersian: String get() {
     persianNumStr = persianNumStr.replace(",".toRegex(), "٬")
     return persianNumStr
 }
+
+
+fun Int?.ifNullOrZero(defaultValue: Int): Int {
+    return if (this == null || this == 0) defaultValue else this
+}
+
+fun Long?.ifNullOrZero(defaultValue: Long): Long {
+    return if (this == null || this == 0L) defaultValue else this
+}
+
+fun Float?.ifNullOrZero(defaultValue: Float): Float {
+    return if (this == null || this == 0f) defaultValue else this
+}
+
+fun Double?.ifNullOrZero(defaultValue: Double): Double {
+    return if (this == null || this == 0.0) defaultValue else this
+}
+

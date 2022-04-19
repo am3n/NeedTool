@@ -1,6 +1,8 @@
 package ir.am3n.needtool
 
+import android.content.Context
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 
 interface EdittextOnDone {
@@ -27,4 +29,10 @@ fun EditText.onDone(edittextOnDone: () -> Boolean) {
         }
         return@setOnEditorActionListener false
     }
+}
+
+
+fun EditText.showSoftKeyboard() {
+    (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)
+        ?.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
 }

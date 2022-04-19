@@ -3,9 +3,26 @@ package ir.am3n.needtool
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.text.Editable
 import androidx.core.content.ContextCompat
 import java.math.BigDecimal
 import java.math.BigInteger
+
+
+const val loremIpsumShort = "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است."
+
+
+val Editable?.len: Int get() = this?.length ?: -1
+val String?.len: Int get() = this?.length ?: -1
+
+fun String?.ifBlank(defaultValue: String? = null): String? {
+    return if (this?.isBlank() == true) defaultValue else this
+}
+
+fun String?.ifNullOrBlank(defaultValue: String): String {
+    return if (isNullOrBlank()) defaultValue else this
+}
+
 
 val String.url2Host get() = replace(Regex(".*//"), "").replace(Regex("/.*"), "").replace("www.", "")
 
@@ -76,9 +93,9 @@ fun change2by2(str: String): ByteArray {
 }
 
 
-val String.intOr0: Int get() = toIntOrNull() ?: 0
+val String?.intOr0: Int get() = this?.toIntOrNull() ?: 0
 
-val String.intOr0Str: String get() = intOr0.toString()
+val String?.intOr0AsString: String get() = intOr0.toString()
 
 
 
