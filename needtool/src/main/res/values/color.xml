@@ -18,4 +18,29 @@
     <color name="graye">#eee</color>
     <color name="white">#fff</color>
 
+    <color name="aEwhite">#efff</color>
+    <color name="aDwhite">#dfff</color>
+    <color name="aCwhite">#cfff</color>
+    <color name="aBwhite">#bfff</color>
+    <color name="aAwhite">#afff</color>
+    <color name="a8white">#8fff</color>
+    <color name="a7white">#7fff</color>
+    <color name="a5white">#5fff</color>
+    <color name="a3white">#3fff</color>
+
+    <color name="aEblack">#e000</color>
+    <color name="aDblack">#d000</color>
+    <color name="aCblack">#c000</color>
+    <color name="aBblack">#b000</color>
+    <color name="aAblack">#a000</color>
+    <color name="a9black">#9000</color>
+    <color name="a8black">#8000</color>
+    <color name="a7black">#7000</color>
+    <color name="a6black">#6000</color>
+    <color name="a5black">#5000</color>
+    <color name="a4black">#4000</color>
+    <color name="a3black">#3000</color>
+    <color name="a2black">#2000</color>
+    <color name="a1black">#1000</color>
+
 </resources>

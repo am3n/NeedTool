@@ -25,11 +25,20 @@
         app:a3_backScaleType="centerInside"
         app:a3_backTint="@color/gray4"/>
 
+    <ir.am3n.needtool.views.CircleCheckBox
+        android:id="@+id/chb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_below="@+id/toolbar"
+        app:ccb_smallTick="false"
+        app:ccb_duration="50"/>
+
     <ir.am3n.needtool.views.A3LinearLayout
         android:id="@+id/linr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/chb"
         android:layout_marginTop="32dp"
         app:a3_direction="locale"
         app:a3_paddingMiddle="32dp">

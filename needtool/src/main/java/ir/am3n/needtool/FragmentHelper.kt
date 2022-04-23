@@ -76,8 +76,6 @@ val Fragment.cfm: FragmentManager get() = childFragmentManager
 
 
 val Fragment.TAG: String get() = javaClass.name
-//val Any.TAG: String get() = javaClass.name.replace("\$Companion", "")
-
 
 fun FragmentTransaction.replaceAndStack(@IdRes containerViewId: Int, @NonNull fragment: Fragment): FragmentTransaction {
     replace(containerViewId, fragment, fragment.TAG)
