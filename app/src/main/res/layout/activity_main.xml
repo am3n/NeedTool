@@ -18,7 +18,7 @@
         app:a3_backIcon="@drawable/ic_baseline_arrow_back_ios_new_24"
         app:a3_backTint="@color/black"
         app:a3_direction="rtl"
-        app:a3_titleColor="@color/white"
+        app:a3_titleColor="@color/aEwhite"
         app:a3_titleText="عنوان"
         app:a3_titleSize="20sp" />
 
