@@ -152,3 +152,10 @@ private fun performReplaceFragment(containerId: Int, ft: FragmentTransaction, fr
     }
     ft.commit()
 }
+
+
+val Fragment.args: Bundle get() {
+    if (arguments == null)
+        arguments = Bundle()
+    return arguments!!
+}
