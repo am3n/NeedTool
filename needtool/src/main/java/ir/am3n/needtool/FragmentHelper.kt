@@ -66,6 +66,12 @@ fun View.onBackPressed(callback: () -> Unit) {
 }
 
 
+val Fragment.args: Bundle get() {
+    if (arguments == null)
+        arguments = Bundle()
+    return arguments!!
+}
+
 val Fragment.vlo: LifecycleOwner get() = viewLifecycleOwner
 val Fragment.vloScope: LifecycleCoroutineScope get() = vlo.lifecycleScope
 
@@ -151,11 +157,4 @@ private fun performReplaceFragment(containerId: Int, ft: FragmentTransaction, fr
         ft.addToBackStack(fragment.TAG)
     }
     ft.commit()
-}
-
-
-val Fragment.args: Bundle get() {
-    if (arguments == null)
-        arguments = Bundle()
-    return arguments!!
 }
