@@ -23,10 +23,15 @@
     <color name="aCwhite">#cfff</color>
     <color name="aBwhite">#bfff</color>
     <color name="aAwhite">#afff</color>
+    <color name="a9white">#9fff</color>
     <color name="a8white">#8fff</color>
     <color name="a7white">#7fff</color>
+    <color name="a6white">#6fff</color>
     <color name="a5white">#5fff</color>
+    <color name="a4white">#4fff</color>
     <color name="a3white">#3fff</color>
+    <color name="a2white">#2fff</color>
+    <color name="a1white">#1fff</color>
 
     <color name="aEblack">#e000</color>
     <color name="aDblack">#d000</color>
