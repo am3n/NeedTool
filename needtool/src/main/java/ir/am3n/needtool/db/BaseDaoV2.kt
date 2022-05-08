@@ -64,8 +64,8 @@ abstract class BaseDaoV2<T: BaseModelV2>(
         if (tableName.isEmpty())
             throw Error("Table name is empty")
         return runRawSelectQuery(SimpleSQLiteQuery(
-            if (paranoid) "SELECT * FROM $tableName WHERE deletedAt = 0 ;"
-            else "SELECT * FROM $tableName ;"
+            if (paranoid) "SELECT * FROM `$tableName` WHERE deletedAt = 0 ;"
+            else "SELECT * FROM `$tableName` ;"
         ))
     }
 
@@ -102,8 +102,8 @@ abstract class BaseDaoV2<T: BaseModelV2>(
             result.append("'").append(ids[index]).append("'")
         }
         val query = SimpleSQLiteQuery(
-            if (paranoid) "SELECT * FROM $tableName WHERE id IN (${idsToStr(ids)}) AND deletedAt = 0;"
-            else "SELECT * FROM $tableName WHERE id IN (${idsToStr(ids)}) ;"
+            if (paranoid) "SELECT * FROM `$tableName` WHERE id IN (${idsToStr(ids)}) AND deletedAt = 0;"
+            else "SELECT * FROM `$tableName` WHERE id IN (${idsToStr(ids)}) ;"
         )
         return runRawSelectQuery(query)
     }
@@ -247,8 +247,8 @@ abstract class BaseDaoV2<T: BaseModelV2>(
             throw Error("Table name is empty")
         var result = 0
         db!!.query(
-            if (!force && paranoid) "UPDATE $tableName SET deletedAt=${System.currentTimeMillis()} ;"
-            else "DELETE FROM $tableName ;"
+            if (!force && paranoid) "UPDATE `$tableName` SET deletedAt=${System.currentTimeMillis()} ;"
+            else "DELETE FROM `$tableName` ;"
             , arrayOf()
         ).apply {
             result = try {
@@ -305,8 +305,8 @@ abstract class BaseDaoV2<T: BaseModelV2>(
             throw Error("Table name is empty")
         var result = 0
         db!!.query(
-            if (!force && paranoid) "UPDATE $tableName SET deletedAt=${System.currentTimeMillis()} WHERE id IN (${idsToStr(ids)}) ;"
-            else "DELETE FROM $tableName WHERE id IN (${idsToStr(ids)}) ;",
+            if (!force && paranoid) "UPDATE `$tableName` SET deletedAt=${System.currentTimeMillis()} WHERE id IN (${idsToStr(ids)}) ;"
+            else "DELETE FROM `$tableName` WHERE id IN (${idsToStr(ids)}) ;",
             arrayOf()
         ).apply {
             result = try {
@@ -347,7 +347,7 @@ abstract class BaseDaoV2<T: BaseModelV2>(
         if (tableName.isEmpty())
             throw Error("Table name is empty")
         var result = 0
-        db!!.query("UPDATE $tableName SET deletedAt=0 ;", arrayOf()).apply {
+        db!!.query("UPDATE `$tableName` SET deletedAt=0 ;", arrayOf()).apply {
             result = try {
                 moveToFirst()
                 1
@@ -397,7 +397,7 @@ abstract class BaseDaoV2<T: BaseModelV2>(
         if (tableName.isEmpty())
             throw Error("Table name is empty")
         var result = 0
-        db!!.query("UPDATE $tableName SET deletedAt=0 WHERE id IN (${idsToStr(ids)}) ;", arrayOf()).apply {
+        db!!.query("UPDATE `$tableName` SET deletedAt=0 WHERE id IN (${idsToStr(ids)}) ;", arrayOf()).apply {
             result = try {
                 moveToFirst()
                 1

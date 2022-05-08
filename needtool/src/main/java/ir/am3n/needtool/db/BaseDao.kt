@@ -40,7 +40,7 @@ abstract class BaseDao<T>(
     fun getAllSync(): List<T>? {
         if (tableName.isEmpty())
             throw Error("Table name is empty")
-        return runRawSelectQuery(SimpleSQLiteQuery("SELECT * FROM $tableName ;"))
+        return runRawSelectQuery(SimpleSQLiteQuery("SELECT * FROM `$tableName` ;"))
     }
     fun getAll(observer: Observer<List<T>?>) {
         onIO {
@@ -90,7 +90,7 @@ abstract class BaseDao<T>(
             }
             result.append("'").append(ids[index]).append("'")
         }
-        val query = SimpleSQLiteQuery("SELECT * FROM $tableName WHERE id IN ($result);")
+        val query = SimpleSQLiteQuery("SELECT * FROM `$tableName` WHERE id IN ($result);")
         return runRawSelectQuery(query)
     }
 
@@ -259,7 +259,7 @@ abstract class BaseDao<T>(
     fun deleteAllSync(): Int? {
         if (tableName.isEmpty())
             throw Error("Table name is empty")
-        val result = runRawQuery(SimpleSQLiteQuery("DELETE FROM $tableName ;"))
+        val result = runRawQuery(SimpleSQLiteQuery("DELETE FROM `$tableName` ;"))
         database?.invalidationTracker?.notifyObserversByTableNames(tableName)
         return result
     }

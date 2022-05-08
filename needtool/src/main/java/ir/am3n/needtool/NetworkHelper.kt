@@ -78,11 +78,7 @@ val Context.isVpnEnabled: Boolean
             return networkList.contains("tun0") ||
                     networkList.contains("ppp0") ||
                     networkList.contains("pptp") ||
-                    (
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    (connectivityManager?.getNetworkInfo(ConnectivityManager.TYPE_VPN)?.isConnectedOrConnecting ?: false)
-                            } else false
-                    )
+                    ((connectivityManager?.getNetworkInfo(ConnectivityManager.TYPE_VPN)?.isConnectedOrConnecting ?: false))
         } catch (e: Exception) {
         }
         return false

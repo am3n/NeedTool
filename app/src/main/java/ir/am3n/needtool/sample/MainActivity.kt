@@ -145,6 +145,9 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
             }
         }
 
+        ping({ Log.d("Me-MainAct", "ping  telegram.org  $it") }, "telegram.org")
+        ping({ Log.d("Me-MainAct", "ping  google.com  $it") }, "google.com")
+
 
     }
 
