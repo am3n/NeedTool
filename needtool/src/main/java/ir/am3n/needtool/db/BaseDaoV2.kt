@@ -7,9 +7,11 @@ import androidx.lifecycle.Observer
 import androidx.room.*
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
-import androidx.sqlite.db.SupportSQLiteQueryBuilder
 import ir.am3n.needtool.onIO
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
+@Suppress("MemberVisibilityCanBePrivate", "unused")
 @SuppressLint("StaticFieldLeak", "RestrictedApi")
 @Dao
 abstract class BaseDaoV2<T: BaseModelV2>(
@@ -40,22 +42,48 @@ abstract class BaseDaoV2<T: BaseModelV2>(
     @Insert(onConflict = OnConflictStrategy.ABORT)
     protected abstract fun insertOrAbortSync(entities: List<T>): List<Long>?
 
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    protected abstract suspend fun insertOrIgnoreSuspend(entities: List<T>): List<Long>?
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    protected abstract suspend fun insertOrAbortSuspend(entities: List<T>): List<Long>?
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     protected abstract fun insertOrUpdateSync(entities: List<T>): List<Long>?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    protected abstract suspend fun insertOrUpdateSuspend(entities: List<T>): List<Long>?
+
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
     protected abstract fun updateOrIgnoreSync(entities: List<T>): Int?
     @Update(onConflict = OnConflictStrategy.ABORT)
     protected abstract fun updateOrAbortSync(entities: List<T>): Int?
 
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    protected abstract suspend fun updateOrIgnoreSuspend(entities: List<T>): Int?
+    @Update(onConflict = OnConflictStrategy.ABORT)
+    protected abstract suspend fun updateOrAbortSuspend(entities: List<T>): Int?
+
+
     @Delete
     protected abstract fun deleteSync(entities: List<T>): Int?
 
+    @Delete
+    protected abstract suspend fun deleteSuspend(entities: List<T>): Int?
+
+
     @RawQuery
-    protected abstract fun runRawSelectQuery(query: SupportSQLiteQuery): List<T>?
+    protected abstract fun runRawSelectQuerySync(query: SupportSQLiteQuery): List<T>?
+
+    @RawQuery
+    protected abstract suspend fun runRawSelectQuerySuspend(query: SupportSQLiteQuery): List<T>?
+
 
 
     // #############################################################################
+
 
 
     // GET ALL
@@ -63,7 +91,16 @@ abstract class BaseDaoV2<T: BaseModelV2>(
     fun getAllSync(): List<T>? {
         if (tableName.isEmpty())
             throw Error("Table name is empty")
-        return runRawSelectQuery(SimpleSQLiteQuery(
+        return runRawSelectQuerySync(SimpleSQLiteQuery(
+            if (paranoid) "SELECT * FROM `$tableName` WHERE deletedAt = 0 ;"
+            else "SELECT * FROM `$tableName` ;"
+        ))
+    }
+
+    suspend fun getAllSuspend(): List<T>? = withContext(Dispatchers.IO) {
+        if (tableName.isEmpty())
+            throw Error("Table name is empty")
+        return@withContext runRawSelectQuerySuspend(SimpleSQLiteQuery(
             if (paranoid) "SELECT * FROM `$tableName` WHERE deletedAt = 0 ;"
             else "SELECT * FROM `$tableName` ;"
         ))
@@ -75,7 +112,7 @@ abstract class BaseDaoV2<T: BaseModelV2>(
         }
     }
 
-    fun getAll(): LiveData<List<T>?> {
+    fun getAllLive(): LiveData<List<T>?> {
         if (db == null)
             throw Error("Database is null")
         if (tableName.isEmpty())
@@ -84,6 +121,7 @@ abstract class BaseDaoV2<T: BaseModelV2>(
             return@createLiveData getAllSync()
         }
     }
+
 
     // GET BY ID
 
@@ -105,7 +143,28 @@ abstract class BaseDaoV2<T: BaseModelV2>(
             if (paranoid) "SELECT * FROM `$tableName` WHERE id IN (${idsToStr(ids)}) AND deletedAt = 0;"
             else "SELECT * FROM `$tableName` WHERE id IN (${idsToStr(ids)}) ;"
         )
-        return runRawSelectQuery(query)
+        return runRawSelectQuerySync(query)
+    }
+
+    suspend fun getByIdSuspend(id: Long): T? = withContext(Dispatchers.IO) {
+        return@withContext getByIdSuspend(listOf(id))?.firstOrNull()
+    }
+
+    suspend fun getByIdSuspend(ids: List<Long>): List<T>? = withContext(Dispatchers.IO) {
+        if (tableName.isEmpty())
+            throw Error("Table name is empty")
+        val result = StringBuilder()
+        for (index in ids.indices) {
+            if (index != 0) {
+                result.append(",")
+            }
+            result.append("'").append(ids[index]).append("'")
+        }
+        val query = SimpleSQLiteQuery(
+            if (paranoid) "SELECT * FROM `$tableName` WHERE id IN (${idsToStr(ids)}) AND deletedAt = 0;"
+            else "SELECT * FROM `$tableName` WHERE id IN (${idsToStr(ids)}) ;"
+        )
+        return@withContext runRawSelectQuerySuspend(query)
     }
 
     fun getById(id: Long, observer: Observer<T?> = Observer {}) {
@@ -119,15 +178,15 @@ abstract class BaseDaoV2<T: BaseModelV2>(
         }
     }
 
-    fun getById(id: Long): LiveData<T> {
+    fun getByIdLive(id: Long): LiveData<T> {
         val resultLiveData = MediatorLiveData<T>()
-        resultLiveData.addSource(getById(listOf(id))) { obj ->
+        resultLiveData.addSource(getByIdLive(listOf(id))) { obj ->
             resultLiveData.postValue(obj?.firstOrNull())
         }
         return resultLiveData
     }
 
-    fun getById(ids: List<Long>): LiveData<List<T>?> {
+    fun getByIdLive(ids: List<Long>): LiveData<List<T>?> {
         if (db == null)
             throw Error("Database is null")
         if (tableName.isEmpty())
@@ -138,7 +197,9 @@ abstract class BaseDaoV2<T: BaseModelV2>(
     }
 
 
+
     // -----------------------------------------------------------------------------
+
 
 
     fun insertSync(entity: T, abort: Boolean = false): Long? {
@@ -157,6 +218,24 @@ abstract class BaseDaoV2<T: BaseModelV2>(
         }
     }
 
+
+    suspend fun insertSuspend(entity: T, abort: Boolean = false): Long? = withContext(Dispatchers.IO) {
+        return@withContext insertSuspend(listOf(entity), abort)?.firstOrNull()
+    }
+
+    suspend fun insertSuspend(entities: List<T>, abort: Boolean = false): List<Long>? = withContext(Dispatchers.IO) {
+        entities.map {
+            it.apply {
+                createdAt = System.currentTimeMillis()
+                modifiedAt = createdAt
+            }
+        }.let {
+            return@withContext if (abort) insertOrAbortSuspend(it)
+            else insertOrIgnoreSuspend(it)
+        }
+    }
+
+
     fun insert(entity: T, observer: Observer<Long?> = Observer {}) {
         insert(listOf(entity)) {
             observer.onChanged(it?.firstOrNull())
@@ -170,7 +249,9 @@ abstract class BaseDaoV2<T: BaseModelV2>(
     }
 
 
+
     // -----------------------------------------------------------------------------
+
 
 
     fun updateSync(entity: T, abort: Boolean = false): Int? {
@@ -188,7 +269,26 @@ abstract class BaseDaoV2<T: BaseModelV2>(
             return if (abort) updateOrAbortSync(it)
             else updateOrIgnoreSync(it)
         }
+
     }
+
+    suspend fun updateSuspend(entity: T, abort: Boolean = false): Int? = withContext(Dispatchers.IO) {
+        return@withContext updateSuspend(listOf(entity), abort)
+    }
+
+    suspend fun updateSuspend(entities: List<T>, abort: Boolean = false): Int? = withContext(Dispatchers.IO) {
+        entities.map {
+            it.apply {
+                if (createdAt == 0L)
+                    createdAt = System.currentTimeMillis()
+                modifiedAt = System.currentTimeMillis()
+            }
+        }.let {
+            return@withContext if (abort) updateOrAbortSuspend(it)
+            else updateOrIgnoreSuspend(it)
+        }
+    }
+
 
     fun update(entity: T, observer: Observer<Int?> = Observer {}) {
         update(listOf(entity)) {
@@ -203,7 +303,9 @@ abstract class BaseDaoV2<T: BaseModelV2>(
     }
 
 
+
     // -----------------------------------------------------------------------------
+
 
 
     fun upsertSync(entity: T): Long? {
@@ -221,6 +323,24 @@ abstract class BaseDaoV2<T: BaseModelV2>(
             return insertOrUpdateSync(it)
         }
     }
+
+
+    suspend fun upsertSuspend(entity: T): Long? = withContext(Dispatchers.IO) {
+        return@withContext upsertSuspend(listOf(entity))?.firstOrNull()
+    }
+
+    suspend fun upsertSuspend(entities: List<T>): List<Long>? = withContext(Dispatchers.IO) {
+        entities.map {
+            it.apply {
+                if (createdAt == 0L)
+                    createdAt = System.currentTimeMillis()
+                modifiedAt = System.currentTimeMillis()
+            }
+        }.let {
+            return@withContext insertOrUpdateSuspend(it)
+        }
+    }
+
 
     fun upsert(entity: T, observer: Observer<Long?> = Observer {}) {
         upsert(listOf(entity)) {
@@ -247,9 +367,8 @@ abstract class BaseDaoV2<T: BaseModelV2>(
             throw Error("Table name is empty")
         var result = 0
         db!!.query(
-            if (!force && paranoid) "UPDATE `$tableName` SET deletedAt=${System.currentTimeMillis()} ;"
-            else "DELETE FROM `$tableName` ;"
-            , arrayOf()
+            if (!force && paranoid) "UPDATE `$tableName` SET deletedAt=${System.currentTimeMillis()} ;" else "DELETE FROM `$tableName` ;",
+            arrayOf()
         ).apply {
             result = try {
                 moveToFirst()
@@ -264,9 +383,14 @@ abstract class BaseDaoV2<T: BaseModelV2>(
         return result
     }
 
+    suspend fun deleteAllSuspend(force: Boolean = false): Int = withContext(Dispatchers.IO) {
+        return@withContext deleteAllSync(force)
+    }
+
     fun deleteAll(force: Boolean = false, observer: Observer<Int?> = Observer {}) {
         onIO { observer.onChanged(deleteAllSync(force)) }
     }
+
 
 
     // by entity
@@ -283,6 +407,20 @@ abstract class BaseDaoV2<T: BaseModelV2>(
         }
     }
 
+
+    suspend fun deleteSuspend(entity: T, force: Boolean = false): Int? = withContext(Dispatchers.IO) {
+        return@withContext deleteSuspend(listOf(entity), force)
+    }
+
+    suspend fun deleteSuspend(entities: List<T>, force: Boolean = false): Int? = withContext(Dispatchers.IO) {
+        return@withContext if (!force && paranoid) {
+            updateSuspend(entities.map { it.apply { deletedAt = System.currentTimeMillis() } }, abort = false)
+        } else {
+            deleteSuspend(entities)
+        }
+    }
+
+
     fun delete(entity: T, force: Boolean = false, observer: Observer<Int?> = Observer {}) {
         delete(listOf(entity), force, observer)
     }
@@ -294,7 +432,7 @@ abstract class BaseDaoV2<T: BaseModelV2>(
 
     // by id
 
-    fun deleteByIdSync(id: Long, force: Boolean = false): Int? {
+    fun deleteByIdSync(id: Long, force: Boolean = false): Int {
         return deleteByIdSync(listOf(id), force)
     }
 
@@ -321,6 +459,16 @@ abstract class BaseDaoV2<T: BaseModelV2>(
         db!!.invalidationTracker.notifyObserversByTableNames(tableName)
         return result
     }
+
+
+    suspend fun deleteByIdSuspend(id: Long, force: Boolean = false): Int = withContext(Dispatchers.IO) {
+        return@withContext deleteByIdSuspend(listOf(id), force)
+    }
+
+    suspend fun deleteByIdSuspend(ids: List<Long>, force: Boolean = false): Int = withContext(Dispatchers.IO) {
+        return@withContext deleteByIdSync(ids, force)
+    }
+
 
     fun deleteById(id: Long, force: Boolean = false, observer: Observer<Int?> = Observer {}) {
         deleteById(listOf(id), force, observer)
@@ -361,9 +509,14 @@ abstract class BaseDaoV2<T: BaseModelV2>(
         return result
     }
 
+    suspend fun restoreAllSuspend(): Int = withContext(Dispatchers.IO) {
+        return@withContext restoreAllSync()
+    }
+
     fun restoreAll(observer: Observer<Int> = Observer {}) {
         onIO { observer.onChanged(restoreAllSync()) }
     }
+
 
     // by entity
 
@@ -375,6 +528,16 @@ abstract class BaseDaoV2<T: BaseModelV2>(
         return restoreByIdSync(entities.map { it.id })
     }
 
+
+    suspend fun restoreSuspend(entity: T): Int = withContext(Dispatchers.IO) {
+        return@withContext restoreSuspend(listOf(entity))
+    }
+
+    suspend fun restoreSuspend(entities: List<T>): Int = withContext(Dispatchers.IO) {
+        return@withContext restoreByIdSync(entities.map { it.id })
+    }
+
+
     fun restore(entity: T, observer: Observer<Int> = Observer {}) {
         restore(listOf(entity), observer)
     }
@@ -382,6 +545,7 @@ abstract class BaseDaoV2<T: BaseModelV2>(
     fun restore(entities: List<T>, observer: Observer<Int> = Observer {}) {
         onIO { observer.onChanged(restoreSync(entities)) }
     }
+
 
     // by id
 
@@ -410,6 +574,16 @@ abstract class BaseDaoV2<T: BaseModelV2>(
         db!!.invalidationTracker.notifyObserversByTableNames(tableName)
         return result
     }
+
+
+    suspend fun restoreByIdSuspend(id: Long): Int = withContext(Dispatchers.IO) {
+        return@withContext restoreByIdSuspend(listOf(id))
+    }
+
+    suspend fun restoreByIdSuspend(ids: List<Long>): Int = withContext(Dispatchers.IO) {
+        return@withContext restoreByIdSync(ids)
+    }
+
 
     fun restoreByIdSync(id: Long, observer: Observer<Int> = Observer {}) {
         restoreByIdSync(listOf(id), observer)

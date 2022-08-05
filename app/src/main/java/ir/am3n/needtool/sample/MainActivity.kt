@@ -87,9 +87,9 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
 
 
-        scanWifi({
+        scanWifi({ success, results ->
             onUI {
-                toast("پیدا شد: ${it?.size}")
+                toast("پیدا شد: ${results?.size}")
             }
         }, {
             onUI {

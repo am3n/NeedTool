@@ -21,15 +21,15 @@ class DatabaseV2Act : AppCompatActivity() {
 
         db = Room.databaseBuilder(this, DBV2::class.java, "DBV2").build()
 
-        db!!.invoiceDao().getAll().observeOnce(this) {
+        db!!.invoiceDao().getAllLive().observeOnce(this) {
             Log.d("DatabaseAct", "getAll > observeOnce: ${it.toString()}")
         }
 
-        db!!.invoiceDao().getAll().observe(this) {
+        db!!.invoiceDao().getAllLive().observe(this) {
             Log.d("DatabaseAct", "getAll > observe: ${it.toString()}")
         }
 
-        db!!.invoiceDao().getById(2).observe(this) {
+        db!!.invoiceDao().getByIdLive(2).observe(this) {
             Log.d("DatabaseAct", "getById > observe: $it")
         }
 
