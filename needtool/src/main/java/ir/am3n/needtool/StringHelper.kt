@@ -35,9 +35,9 @@ fun String.isAlphabet() = matches(Regex("[a-zA-Z]+"))
 fun String.isAlphabetAndNumber() = matches(Regex("[a-zA-Z0-9]+")) && !isNumeric() && !isAlphabet()
 
 fun String.isPhoneNumber() = isNumeric() &&
-    ((startsWith("09") && length == 11) ||
-        (startsWith("989") && length == 12) ||
-        (startsWith("+989") && length == 13))
+        ((startsWith("09") && length == 11) ||
+                (startsWith("989") && length == 12) ||
+                (startsWith("+989") && length == 13))
 
 fun String.replaceLast(delimiter: String, replace: String): String {
     val index = lastIndexOf(delimiter)
@@ -98,7 +98,6 @@ val String?.intOr0: Int get() = this?.toIntOrNull() ?: 0
 val String?.intOr0AsString: String get() = intOr0.toString()
 
 
-
 fun String.optSubString(startIndex: Int, endIndex: Int): String {
     return try {
         substring(startIndex, endIndex) + ".."
@@ -113,4 +112,33 @@ fun String.optSubString(range: IntRange): String {
     } catch (t: Throwable) {
         this
     }
+}
+
+fun String.replaceArabicToPersian(): String {
+    var result = this
+    mapOf(
+        "ك" to "ک",
+        "دِ" to "د",
+        "بِ" to "ب",
+        "زِ" to "ز",
+        "ذِ" to "ذ",
+        "شِ" to "ش",
+        "سِ" to "س",
+        "ة" to "ه",
+        "ى" to "ی",
+        "ي" to "ی",
+        "١" to "۱",
+        "٢" to "۲",
+        "٣" to "۳",
+        "٤" to "۴",
+        "٥" to "۵",
+        "٦" to "۶",
+        "٧" to "۷",
+        "٨" to "۸",
+        "٩" to "۹",
+        "٠" to "۰",
+    ).forEach { entry ->
+        result = result.replace(entry.key, entry.value)
+    }
+    return result
 }
