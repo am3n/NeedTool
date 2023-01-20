@@ -7,12 +7,14 @@ plugins {
 
 android {
 
-    compileSdk 32
+    namespace 'ir.am3n.needtool.sample'
+
+    compileSdk 33
 
     defaultConfig {
         applicationId "ir.am3n.needtool.sample"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
@@ -50,14 +52,14 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     /** android lifecycle */
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-common-java8:2.5.0'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.5.1'
 
     implementation 'io.github.inflationx:viewpump:2.0.3'
     implementation 'io.github.inflationx:calligraphy3:3.1.1'
 
-    kapt 'androidx.room:room-compiler:2.4.2'
+    kapt 'androidx.room:room-compiler:2.5.0'
 
     api project(path: ':needtool')
 

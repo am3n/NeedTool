@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="ir.am3n.needtool.sample">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -34,15 +33,15 @@
 
         <activity
             android:name=".A3ViewsActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
 
         <activity
             android:name=".DatabaseAct"
-            android:exported="true"></activity>
+            android:exported="true" />
 
         <activity
             android:name=".DatabaseV2Act"
-            android:exported="true"></activity>
+            android:exported="true" />
 
     </application>
 

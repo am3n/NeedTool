@@ -1,8 +1,6 @@
 package ir.am3n.needtool.views.popup
 
 import android.animation.Animator
-import android.annotation.TargetApi
-import android.os.Build
 import android.view.Gravity
 import android.view.View
 import android.view.ViewAnimationUtils
@@ -163,14 +161,12 @@ open class RelativePopupWindow : PopupWindow() {
             showAtLocation(anchor, Gravity.NO_GRAVITY, x, y)
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            contentView.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
-                override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
-                    contentView.removeOnLayoutChangeListener(this)
-                    circularReveal(anchor, true)
-                }
-            })
-        }
+        contentView.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
+            override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
+                contentView.removeOnLayoutChangeListener(this)
+                circularReveal(anchor, true)
+            }
+        })
 
     }
 
@@ -201,7 +197,6 @@ open class RelativePopupWindow : PopupWindow() {
     }
 
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private fun circularReveal(anchor: View, show: Boolean, dismiss: (() -> Unit)? = null) {
         val contentView = contentView
 
@@ -222,12 +217,12 @@ open class RelativePopupWindow : PopupWindow() {
         animator.interpolator = if (show) AccelerateDecelerateInterpolator() else AccelerateInterpolator()
         animator.duration = 200
         animator.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator?) {}
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationStart(animation: Animator) {}
+            override fun onAnimationEnd(animation: Animator) {
                 dismiss?.invoke()
             }
-            override fun onAnimationCancel(animation: Animator?) {}
-            override fun onAnimationRepeat(animation: Animator?) {}
+            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationRepeat(animation: Animator) {}
         })
         animator.start()
 

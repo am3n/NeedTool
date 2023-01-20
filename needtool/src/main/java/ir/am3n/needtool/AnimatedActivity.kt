@@ -77,7 +77,8 @@ abstract class AnimatedActivity(
         enter()
     }
 
-    override fun startActivityForResult(intent: Intent?, requestCode: Int, options: Bundle?) {
+    @Deprecated("Deprecated in Java")
+    override fun startActivityForResult(intent: Intent, requestCode: Int, options: Bundle?) {
         super.startActivityForResult(intent, requestCode, options)
         Log.d("Me-AnimatedActivity", "$tag | startActivityForResult()")
         enter()

@@ -7,11 +7,13 @@ plugins {
 
 android {
 
-    compileSdk 32
+    namespace 'ir.am3n.needtool'
+
+    compileSdk 33
 
     defaultConfig {
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         multiDexEnabled true
     }
 
@@ -48,11 +50,13 @@ dependencies {
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines"
-    api 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0'
+    api 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
 
 
     /** paging */
-    api 'androidx.paging:paging-runtime-ktx:3.1.1'
+    api ('androidx.paging:paging-runtime-ktx:3.1.1') {
+        exclude group: 'androidx.lifecycle', module: 'lifecycle-viewmodel-ktx'
+    }
 
 
     /** retrofit */
@@ -62,8 +66,8 @@ dependencies {
 
 
     /** room */
-    api 'androidx.room:room-runtime:2.4.2'
-    api 'androidx.room:room-ktx:2.4.2'
+    api 'androidx.room:room-runtime:2.5.0'
+    api 'androidx.room:room-ktx:2.5.0'
 
 
     /** device name */
