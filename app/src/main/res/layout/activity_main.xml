@@ -12,15 +12,36 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:a3_backIcon="@drawable/ic_baseline_arrow_back_ios_new_24"
         app:a3_backTint="@color/black"
         app:a3_direction="rtl"
         app:a3_titleColor="@color/aEwhite"
+        app:a3_titleSize="20sp"
         app:a3_titleText="عنوان"
-        app:a3_titleSize="20sp" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ir.am3n.needtool.views.A3LinearLayout
+        android:id="@+id/linr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="vertical"
+        app:a3_direction="locale"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="text 1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="text 2" />
+
+    </ir.am3n.needtool.views.A3LinearLayout>
 
     <ir.am3n.needtool.views.MaxHeightRelativeLayout
         android:id="@+id/mhrlv"
@@ -28,8 +49,9 @@
         android:layout_height="wrap_content"
         android:maxHeight="320dp"
         app:a3_direction="rtl"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintLeft_toLeftOf="parent">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linr">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,60 +64,60 @@
                 android:layout_width="180dp"
                 android:layout_height="80dp"
                 android:layout_margin="16dp"
-                app:a3sb_orientation="horizontal_ltr"
                 app:a3sb_bar_background="#ff0"
                 app:a3sb_bar_corner_radius="21dp"
                 app:a3sb_bar_progress="@color/colorPrimary"
                 app:a3sb_max_value="1000"
                 app:a3sb_min_value="0"
+                app:a3sb_orientation="horizontal_ltr"
                 app:a3sb_progress="20" />
 
             <ir.am3n.needtool.views.A3SeekBar
                 android:layout_width="180dp"
                 android:layout_height="80dp"
                 android:layout_margin="16dp"
+                app:a3sb_bar_background="#ff0"
+                app:a3sb_bar_corner_radius="21dp"
+                app:a3sb_bar_progress="@color/colorPrimary"
+                app:a3sb_max_value="100"
+                app:a3sb_min_value="0"
                 app:a3sb_orientation="horizontal_rtl"
-                app:a3sb_bar_background="#ff0"
-                app:a3sb_bar_corner_radius="21dp"
-                app:a3sb_bar_progress="@color/colorPrimary"
-                app:a3sb_max_value="100"
-                app:a3sb_min_value="0"
                 app:a3sb_progress="20" />
 
             <ir.am3n.needtool.views.A3SeekBar
                 android:layout_width="180dp"
                 android:layout_height="80dp"
                 android:layout_margin="16dp"
+                app:a3sb_bar_background="#ff0"
+                app:a3sb_bar_corner_radius="21dp"
+                app:a3sb_bar_progress="@color/colorPrimary"
+                app:a3sb_max_value="100"
+                app:a3sb_min_value="0"
                 app:a3sb_orientation="horizontal_locale"
-                app:a3sb_bar_background="#ff0"
-                app:a3sb_bar_corner_radius="21dp"
-                app:a3sb_bar_progress="@color/colorPrimary"
-                app:a3sb_max_value="100"
-                app:a3sb_min_value="0"
                 app:a3sb_progress="20" />
 
             <ir.am3n.needtool.views.A3SeekBar
                 android:layout_width="80dp"
                 android:layout_height="180dp"
                 android:layout_margin="16dp"
+                app:a3sb_bar_background="#ff0"
+                app:a3sb_bar_corner_radius="21dp"
+                app:a3sb_bar_progress="@color/colorPrimary"
+                app:a3sb_max_value="100"
+                app:a3sb_min_value="0"
                 app:a3sb_orientation="vertical_ttb"
-                app:a3sb_bar_background="#ff0"
-                app:a3sb_bar_corner_radius="21dp"
-                app:a3sb_bar_progress="@color/colorPrimary"
-                app:a3sb_max_value="100"
-                app:a3sb_min_value="0"
                 app:a3sb_progress="20" />
 
             <ir.am3n.needtool.views.A3SeekBar
                 android:layout_width="80dp"
                 android:layout_height="180dp"
                 android:layout_margin="16dp"
-                app:a3sb_orientation="vertical_btt"
                 app:a3sb_bar_background="#ff0"
                 app:a3sb_bar_corner_radius="21dp"
                 app:a3sb_bar_progress="@color/colorPrimary"
                 app:a3sb_max_value="100"
                 app:a3sb_min_value="0"
+                app:a3sb_orientation="vertical_btt"
                 app:a3sb_progress="20" />
 
 
@@ -117,34 +139,34 @@
         android:id="@+id/rcl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/mhrlv"
         android:layoutDirection="rtl"
         app:layoutManager="ir.am3n.needtool.views.recyclerview.RtlStaggeredLayoutManager"
+        app:layout_constraintTop_toBottomOf="@+id/mhrlv"
         tools:itemCount="5"
-        tools:listitem="@layout/itm_user"/>
+        tools:listitem="@layout/itm_user" />
 
     <Button
         android:id="@+id/btnTestVeiws"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnDatabaseAct"
-        android:text="test views frg"/>
+        android:text="test views frg"
+        app:layout_constraintBottom_toTopOf="@+id/btnDatabaseAct" />
 
     <Button
         android:id="@+id/btnDatabaseAct"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnDatabaseV2Act"
-        android:text="Database Activity"/>
+        android:text="Database Activity"
+        app:layout_constraintBottom_toTopOf="@+id/btnDatabaseV2Act" />
 
     <Button
         android:id="@+id/btnDatabaseV2Act"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="Database V2 Activity"/>
+        android:text="Database V2 Activity"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

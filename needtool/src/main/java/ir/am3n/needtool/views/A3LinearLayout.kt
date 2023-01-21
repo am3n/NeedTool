@@ -200,33 +200,31 @@ open class A3LinearLayout : LinearLayoutCompat {
 
             removeAllViews()
 
-            if (orientation == HORIZONTAL) {
+            if (gravity != CENTER && gravity != CENTER_HORIZONTAL) {
+                when (gravity) {
+                    START -> gravity = END
+                    START or TOP -> gravity = END or TOP
+                    START or BOTTOM -> gravity = END or BOTTOM
+                    START or CENTER_VERTICAL -> gravity = END or CENTER_VERTICAL
+                    LEFT -> gravity = RIGHT
+                    LEFT or TOP -> gravity = RIGHT or TOP
+                    LEFT or BOTTOM -> gravity = RIGHT or BOTTOM
+                    LEFT or CENTER_VERTICAL -> gravity = RIGHT or CENTER_VERTICAL
+                    END -> gravity = START
+                    END or TOP -> gravity = START or TOP
+                    END or BOTTOM -> gravity = START or BOTTOM
+                    END or CENTER_VERTICAL -> gravity = START or CENTER_VERTICAL
+                    RIGHT -> gravity = LEFT
+                    RIGHT or TOP -> gravity = LEFT or TOP
+                    RIGHT or BOTTOM -> gravity = LEFT or BOTTOM
+                    RIGHT or CENTER_VERTICAL -> gravity = LEFT or CENTER_VERTICAL
+                }
+            }
 
+            if (orientation == HORIZONTAL) {
                 childs.reversed().forEach { view ->
                     addView(view)
                 }
-
-                if (gravity != CENTER && gravity != CENTER_HORIZONTAL) {
-                    when (gravity) {
-                        START -> gravity = END
-                        START or TOP -> gravity = END or TOP
-                        START or BOTTOM -> gravity = END or BOTTOM
-                        START or CENTER_VERTICAL -> gravity = END or CENTER_VERTICAL
-                        LEFT -> gravity = RIGHT
-                        LEFT or TOP -> gravity = RIGHT or TOP
-                        LEFT or BOTTOM -> gravity = RIGHT or BOTTOM
-                        LEFT or CENTER_VERTICAL -> gravity = RIGHT or CENTER_VERTICAL
-                        END -> gravity = START
-                        END or TOP -> gravity = START or TOP
-                        END or BOTTOM -> gravity = START or BOTTOM
-                        END or CENTER_VERTICAL -> gravity = START or CENTER_VERTICAL
-                        RIGHT -> gravity = LEFT
-                        RIGHT or TOP -> gravity = LEFT or TOP
-                        RIGHT or BOTTOM -> gravity = LEFT or BOTTOM
-                        RIGHT or CENTER_VERTICAL -> gravity = LEFT or CENTER_VERTICAL
-                    }
-                }
-
             } else {
                 childs.forEach { view ->
                     addView(view)
