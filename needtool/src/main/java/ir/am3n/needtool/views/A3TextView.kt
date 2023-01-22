@@ -3,6 +3,7 @@ package ir.am3n.needtool.views
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -28,6 +29,7 @@ class A3TextView : AppCompatTextView {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         build(context, attrs, 0)
     }
+
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         build(context, attrs, defStyleAttr)
     }
@@ -37,12 +39,12 @@ class A3TextView : AppCompatTextView {
         val isRtl = when (direction) {
             0 -> false
             1 -> true
-            2 -> parent.layoutDirection==1
+            2 -> parent.layoutDirection == 1
             3 -> resources.isRtl
             else -> false
         }
         if (!rtlized && isRtl && needRefresh) {
-            rtlize(isRtl)
+            rtlize()
         }
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -58,53 +60,54 @@ class A3TextView : AppCompatTextView {
         needRefresh = true
     }
 
-    private fun rtlize(isRtl: Boolean) {
+    private fun rtlize() {
 
         if (context == null) return
         rtlized = true
         needRefresh = false
 
-        if (isRtl) {
-
-            val leftMargin = marginLeft
-            val rightMargin = marginRight
+        val leftMargin = marginLeft
+        val rightMargin = marginRight
+        try {
+            updateLayoutParams<RelativeLayout.LayoutParams> { updateMargins(left = rightMargin, right = leftMargin) }
+        } catch (t: Throwable) {
             try {
-                updateLayoutParams<RelativeLayout.LayoutParams> { updateMargins(left = rightMargin, right = leftMargin) }
+                updateLayoutParams<LinearLayout.LayoutParams> { updateMargins(left = rightMargin, right = leftMargin) }
             } catch (t: Throwable) {
                 try {
-                    updateLayoutParams<LinearLayout.LayoutParams> { updateMargins(left = rightMargin, right = leftMargin) }
-                } catch (t: Throwable) {
-                    try {
-                        updateLayoutParams<ConstraintLayout.LayoutParams> { updateMargins(left = rightMargin, right = leftMargin) }
-                    } catch (t: Throwable) {}
+                    updateLayoutParams<ConstraintLayout.LayoutParams> { updateMargins(left = rightMargin, right = leftMargin) }
+                } catch (ignore: Throwable) {
                 }
             }
+        }
 
-            val leftPadding = paddingLeft
-            val rightPadding = paddingRight
-            updatePadding(left = rightPadding, right = leftPadding)
+        val leftPadding = paddingLeft
+        val rightPadding = paddingRight
+        updatePadding(left = rightPadding, right = leftPadding)
 
-            if (gravity != Gravity.CENTER && gravity != Gravity.CENTER_HORIZONTAL) {
-                when (gravity) {
-                    Gravity.START -> gravity = Gravity.END
-                    Gravity.START or Gravity.TOP -> gravity = Gravity.END or Gravity.TOP
-                    Gravity.START or Gravity.BOTTOM -> gravity = Gravity.END or Gravity.BOTTOM
-                    Gravity.START or Gravity.CENTER_VERTICAL -> gravity = Gravity.END or Gravity.CENTER_VERTICAL
-                    Gravity.LEFT -> gravity = Gravity.RIGHT
-                    Gravity.LEFT or Gravity.TOP -> gravity = Gravity.RIGHT or Gravity.TOP
-                    Gravity.LEFT or Gravity.BOTTOM -> gravity = Gravity.RIGHT or Gravity.BOTTOM
-                    Gravity.LEFT or Gravity.CENTER_VERTICAL -> gravity = Gravity.RIGHT or Gravity.CENTER_VERTICAL
-                    Gravity.END -> gravity = Gravity.START
-                    Gravity.END or Gravity.TOP -> gravity = Gravity.START or Gravity.TOP
-                    Gravity.END or Gravity.BOTTOM -> gravity = Gravity.START or Gravity.BOTTOM
-                    Gravity.END or Gravity.CENTER_VERTICAL -> gravity = Gravity.START or Gravity.CENTER_VERTICAL
-                    Gravity.RIGHT -> gravity = Gravity.LEFT
-                    Gravity.RIGHT or Gravity.TOP -> gravity = Gravity.LEFT or Gravity.TOP
-                    Gravity.RIGHT or Gravity.BOTTOM -> gravity = Gravity.LEFT or Gravity.BOTTOM
-                    Gravity.RIGHT or Gravity.CENTER_VERTICAL -> gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
-                }
+        if (gravity != Gravity.CENTER && gravity != Gravity.CENTER_HORIZONTAL) {
+            when (gravity) {
+                Gravity.START -> gravity = Gravity.END
+                Gravity.START or Gravity.TOP -> gravity = Gravity.END or Gravity.TOP
+                Gravity.START or Gravity.BOTTOM -> gravity = Gravity.END or Gravity.BOTTOM
+                Gravity.START or Gravity.CENTER_VERTICAL -> gravity = Gravity.END or Gravity.CENTER_VERTICAL
+                Gravity.LEFT -> gravity = Gravity.RIGHT
+                Gravity.LEFT or Gravity.TOP -> gravity = Gravity.RIGHT or Gravity.TOP
+                Gravity.LEFT or Gravity.BOTTOM -> gravity = Gravity.RIGHT or Gravity.BOTTOM
+                Gravity.LEFT or Gravity.CENTER_VERTICAL -> gravity = Gravity.RIGHT or Gravity.CENTER_VERTICAL
+                Gravity.END -> gravity = Gravity.START
+                Gravity.END or Gravity.TOP -> gravity = Gravity.START or Gravity.TOP
+                Gravity.END or Gravity.BOTTOM -> gravity = Gravity.START or Gravity.BOTTOM
+                Gravity.END or Gravity.CENTER_VERTICAL -> gravity = Gravity.START or Gravity.CENTER_VERTICAL
+                Gravity.RIGHT -> gravity = Gravity.LEFT
+                Gravity.RIGHT or Gravity.TOP -> gravity = Gravity.LEFT or Gravity.TOP
+                Gravity.RIGHT or Gravity.BOTTOM -> gravity = Gravity.LEFT or Gravity.BOTTOM
+                Gravity.RIGHT or Gravity.CENTER_VERTICAL -> gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
             }
+        }
 
+        compoundDrawables.let {
+            setCompoundDrawables(it[2], it[1], it[0], it[3])
         }
 
     }

@@ -31,15 +31,21 @@
         app:a3_direction="locale"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <TextView
+        <ir.am3n.needtool.views.A3TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="text 1" />
+            android:drawableLeft="@drawable/baseline_access_time_24"
+            android:text="text 1"
+            android:drawablePadding="8dp"
+            app:a3_direction="locale" />
 
-        <TextView
+        <ir.am3n.needtool.views.A3TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="text 2" />
+            android:drawableRight="@drawable/baseline_access_time_24"
+            android:drawablePadding="8dp"
+            android:text="text 2"
+            app:a3_direction="locale" />
 
     </ir.am3n.needtool.views.A3LinearLayout>
 
