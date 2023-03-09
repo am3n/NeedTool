@@ -14,6 +14,7 @@ import androidx.core.content.res.getDrawableOrThrow
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.ViewCompat
 import androidx.core.widget.ImageViewCompat
+import androidx.core.widget.TextViewCompat
 import ir.am3n.needtool.R
 import ir.am3n.needtool.asStateList
 import ir.am3n.needtool.isDark
@@ -67,6 +68,12 @@ open class A3SeekBar @JvmOverloads constructor(
             if (field == Orientation.HORIZONTAL_LOCALE) {
                 field = if (resources.isRtl) Orientation.HORIZONTAL_RIGHT_TO_LEFT else Orientation.HORIZONTAL_LEFT_TO_RIGHT
             }
+            applyAttributes()
+        }
+
+    var textAppearance: Int = 0
+        set(value) {
+            field = value
             applyAttributes()
         }
 
@@ -244,6 +251,11 @@ open class A3SeekBar @JvmOverloads constructor(
 
                 orientation = Orientation.values()[attributes.getInt(R.styleable.A3SeekBar_a3sb_orientation, 0)]
 
+                //try {
+                    textAppearance = attributes.getResourceId(R.styleable.A3SeekBar_android_textAppearance, 0)
+                //} catch (_: Throwable) {
+                //}
+
                 progressOnTouch = attributes.getBoolean(
                     R.styleable.A3SeekBar_a3sb_progress_on_touch,
                     progressOnTouch
@@ -255,32 +267,32 @@ open class A3SeekBar @JvmOverloads constructor(
 
                 try {
                     barBackgroundDrawable = attributes.getDrawableOrThrow(R.styleable.A3SeekBar_a3sb_bar_background)
-                } catch (t: Throwable) {
+                } catch (_: Throwable) {
                 }
                 try {
                     barBackgroundStartColor =
                         attributes.getColorOrThrow(R.styleable.A3SeekBar_a3sb_bar_background_gradient_start)
-                } catch (t: Throwable) {
+                } catch (_: Throwable) {
                 }
                 try {
                     barBackgroundEndColor =
                         attributes.getColorOrThrow(R.styleable.A3SeekBar_a3sb_bar_background_gradient_end)
-                } catch (t: Throwable) {
+                } catch (_: Throwable) {
                 }
 
                 try {
                     barProgressDrawable = attributes.getDrawableOrThrow(R.styleable.A3SeekBar_a3sb_bar_progress)
-                } catch (t: Throwable) {
+                } catch (_: Throwable) {
                 }
                 try {
                     barProgressStartColor =
                         attributes.getColorOrThrow(R.styleable.A3SeekBar_a3sb_bar_progress_gradient_start)
-                } catch (t: Throwable) {
+                } catch (_: Throwable) {
                 }
                 try {
                     barProgressEndColor =
                         attributes.getColorOrThrow(R.styleable.A3SeekBar_a3sb_bar_progress_gradient_end)
-                } catch (t: Throwable) {
+                } catch (_: Throwable) {
                 }
 
                 barStrokeWidth = attributes.getDimensionPixelSize(R.styleable.A3SeekBar_a3sb_bar_stroke_width, 0)
@@ -374,14 +386,17 @@ open class A3SeekBar @JvmOverloads constructor(
 
             imgMaxPlaceholder.setImageDrawable(maxPlaceholderDrawable)
             txtMaxPlaceholder.text = maxPlaceholderText
+            TextViewCompat.setTextAppearance(txtMaxPlaceholder, textAppearance)
             txtMaxPlaceholder.setTextColor(maxPlaceholderTextColor ?: Color.WHITE)
 
             imgMidPlaceholder.setImageDrawable(midPlaceholderDrawable)
             txtMidPlaceholder.text = midPlaceholderText
+            TextViewCompat.setTextAppearance(txtMidPlaceholder, textAppearance)
             txtMidPlaceholder.setTextColor(midPlaceholderTextColor ?: Color.WHITE)
 
             imgMinPlaceholder.setImageDrawable(minPlaceholderDrawable)
             txtMinPlaceholder.text = minPlaceholderText
+            TextViewCompat.setTextAppearance(txtMinPlaceholder, textAppearance)
             txtMinPlaceholder.setTextColor(minPlaceholderTextColor ?: Color.WHITE)
 
             val maxPlaceholderLayoutParams = (imgMaxPlaceholder.layoutParams as LayoutParams)
@@ -400,15 +415,15 @@ open class A3SeekBar @JvmOverloads constructor(
             if (progressOnTouch && !touchListening) {
                 val action: (View, Int) -> Unit = { bar, position ->
                     val fill = if (isVertical) bar.measuredHeight else bar.measuredWidth
-                    when {
+                    progress = when {
                         position in 1 until fill -> {
-                            progress = if (isReverse)
+                            if (isReverse)
                                 maxValue - (position * maxValue / fill)
                             else
                                 minValue + (position * maxValue / fill)
                         }
-                        position <= 0 -> progress = if (isReverse) maxValue else minValue
-                        position >= fill -> progress = if (isReverse) minValue else maxValue
+                        position < 1 -> if (isReverse) maxValue else minValue
+                        else -> if (isReverse) minValue else maxValue
                     }
                 }
                 barCardView.setOnTouchListener { bar, event ->

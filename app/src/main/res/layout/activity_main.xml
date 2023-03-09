@@ -35,8 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/baseline_access_time_24"
-            android:text="text 1"
             android:drawablePadding="8dp"
+            android:text="text 1"
             app:a3_direction="locale" />
 
         <ir.am3n.needtool.views.A3TextView
@@ -70,9 +70,12 @@
                 android:layout_width="180dp"
                 android:layout_height="80dp"
                 android:layout_margin="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 app:a3sb_bar_background="#ff0"
                 app:a3sb_bar_corner_radius="21dp"
                 app:a3sb_bar_progress="@color/colorPrimary"
+                app:a3sb_mid_placeholder_text="100%"
+                app:a3sb_mid_placeholder_text_color="#f00"
                 app:a3sb_max_value="1000"
                 app:a3sb_min_value="0"
                 app:a3sb_orientation="horizontal_ltr"

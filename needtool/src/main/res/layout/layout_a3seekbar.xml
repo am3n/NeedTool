@@ -39,7 +39,7 @@
             android:layout_gravity="center"
             android:contentDescription="@null" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txtMaxPlaceholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             android:layout_gravity="center_horizontal"
             android:contentDescription="@null" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txtMidPlaceholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
             android:layout_gravity="center_horizontal"
             android:contentDescription="@null" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txtMinPlaceholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
