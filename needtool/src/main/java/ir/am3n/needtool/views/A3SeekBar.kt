@@ -40,12 +40,6 @@ open class A3SeekBar @JvmOverloads constructor(
         HORIZONTAL_LOCALE
     }
 
-    companion object {
-        private const val DEFAULT_MIN_VALUE = 0
-        private const val DEFAULT_MAX_VALUE = 100
-        private const val DEFAULT_PROGRESS = 50
-    }
-
     private val onProgressChange: (Int) -> Unit = { newValue ->
         onProgressChangeListener?.invoke(newValue)
     }
@@ -199,7 +193,7 @@ open class A3SeekBar @JvmOverloads constructor(
             applyAttributes()
         }
 
-    var minValue = DEFAULT_MIN_VALUE
+    var minValue = 0
         set(value) {
             val newValue = when {
                 value < 0 -> 0
@@ -209,7 +203,7 @@ open class A3SeekBar @JvmOverloads constructor(
             field = newValue
             updateViews()
         }
-    var maxValue = DEFAULT_MAX_VALUE
+    var maxValue = 0
         set(value) {
             val newValue = when {
                 value < 1 -> 1
@@ -220,7 +214,7 @@ open class A3SeekBar @JvmOverloads constructor(
             updateViews()
         }
 
-    var progress: Int = DEFAULT_PROGRESS
+    var progress: Int = 0
         set(value) {
             val newValue = when {
                 value < minValue -> minValue
