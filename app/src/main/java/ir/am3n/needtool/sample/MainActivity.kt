@@ -16,6 +16,8 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import ir.am3n.needtool.*
+import ir.am3n.needtool.polygon.Point
+import ir.am3n.needtool.polygon.Polygon
 import ir.am3n.needtool.views.A3Toolbar
 import ir.am3n.needtool.views.recyclerview.RtlStaggeredLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -32,10 +34,12 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         Log.d("Me-MainAct", "onCreate() isDataEnabled: $isDataEnabled  -  isSimCardExists: $isSimCardExists")
 
 
-        toolbar.setMenu(listOf(
-            A3Toolbar.Menu.create(R.id.menuItem0, "", R.drawable.img_logout, null, 4.iDp2Px),
-            A3Toolbar.Menu.create(R.id.menuItem1, "", R.drawable.calendar, null, 4.iDp2Px)
-        ))
+        toolbar.setMenu(
+            listOf(
+                A3Toolbar.Menu.create(R.id.menuItem0, "", R.drawable.img_logout, null, 4.iDp2Px),
+                A3Toolbar.Menu.create(R.id.menuItem1, "", R.drawable.calendar, null, 4.iDp2Px)
+            )
+        )
 
         onUI(3000) {
             toolbar?.direction = LayoutDirection.LTR
@@ -76,12 +80,11 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         }, 6000)
 
 
-
         val plainText = "salllom :)"
         val key = "12345678901234567890123456789012"
-        val ciphered = encrypt(plainText, key) ?:""
+        val ciphered = encrypt(plainText, key) ?: ""
         Log.d("Meeeeee", ciphered)
-        val plain = decrypt(ciphered, key) ?:""
+        val plain = decrypt(ciphered, key) ?: ""
         Log.d("Meeeeee", plain)
 
 
@@ -114,9 +117,11 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         }, {
             2
         })
-        adapter = CustomAdapter(arrayOf(
-            "Helo", "aliiii", "dastamo", "sofre", "khoda"
-        ))
+        adapter = CustomAdapter(
+            arrayOf(
+                "Helo", "aliiii", "dastamo", "sofre", "khoda"
+            )
+        )
         rcl?.adapter = adapter
 
 
@@ -137,7 +142,7 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
                 try {
                     sleep(1)
                     sb?.post { sb?.progress = progress++ }
-                    if (progress>=1000)
+                    if (progress >= 1000)
                         break
                 } catch (t: Throwable) {
                     t.printStackTrace()
@@ -148,6 +153,13 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         ping({ Log.d("Me-MainAct", "ping  telegram.org  $it") }, "telegram.org")
         ping({ Log.d("Me-MainAct", "ping  google.com  $it") }, "google.com")
 
+
+        val p = Polygon.Builder()
+            .addVertex(Point(0.0, 1.0))
+            .build()
+        p.sides.forEach {
+            // draw
+        }
 
     }
 
