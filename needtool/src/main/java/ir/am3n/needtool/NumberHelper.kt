@@ -2,7 +2,10 @@ package ir.am3n.needtool
 
 import android.content.Context
 import java.util.*
-import kotlin.experimental.and
+import kotlin.math.abs
+import kotlin.math.floor
+import kotlin.math.pow
+import kotlin.math.roundToInt
 
 class Num2Persian(private val value: Any) {
 
@@ -23,7 +26,18 @@ class Num2Persian(private val value: Any) {
     )
 
     private val decimalSuffixes: Array<String> = arrayOf(
-        "", "دهم", "صدم", "هزارم", "ده‌هزارم", "صد‌هزارم", "میلیونوم", "ده‌میلیونوم", "صدمیلیونوم", "میلیاردم", "ده‌میلیاردم", "صد‌‌میلیاردم"
+        "",
+        "دهم",
+        "صدم",
+        "هزارم",
+        "ده‌هزارم",
+        "صد‌هزارم",
+        "میلیونوم",
+        "ده‌میلیونوم",
+        "صدمیلیونوم",
+        "میلیاردم",
+        "ده‌میلیاردم",
+        "صد‌‌میلیاردم"
     )
 
 
@@ -106,11 +120,11 @@ class Num2Persian(private val value: Any) {
         var isNegative = false
         val doubleParse = input.toDoubleOrNull() ?: return zero
         // check for zero
-        if (doubleParse == 0.toDouble()){
+        if (doubleParse == 0.toDouble()) {
             return zero
         }
         // set negative flag:true if the number is less than 0
-        if (doubleParse < 0){
+        if (doubleParse < 0) {
             isNegative = true
             input = input.replace(Regex("[\\-]"), "")
         }
@@ -147,7 +161,7 @@ class Num2Persian(private val value: Any) {
             decimalPart = convertDecimalPart(decimalPart)
         }
 
-        return (if(isNegative) negative else "") + output.joinToString(delimiter) + decimalPart
+        return (if (isNegative) negative else "") + output.joinToString(delimiter) + decimalPart
     }
 
 }
@@ -170,70 +184,77 @@ fun String.rtlSignNum(context: Context?): String {
 }
 
 
-val String.persianOrArabicToEnglish: String get() {
-    var engNumStr = this.replace("۰".toRegex(), "0")
-    engNumStr = engNumStr.replace("۱".toRegex(), "1")
-    engNumStr = engNumStr.replace("۲".toRegex(), "2")
-    engNumStr = engNumStr.replace("۳".toRegex(), "3")
-    engNumStr = engNumStr.replace("۴".toRegex(), "4")
-    engNumStr = engNumStr.replace("۵".toRegex(), "5")
-    engNumStr = engNumStr.replace("۶".toRegex(), "6")
-    engNumStr = engNumStr.replace("۷".toRegex(), "7")
-    engNumStr = engNumStr.replace("۸".toRegex(), "8")
-    engNumStr = engNumStr.replace("۹".toRegex(), "9")
-    // arabic
-    engNumStr = engNumStr.replace("٠".toRegex(), "0")
-    engNumStr = engNumStr.replace("١".toRegex(), "1")
-    engNumStr = engNumStr.replace("٢".toRegex(), "2")
-    engNumStr = engNumStr.replace("٣".toRegex(), "3")
-    engNumStr = engNumStr.replace("٤".toRegex(), "4")
-    engNumStr = engNumStr.replace("٥".toRegex(), "5")
-    engNumStr = engNumStr.replace("٦".toRegex(), "6")
-    engNumStr = engNumStr.replace("٧".toRegex(), "7")
-    engNumStr = engNumStr.replace("٨".toRegex(), "8")
-    engNumStr = engNumStr.replace("٩".toRegex(), "9")
+val String.persianOrArabicToEnglish: String
+    get() {
+        var engNumStr = this.replace("۰".toRegex(), "0")
+        engNumStr = engNumStr.replace("۱".toRegex(), "1")
+        engNumStr = engNumStr.replace("۲".toRegex(), "2")
+        engNumStr = engNumStr.replace("۳".toRegex(), "3")
+        engNumStr = engNumStr.replace("۴".toRegex(), "4")
+        engNumStr = engNumStr.replace("۵".toRegex(), "5")
+        engNumStr = engNumStr.replace("۶".toRegex(), "6")
+        engNumStr = engNumStr.replace("۷".toRegex(), "7")
+        engNumStr = engNumStr.replace("۸".toRegex(), "8")
+        engNumStr = engNumStr.replace("۹".toRegex(), "9")
+        // arabic
+        engNumStr = engNumStr.replace("٠".toRegex(), "0")
+        engNumStr = engNumStr.replace("١".toRegex(), "1")
+        engNumStr = engNumStr.replace("٢".toRegex(), "2")
+        engNumStr = engNumStr.replace("٣".toRegex(), "3")
+        engNumStr = engNumStr.replace("٤".toRegex(), "4")
+        engNumStr = engNumStr.replace("٥".toRegex(), "5")
+        engNumStr = engNumStr.replace("٦".toRegex(), "6")
+        engNumStr = engNumStr.replace("٧".toRegex(), "7")
+        engNumStr = engNumStr.replace("٨".toRegex(), "8")
+        engNumStr = engNumStr.replace("٩".toRegex(), "9")
 
-    engNumStr = engNumStr.replace("[٬،]".toRegex(), ",")
+        engNumStr = engNumStr.replace("[٬،]".toRegex(), ",")
 
-    return engNumStr
-}
+        return engNumStr
+    }
 
 
-val Int.toPersian: String get() {
-    return toFloat().toPersian.replace(Regex("\\..*"), "")
-}
+val Int.toPersian: String
+    get() {
+        return toFloat().toPersian.replace(Regex("\\..*"), "")
+    }
 
-val Float.toPersian: String get() {
-    return toString().toDouble().toPersian
-}
+val Float.toPersian: String
+    get() {
+        return toString().toDouble().toPersian
+    }
 
-val Double.toPersian: String get() {
-    return toString().toPersian
-}
+val Double.toPersian: String
+    get() {
+        return toString().toPersian
+    }
 
-val Long.toPersian: String get() {
-    return toString().toPersian
-}
+val Long.toPersian: String
+    get() {
+        return toString().toPersian
+    }
 
-val String.toPersian: String get() {
-    var persianNumStr = replace("0".toRegex(), "۰")
-    persianNumStr = persianNumStr.replace("1".toRegex(), "۱")
-    persianNumStr = persianNumStr.replace("2".toRegex(), "۲")
-    persianNumStr = persianNumStr.replace("3".toRegex(), "۳")
-    persianNumStr = persianNumStr.replace("4".toRegex(), "۴")
-    persianNumStr = persianNumStr.replace("5".toRegex(), "۵")
-    persianNumStr = persianNumStr.replace("6".toRegex(), "۶")
-    persianNumStr = persianNumStr.replace("7".toRegex(), "۷")
-    persianNumStr = persianNumStr.replace("8".toRegex(), "۸")
-    persianNumStr = persianNumStr.replace("9".toRegex(), "۹")
-    persianNumStr = persianNumStr.replace(",".toRegex(), "٬")
-    return persianNumStr
-}
+val String.toPersian: String
+    get() {
+        var persianNumStr = replace("0".toRegex(), "۰")
+        persianNumStr = persianNumStr.replace("1".toRegex(), "۱")
+        persianNumStr = persianNumStr.replace("2".toRegex(), "۲")
+        persianNumStr = persianNumStr.replace("3".toRegex(), "۳")
+        persianNumStr = persianNumStr.replace("4".toRegex(), "۴")
+        persianNumStr = persianNumStr.replace("5".toRegex(), "۵")
+        persianNumStr = persianNumStr.replace("6".toRegex(), "۶")
+        persianNumStr = persianNumStr.replace("7".toRegex(), "۷")
+        persianNumStr = persianNumStr.replace("8".toRegex(), "۸")
+        persianNumStr = persianNumStr.replace("9".toRegex(), "۹")
+        persianNumStr = persianNumStr.replace(",".toRegex(), "٬")
+        return persianNumStr
+    }
 
 
 fun Int?.ifNullOrZero(defaultValue: Int): Int {
     return if (this == null || this == 0) defaultValue else this
 }
+
 fun Int?.ifNullOrZero(defaultValue: String): String {
     return if (this == null || this == 0) defaultValue else this.toString()
 }
@@ -241,6 +262,7 @@ fun Int?.ifNullOrZero(defaultValue: String): String {
 fun Long?.ifNullOrZero(defaultValue: Long): Long {
     return if (this == null || this == 0L) defaultValue else this
 }
+
 fun Long?.ifNullOrZero(defaultValue: String): String {
     return if (this == null || this == 0L) defaultValue else this.toString()
 }
@@ -248,6 +270,7 @@ fun Long?.ifNullOrZero(defaultValue: String): String {
 fun Float?.ifNullOrZero(defaultValue: Float): Float {
     return if (this == null || this == 0f) defaultValue else this
 }
+
 fun Float?.ifNullOrZero(defaultValue: String): String {
     return if (this == null || this == 0f) defaultValue else this.toString()
 }
@@ -255,7 +278,24 @@ fun Float?.ifNullOrZero(defaultValue: String): String {
 fun Double?.ifNullOrZero(defaultValue: Double): Double {
     return if (this == null || this == 0.0) defaultValue else this
 }
+
 fun Double?.ifNullOrZero(defaultValue: String): String {
     return if (this == null || this == 0.0) defaultValue else this.toString()
 }
+
+fun Float.toPrecision(precision: Int) =
+    this.toDouble().toPrecision(precision)
+
+fun Double.toPrecision(precision: Int) =
+    if (precision < 1) {
+        "${this.roundToInt()}"
+    } else {
+        val p = 10.0.pow(precision)
+        val v = (abs(this) * p).roundToInt()
+        val i = floor(v / p)
+        var f = "${floor(v - (i * p)).toInt()}"
+        while (f.length < precision) f = "0$f"
+        val s = if (this < 0) "-" else ""
+        "$s${i.toInt()}.$f"
+    }
 

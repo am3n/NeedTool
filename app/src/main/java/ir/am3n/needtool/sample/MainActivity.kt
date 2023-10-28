@@ -2,14 +2,12 @@ package ir.am3n.needtool.sample
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.LayoutDirection
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -154,11 +152,15 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         ping({ Log.d("Me-MainAct", "ping  google.com  $it") }, "google.com")
 
 
-        val p = Polygon.Builder()
-            .addVertex(Point(0.0, 1.0))
-            .build()
-        p.sides.forEach {
-            // draw
+        try {
+            val p = Polygon.Builder()
+                .addVertex(Point(0.0, 1.0))
+                .build()
+            p.sides.forEach {
+                // draw
+            }
+        } catch (t: Throwable) {
+            t.printStackTrace()
         }
 
     }
