@@ -284,18 +284,26 @@ fun Double?.ifNullOrZero(defaultValue: String): String {
 }
 
 fun Float.toPrecision(precision: Int) =
-    this.toDouble().toPrecision(precision)
+    try {
+        this.toDouble().toPrecision(precision)
+    } catch (t: Throwable) {
+        this.toString()
+    }
 
 fun Double.toPrecision(precision: Int) =
-    if (precision < 1) {
-        "${this.roundToInt()}"
-    } else {
-        val p = 10.0.pow(precision)
-        val v = (abs(this) * p).roundToInt()
-        val i = floor(v / p)
-        var f = "${floor(v - (i * p)).toInt()}"
-        while (f.length < precision) f = "0$f"
-        val s = if (this < 0) "-" else ""
-        "$s${i.toInt()}.$f"
+    try {
+        if (precision < 1) {
+            "${this.roundToInt()}"
+        } else {
+            val p = 10.0.pow(precision)
+            val v = (abs(this) * p).roundToInt()
+            val i = floor(v / p)
+            var f = "${floor(v - (i * p)).toInt()}"
+            while (f.length < precision) f = "0$f"
+            val s = if (this < 0) "-" else ""
+            "$s${i.toInt()}.$f"
+        }
+    } catch (t: Throwable) {
+        this.toString()
     }
 
