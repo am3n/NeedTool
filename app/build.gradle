@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "ir.am3n.needtool.sample"
-        minSdk 21
+        minSdk 16
         targetSdk 33
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
