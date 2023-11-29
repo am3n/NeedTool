@@ -2,10 +2,7 @@ package ir.am3n.needtool
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewTreeLifecycleOwner
-import androidx.lifecycle.coroutineScope
 import ir.am3n.needtool.AfterForegrounded.isInBackground
-import kotlinx.coroutines.launch
 import java.lang.Thread.sleep
 
 
