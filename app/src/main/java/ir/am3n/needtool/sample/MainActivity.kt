@@ -74,7 +74,13 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         }, 1000)
 
         onUI({
-            snack(actMain, rtl = true, text = "سلام, ${device["appVersion"]}", font = SnackFont.AUTO, actionText = "بزن بریم")
+            snack(
+                actMain,
+                direction = Direction.RTL,
+                text = "Hi, heloo",
+                font = SnackFont.AUTO,
+                actionText = "بزن بریم"
+            )
         }, 6000)
 
 
