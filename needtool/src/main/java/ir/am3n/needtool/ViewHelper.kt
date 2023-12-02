@@ -44,7 +44,7 @@ fun View.delayOnLifecycle(
     block: () -> Unit
 ): Job? = findViewTreeLifecycleOwner()?.let { lifecycleOwner ->
     lifecycleOwner.lifecycle.coroutineScope.launch(dispatcher) {
-        delay(duration)
+        withContext(Dispatchers.IO) { delay(duration) }
         block()
     }
 }
@@ -55,7 +55,7 @@ fun View.delayOnLifecycleSuspended(
     block: suspend () -> Unit
 ): Job? = findViewTreeLifecycleOwner()?.let { lifecycleOwner ->
     lifecycleOwner.lifecycle.coroutineScope.launch(dispatcher) {
-        delay(duration)
+        withContext(Dispatchers.IO) { delay(duration) }
         block()
     }
 }
