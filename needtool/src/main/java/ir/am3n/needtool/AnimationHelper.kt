@@ -118,6 +118,7 @@ fun View.hide(gone: Boolean = true, disable: Boolean = true) {
     val set = AnimationSet(false)
     set.addAnimation(scale)
     set.addAnimation(alpha)
+    set.fillAfter = false
     set.setAnimationListener(object : Animation.AnimationListener {
         override fun onAnimationStart(animation: Animation?) {}
         override fun onAnimationEnd(animation: Animation?) {
@@ -136,7 +137,6 @@ fun View.hide(gone: Boolean = true, disable: Boolean = true) {
         }
         override fun onAnimationRepeat(animation: Animation?) {}
     })
-    set.fillAfter = true
     startAnimation(set)
 }
 
@@ -164,7 +164,7 @@ fun View.show(enable: Boolean = true, onEnd: () -> Unit = {}) {
     val set = AnimationSet(false)
     set.addAnimation(scale)
     set.addAnimation(alpha)
-    set.fillAfter = true
+    set.fillAfter = false
     set.setAnimationListener(object : Animation.AnimationListener {
         override fun onAnimationStart(animation: Animation?) {}
         override fun onAnimationEnd(animation: Animation?) {
@@ -176,10 +176,6 @@ fun View.show(enable: Boolean = true, onEnd: () -> Unit = {}) {
         override fun onAnimationRepeat(animation: Animation?) {}
     })
     startAnimation(set)
-    /*if (!clickable) {
-        isClickable = true
-        isFocusable = true
-    }*/
 }
 
 //-----------------------------------------------------
@@ -229,22 +225,6 @@ fun View.breath() {
     }
 
     startAnimation(scale1)
-
-    /*val set = AnimationSet(false)
-    set.addAnimation(scale1)
-    set.addAnimation(scale2)
-    set.fillAfter = true
-    set.repeatCount = ValueAnimator.INFINITE
-    set.repeatMode = ValueAnimator.REVERSE
-    startAnimation(set)*/
-
-    /*val set = AnimatorSet()
-    set.playSequentially(
-        ObjectAnimator.ofFloat(this, "scaleX", 0.3f, 0.5f, 0.9f, 0.8f, 0.9f, 1f),
-        ObjectAnimator.ofFloat(this, "scaleY", 0.3f, 0.5f, 0.9f, 0.8f, 0.9f, 1f)
-    )
-    set.duration = 5000
-    set.start()*/
 
 }
 
