@@ -96,13 +96,13 @@ fun View.blink(
 
 //-----------------------------------------------------
 
-fun View.hide(gone: Boolean = true, disable: Boolean = true) {
+fun View.hide(gone: Boolean = true, disable: Boolean = true, startOffset: Long = 0, duration: Long = 100) {
     if (!isVisible)
         return
     clearAnimation()
     val alpha = AlphaAnimation(1f, 0f).apply {
         interpolator = AccelerateInterpolator()
-        duration = 100
+        this.duration = duration
         fillAfter = true
     }
     val scale = ScaleAnimation(
@@ -112,12 +112,13 @@ fun View.hide(gone: Boolean = true, disable: Boolean = true) {
         Animation.RELATIVE_TO_SELF, .5f
     ).apply {
         interpolator = AccelerateInterpolator()
-        duration = 100
+        this.duration = duration
         fillAfter = true
     }
     val set = AnimationSet(false)
     set.addAnimation(scale)
     set.addAnimation(alpha)
+    set.startOffset = startOffset
     set.fillAfter = false
     set.setAnimationListener(object : Animation.AnimationListener {
         override fun onAnimationStart(animation: Animation?) {}
@@ -140,7 +141,7 @@ fun View.hide(gone: Boolean = true, disable: Boolean = true) {
     startAnimation(set)
 }
 
-fun View.show(enable: Boolean = true, onEnd: () -> Unit = {}) {
+fun View.show(enable: Boolean = true, onEnd: () -> Unit = {}, startOffset: Long = 0, duration: Long = 100) {
     if (isVisible && tag != "hided but visiblity flag is true")
         return
     isVisible = true
@@ -149,8 +150,7 @@ fun View.show(enable: Boolean = true, onEnd: () -> Unit = {}) {
     clearAnimation()
     val alpha = AlphaAnimation(0f, 1f).apply {
         interpolator = AccelerateInterpolator()
-        duration = 100
-        startOffset = 0
+        this.duration = duration
     }
     val scale = ScaleAnimation(
         .7f, 1f,
@@ -158,12 +158,13 @@ fun View.show(enable: Boolean = true, onEnd: () -> Unit = {}) {
         Animation.RELATIVE_TO_SELF, .5f,
         Animation.RELATIVE_TO_SELF, .5f
     ).apply {
-        duration = 100
+        this.duration = duration
         interpolator = AccelerateInterpolator()
     }
     val set = AnimationSet(false)
     set.addAnimation(scale)
     set.addAnimation(alpha)
+    set.startOffset = startOffset
     set.fillAfter = false
     set.setAnimationListener(object : Animation.AnimationListener {
         override fun onAnimationStart(animation: Animation?) {}
