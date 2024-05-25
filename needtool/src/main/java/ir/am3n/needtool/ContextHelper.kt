@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityManager
 import android.app.NotificationManager
+import android.bluetooth.BluetoothManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -39,6 +40,9 @@ fun Context.sendLocalBroadcastSync(intent: Intent) {
     LocalBroadcastManager.getInstance(this).sendBroadcastSync(intent)
 }
 
+val Context.bluetoothManager: BluetoothManager?
+    @SuppressLint("InlinedApi")
+    get() = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager?
 
 val Context.locationManager: LocationManager?
     get() =  getSystemService(Context.LOCATION_SERVICE) as LocationManager?
