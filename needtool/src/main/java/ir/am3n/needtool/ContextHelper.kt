@@ -16,6 +16,7 @@ import android.content.pm.PackageInfo
 import android.content.res.Configuration
 import android.graphics.Point
 import android.location.LocationManager
+import android.media.AudioManager
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import android.os.Build
@@ -61,6 +62,9 @@ val Context.activityManager: ActivityManager?
 
 val Context.wifiManager: WifiManager?
     get() = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager?
+
+val Context.audioManager: AudioManager?
+    get() = getSystemService(Context.AUDIO_SERVICE) as AudioManager?
 
 val Context.teleManager: TelephonyManager?
     get() = applicationContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager?
