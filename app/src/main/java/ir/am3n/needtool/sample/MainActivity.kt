@@ -169,6 +169,30 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
             t.printStackTrace()
         }
 
+
+        Log.d("Meeee", msToTimesAgo(Now))
+        Log.d("Meeee", msToTimesAgo(Now.minus(20 * 1000)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(59 * 1000)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(60 * 1000)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(61 * 1000)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(90 * 1000)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(128 * 1000)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(100 * 60 * 1000)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(5 * 60 * 60 * 1000)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(23 * 60 * 60 * 1000)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(24 * 60 * 60 * 1000)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(4 * 24 * 60 * 60 * 1000)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(6 * 24 * 60 * 60 * 1000)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(7 * 24 * 60 * 60 * 1000)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(9 * 24 * 60 * 60 * 1000)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(17 * 24 * 60 * 60 * 1000)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(31 * 24 * 60 * 60 * 1000L)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(50 * 24 * 60 * 60 * 1000L)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(120 * 24 * 60 * 60 * 1000L)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(700 * 24 * 60 * 60 * 1000L)))
+        Log.d("Meeee", msToTimesAgo(Now.minus(900 * 24 * 60 * 60 * 1000L)))
+
+
     }
 
     override fun onStart() {

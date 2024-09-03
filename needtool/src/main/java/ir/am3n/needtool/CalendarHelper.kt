@@ -1,5 +1,6 @@
 package ir.am3n.needtool
 
+import android.content.Context
 import androidx.annotation.IntRange
 import java.time.Month
 import java.util.*
@@ -59,4 +60,37 @@ fun isDay(time: Calendar, @IntRange(from = 1, to = 12) shamsiMonth: Int): Boolea
         else -> true
     }
 
+}
+
+fun Context.msToTimesAgo(millis: Long): String {
+    val seconds = (System.currentTimeMillis() - millis) / 1000f
+    return when {
+        seconds < 60 -> {
+            this.resources.getQuantityString(R.plurals.seconds_ago, seconds.toInt(), seconds.toInt())
+        }
+        seconds < 3600 -> {
+            val minutes = seconds / 60f
+            this.resources.getQuantityString(R.plurals.minutes_ago, minutes.toInt(), minutes.toInt())
+        }
+        seconds < 86400 -> {
+            val hours = seconds / 3600f
+            this.resources.getQuantityString(R.plurals.hours_ago, hours.toInt(), hours.toInt())
+        }
+        seconds < 604800 -> {
+            val days = seconds / 86400f
+            this.resources.getQuantityString(R.plurals.days_ago, days.toInt(), days.toInt())
+        }
+        seconds < 2_628_000 -> {
+            val weeks = seconds / 604800f
+            this.resources.getQuantityString(R.plurals.weeks_ago, weeks.toInt(), weeks.toInt())
+        }
+        seconds < 31_536_000 -> {
+            val months = seconds / 2_628_000f
+            this.resources.getQuantityString(R.plurals.months_ago, months.toInt(), months.toInt())
+        }
+        else -> {
+            val years = seconds / 31_536_000f
+            this.resources.getQuantityString(R.plurals.years_ago, years.toInt(), years.toInt())
+        }
+    }
 }
