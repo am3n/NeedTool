@@ -8,13 +8,15 @@ import java.nio.channels.SelectionKey;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.io.IOException;
+
 import ir.am3n.needtool.webserver.Headers;
+
 import java.io.OutputStream;
 import java.io.InputStream;
 import java.nio.channels.SocketChannel;
 
-class Request
-{
+class Request {
+
     static final int BUF_LEN = 2048;
     static final byte CR = 13;
     static final byte LF = 10;
@@ -26,7 +28,7 @@ class Request
     int pos;
     StringBuffer lineBuf;
     Headers hdrs;
-    
+
     Request(final InputStream is, final OutputStream os) throws IOException {
         this.buf = new char[2048];
         this.hdrs = null;
@@ -40,15 +42,15 @@ class Request
             }
         } while (this.startLine.equals(""));
     }
-    
+
     public InputStream inputStream() {
         return this.is;
     }
-    
+
     public OutputStream outputStream() {
         return this.os;
     }
-    
+
     public String readLine() throws IOException {
         int n = 0;
         int i = 0;
@@ -62,36 +64,33 @@ class Request
             if (n != 0) {
                 if (read == 10) {
                     i = 1;
-                }
-                else {
+                } else {
                     n = 0;
                     this.consume(13);
                     this.consume(read);
                 }
-            }
-            else if (read == 13) {
+            } else if (read == 13) {
                 n = 1;
-            }
-            else {
+            } else {
                 this.consume(read);
             }
         }
         this.lineBuf.append(this.buf, 0, this.pos);
         return new String(this.lineBuf);
     }
-    
+
     private void consume(final int n) {
         if (this.pos == 2048) {
             this.lineBuf.append(this.buf);
             this.pos = 0;
         }
-        this.buf[this.pos++] = (char)n;
+        this.buf[this.pos++] = (char) n;
     }
-    
+
     public String requestLine() {
         return this.startLine;
     }
-    
+
     Headers headers() throws IOException {
         if (this.hdrs != null) {
             return this.hdrs;
@@ -99,12 +98,12 @@ class Request
         this.hdrs = new Headers();
         char[] array = new char[10];
         int n = this.is.read();
-    Label_0036:
+        Label_0036:
         while (n != 10 && n != 13 && n >= 0) {
             int n2 = 0;
             int n3 = -1;
             int n4 = (n > 32) ? 1 : 0;
-            array[n2++] = (char)n;
+            array[n2++] = (char) n;
             while (true) {
                 int read;
                 while ((read = this.is.read()) >= 0) {
@@ -145,8 +144,7 @@ class Request
                             if (n3 <= 0) {
                                 copyValue = null;
                                 n3 = 0;
-                            }
-                            else {
+                            } else {
                                 copyValue = String.copyValueOf(array, 0, n3);
                                 if (n3 < n2 && array[n3] == ':') {
                                     ++n3;
@@ -158,8 +156,7 @@ class Request
                             String copyValue2;
                             if (n3 >= n2) {
                                 copyValue2 = new String();
-                            }
-                            else {
+                            } else {
                                 copyValue2 = String.copyValueOf(array, n3, n2 - n3);
                             }
                             this.hdrs.add(copyValue, copyValue2);
@@ -171,7 +168,7 @@ class Request
                         System.arraycopy(array, 0, array2, 0, n2);
                         array = array2;
                     }
-                    array[n2++] = (char)read;
+                    array[n2++] = (char) read;
                 }
                 n = -1;
                 continue;
@@ -179,9 +176,8 @@ class Request
         }
         return this.hdrs;
     }
-    
-    static class ReadStream extends InputStream
-    {
+
+    static class ReadStream extends InputStream {
         SocketChannel channel;
         ByteBuffer chanbuf;
         byte[] one;
@@ -194,7 +190,7 @@ class Request
         static long readTimeout;
         ServerImpl server;
         static final int BUFSIZE = 8192;
-        
+
         public ReadStream(final ServerImpl server, final SocketChannel channel) throws IOException {
             this.closed = false;
             this.eof = false;
@@ -208,12 +204,12 @@ class Request
             this.marked = closed;
             this.closed = closed;
         }
-        
+
         @Override
         public synchronized int read(final byte[] array) throws IOException {
             return this.read(array, 0, array.length);
         }
-        
+
         @Override
         public synchronized int read() throws IOException {
             if (this.read(this.one, 0, 1) == 1) {
@@ -221,7 +217,7 @@ class Request
             }
             return -1;
         }
-        
+
         @Override
         public synchronized int read(final byte[] src, final int offset, final int n) throws IOException {
             if (this.closed) {
@@ -241,8 +237,7 @@ class Request
                 if (remaining == i) {
                     this.reset = false;
                 }
-            }
-            else {
+            } else {
                 this.chanbuf.clear();
                 if (n < 8192) {
                     this.chanbuf.limit(n);
@@ -259,20 +254,19 @@ class Request
                 if (this.marked) {
                     try {
                         this.markBuf.put(src, offset, i);
-                    }
-                    catch (BufferOverflowException ex) {
+                    } catch (BufferOverflowException ex) {
                         this.marked = false;
                     }
                 }
             }
             return i;
         }
-        
+
         @Override
         public boolean markSupported() {
             return true;
         }
-        
+
         @Override
         public synchronized int available() throws IOException {
             if (this.closed) {
@@ -286,7 +280,7 @@ class Request
             }
             return this.chanbuf.remaining();
         }
-        
+
         @Override
         public void close() throws IOException {
             if (this.closed) {
@@ -296,7 +290,7 @@ class Request
             this.channel.close();
             this.closed = true;
         }
-        
+
         @Override
         public synchronized void mark(final int n) {
             if (this.closed) {
@@ -307,7 +301,7 @@ class Request
             this.marked = true;
             this.reset = false;
         }
-        
+
         @Override
         public synchronized void reset() throws IOException {
             if (this.closed) {
@@ -321,16 +315,15 @@ class Request
             this.markBuf.flip();
         }
     }
-    
-    static class WriteStream extends OutputStream
-    {
+
+    static class WriteStream extends OutputStream {
         SocketChannel channel;
         ByteBuffer buf;
         SelectionKey key;
         boolean closed;
         byte[] one;
         ServerImpl server;
-        
+
         public WriteStream(final ServerImpl server, final SocketChannel channel) throws IOException {
             this.channel = channel;
             this.server = server;
@@ -339,18 +332,18 @@ class Request
             this.one = new byte[1];
             this.buf = ByteBuffer.allocate(4096);
         }
-        
+
         @Override
         public synchronized void write(final int n) throws IOException {
-            this.one[0] = (byte)n;
+            this.one[0] = (byte) n;
             this.write(this.one, 0, 1);
         }
-        
+
         @Override
         public synchronized void write(final byte[] array) throws IOException {
             this.write(array, 0, array.length);
         }
-        
+
         @Override
         public synchronized void write(final byte[] src, final int offset, final int length) throws IOException {
             int n = length;
@@ -372,7 +365,7 @@ class Request
                 }
             }
         }
-        
+
         @Override
         public void close() throws IOException {
             if (this.closed) {

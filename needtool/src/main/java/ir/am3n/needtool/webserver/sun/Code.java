@@ -4,8 +4,8 @@
 
 package ir.am3n.needtool.webserver.sun;
 
-class Code
-{
+class Code {
+
     public static final int HTTP_CONTINUE = 100;
     public static final int HTTP_OK = 200;
     public static final int HTTP_CREATED = 201;
@@ -42,7 +42,7 @@ class Code
     public static final int HTTP_UNAVAILABLE = 503;
     public static final int HTTP_GATEWAY_TIMEOUT = 504;
     public static final int HTTP_VERSION = 505;
-    
+
     static String msg(final int n) {
         switch (n) {
             case 200: {

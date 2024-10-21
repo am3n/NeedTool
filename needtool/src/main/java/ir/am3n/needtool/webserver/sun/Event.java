@@ -4,10 +4,9 @@
 
 package ir.am3n.needtool.webserver.sun;
 
-class Event
-{
+class Event {
     ExchangeImpl exchange;
-    
+
     protected Event(final ExchangeImpl exchange) {
         this.exchange = exchange;
     }

@@ -4,12 +4,11 @@
 
 package ir.am3n.needtool.webserver.sun;
 
-import java.security.PrivilegedAction;
 import java.security.AccessController;
 
 
-class ServerConfig
-{
+class ServerConfig {
+
     static int clockTick;
     static int defaultClockTick;
     static long defaultReadTimeout;
@@ -31,51 +30,51 @@ class ServerConfig
     static long maxRspTime;
     static long timerMillis;
     static boolean debug;
-    
+
     static long getReadTimeout() {
         return ServerConfig.readTimeout;
     }
-    
+
     static long getSelCacheTimeout() {
         return ServerConfig.selCacheTimeout;
     }
-    
+
     static boolean debugEnabled() {
         return ServerConfig.debug;
     }
-    
+
     static long getIdleInterval() {
         return ServerConfig.idleInterval;
     }
-    
+
     static int getClockTick() {
         return ServerConfig.clockTick;
     }
-    
+
     static int getMaxIdleConnections() {
         return ServerConfig.maxIdleConnections;
     }
-    
+
     static long getWriteTimeout() {
         return ServerConfig.writeTimeout;
     }
-    
+
     static long getDrainAmount() {
         return ServerConfig.drainAmount;
     }
-    
+
     static long getMaxReqTime() {
         return ServerConfig.maxReqTime;
     }
-    
+
     static long getMaxRspTime() {
         return ServerConfig.maxRspTime;
     }
-    
+
     static long getTimerMillis() {
         return ServerConfig.timerMillis;
     }
-    
+
     static {
         ServerConfig.defaultClockTick = 10000;
         ServerConfig.defaultReadTimeout = 20L;
@@ -88,16 +87,16 @@ class ServerConfig
         ServerConfig.defaultTimerMillis = 0L;
         ServerConfig.defaultDrainAmount = 65536L;
         ServerConfig.debug = false;
-        ServerConfig.idleInterval = AccessController.doPrivileged((PrivilegedAction<Long>)new GetLongAction("ir.am3n.needtool.webserver.sun.idleInterval", ServerConfig.defaultIdleInterval)) * 1000L;
-        ServerConfig.clockTick = AccessController.doPrivileged((PrivilegedAction<Integer>)new GetIntegerAction("ir.am3n.needtool.webserver.sun.clockTick", ServerConfig.defaultClockTick));
-        ServerConfig.maxIdleConnections = AccessController.doPrivileged((PrivilegedAction<Integer>)new GetIntegerAction("ir.am3n.needtool.webserver.sun.maxIdleConnections", ServerConfig.defaultMaxIdleConnections));
-        ServerConfig.readTimeout = AccessController.doPrivileged((PrivilegedAction<Long>)new GetLongAction("ir.am3n.needtool.webserver.sun.readTimeout", ServerConfig.defaultReadTimeout)) * 1000L;
-        ServerConfig.selCacheTimeout = AccessController.doPrivileged((PrivilegedAction<Long>)new GetLongAction("ir.am3n.needtool.webserver.sun.selCacheTimeout", ServerConfig.defaultSelCacheTimeout)) * 1000L;
-        ServerConfig.writeTimeout = AccessController.doPrivileged((PrivilegedAction<Long>)new GetLongAction("ir.am3n.needtool.webserver.sun.writeTimeout", ServerConfig.defaultWriteTimeout)) * 1000L;
-        ServerConfig.drainAmount = AccessController.doPrivileged((PrivilegedAction<Long>)new GetLongAction("ir.am3n.needtool.webserver.sun.drainAmount", ServerConfig.defaultDrainAmount));
-        ServerConfig.maxReqTime = AccessController.doPrivileged((PrivilegedAction<Long>)new GetLongAction("ir.am3n.needtool.webserver.sun.maxReqTime", ServerConfig.defaultMaxReqTime));
-        ServerConfig.maxRspTime = AccessController.doPrivileged((PrivilegedAction<Long>)new GetLongAction("ir.am3n.needtool.webserver.sun.maxRspTime", ServerConfig.defaultMaxRspTime));
-        ServerConfig.timerMillis = AccessController.doPrivileged((PrivilegedAction<Long>)new GetLongAction("ir.am3n.needtool.webserver.sun.timerMillis", ServerConfig.defaultTimerMillis));
-        ServerConfig.debug = AccessController.doPrivileged((PrivilegedAction<Boolean>)new GetBooleanAction("ir.am3n.needtool.webserver.sun.debug"));
+        ServerConfig.idleInterval = AccessController.doPrivileged(new GetLongAction("ir.am3n.needtool.webserver.sun.idleInterval", ServerConfig.defaultIdleInterval)) * 1000L;
+        ServerConfig.clockTick = AccessController.doPrivileged(new GetIntegerAction("ir.am3n.needtool.webserver.sun.clockTick", ServerConfig.defaultClockTick));
+        ServerConfig.maxIdleConnections = AccessController.doPrivileged(new GetIntegerAction("ir.am3n.needtool.webserver.sun.maxIdleConnections", ServerConfig.defaultMaxIdleConnections));
+        ServerConfig.readTimeout = AccessController.doPrivileged(new GetLongAction("ir.am3n.needtool.webserver.sun.readTimeout", ServerConfig.defaultReadTimeout)) * 1000L;
+        ServerConfig.selCacheTimeout = AccessController.doPrivileged(new GetLongAction("ir.am3n.needtool.webserver.sun.selCacheTimeout", ServerConfig.defaultSelCacheTimeout)) * 1000L;
+        ServerConfig.writeTimeout = AccessController.doPrivileged(new GetLongAction("ir.am3n.needtool.webserver.sun.writeTimeout", ServerConfig.defaultWriteTimeout)) * 1000L;
+        ServerConfig.drainAmount = AccessController.doPrivileged(new GetLongAction("ir.am3n.needtool.webserver.sun.drainAmount", ServerConfig.defaultDrainAmount));
+        ServerConfig.maxReqTime = AccessController.doPrivileged(new GetLongAction("ir.am3n.needtool.webserver.sun.maxReqTime", ServerConfig.defaultMaxReqTime));
+        ServerConfig.maxRspTime = AccessController.doPrivileged(new GetLongAction("ir.am3n.needtool.webserver.sun.maxRspTime", ServerConfig.defaultMaxRspTime));
+        ServerConfig.timerMillis = AccessController.doPrivileged(new GetLongAction("ir.am3n.needtool.webserver.sun.timerMillis", ServerConfig.defaultTimerMillis));
+        ServerConfig.debug = AccessController.doPrivileged(new GetBooleanAction("ir.am3n.needtool.webserver.sun.debug"));
     }
 }

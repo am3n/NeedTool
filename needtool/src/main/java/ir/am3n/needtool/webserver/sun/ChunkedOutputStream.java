@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.FilterOutputStream;
 
-class ChunkedOutputStream extends FilterOutputStream
-{
+class ChunkedOutputStream extends FilterOutputStream {
+
     private boolean closed;
     static final int CHUNK_SIZE = 4096;
     static final int OFFSET = 6;
@@ -17,7 +17,7 @@ class ChunkedOutputStream extends FilterOutputStream
     private int count;
     private byte[] buf;
     ExchangeImpl t;
-    
+
     ChunkedOutputStream(final ExchangeImpl t, final OutputStream out) {
         super(out);
         this.closed = false;
@@ -26,19 +26,19 @@ class ChunkedOutputStream extends FilterOutputStream
         this.buf = new byte[4104];
         this.t = t;
     }
-    
+
     @Override
     public void write(final int n) throws IOException {
         if (this.closed) {
             throw new StreamClosedException();
         }
-        this.buf[this.pos++] = (byte)n;
+        this.buf[this.pos++] = (byte) n;
         ++this.count;
         if (this.count == 4096) {
             this.writeChunk();
         }
     }
-    
+
     @Override
     public void write(final byte[] array, int n, int i) throws IOException {
         if (this.closed) {
@@ -68,14 +68,14 @@ class ChunkedOutputStream extends FilterOutputStream
             this.writeChunk();
         }
     }
-    
+
     private void writeChunk() throws IOException {
         final char[] charArray = Integer.toHexString(this.count).toCharArray();
         final int length = charArray.length;
         final int off = 4 - length;
         int i;
         for (i = 0; i < length; ++i) {
-            this.buf[off + i] = (byte)charArray[i];
+            this.buf[off + i] = (byte) charArray[i];
         }
         this.buf[off + i++] = 13;
         this.buf[off + i++] = 10;
@@ -85,7 +85,7 @@ class ChunkedOutputStream extends FilterOutputStream
         this.count = 0;
         this.pos = 6;
     }
-    
+
     @Override
     public void close() throws IOException {
         if (this.closed) {
@@ -99,12 +99,12 @@ class ChunkedOutputStream extends FilterOutputStream
         if (!originalInputStream.isClosed()) {
             try {
                 originalInputStream.close();
+            } catch (IOException ex) {
             }
-            catch (IOException ex) {}
         }
         this.t.getHttpContext().getServerImpl().addEvent(new WriteFinishedEvent(this.t));
     }
-    
+
     @Override
     public void flush() throws IOException {
         if (this.closed) {

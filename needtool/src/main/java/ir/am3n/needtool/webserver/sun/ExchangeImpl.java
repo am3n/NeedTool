@@ -5,23 +5,27 @@
 package ir.am3n.needtool.webserver.sun;
 
 import ir.am3n.needtool.webserver.HttpExchange;
+
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLSession;
+
 import java.net.Socket;
 import java.net.InetSocketAddress;
-import java.util.Iterator;
 import java.util.List;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
+
 import ir.am3n.needtool.webserver.HttpPrincipal;
+
 import java.util.Map;
 import java.io.OutputStream;
 import java.io.InputStream;
 import java.net.URI;
+
 import ir.am3n.needtool.webserver.Headers;
 
-class ExchangeImpl
-{
+class ExchangeImpl {
+
     Headers reqHdrs;
     Headers rspHdrs;
     Request req;
@@ -45,7 +49,7 @@ class ExchangeImpl
     HttpPrincipal principal;
     ServerImpl server;
     private byte[] rspbuf;
-    
+
     ExchangeImpl(final String method, final URI uri, final Request req, final int reqContentLen, final HttpConnection connection) throws IOException {
         this.rcode = -1;
         this.rspbuf = new byte[128];
@@ -60,27 +64,27 @@ class ExchangeImpl
         this.ris = req.inputStream();
         (this.server = this.getServerImpl()).startExchange();
     }
-    
+
     public Headers getRequestHeaders() {
         return new UnmodifiableHeaders(this.reqHdrs);
     }
-    
+
     public Headers getResponseHeaders() {
         return this.rspHdrs;
     }
-    
+
     public URI getRequestURI() {
         return this.uri;
     }
-    
+
     public String getRequestMethod() {
         return this.method;
     }
-    
+
     public HttpContextImpl getHttpContext() {
         return this.connection.getHttpContext();
     }
-    
+
     public void close() {
         if (this.closed) {
             return;
@@ -99,12 +103,11 @@ class ExchangeImpl
                 this.uis_orig.close();
             }
             this.uos.close();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             this.connection.close();
         }
     }
-    
+
     public InputStream getRequestBody() {
         if (this.uis != null) {
             return this.uis;
@@ -112,22 +115,21 @@ class ExchangeImpl
         if (this.reqContentLen == -1) {
             this.uis_orig = new ChunkedInputStream(this, this.ris);
             this.uis = this.uis_orig;
-        }
-        else {
+        } else {
             this.uis_orig = new FixedLengthInputStream(this, this.ris, this.reqContentLen);
             this.uis = this.uis_orig;
         }
         return this.uis;
     }
-    
+
     LeftOverInputStream getOriginalInputStream() {
         return this.uis_orig;
     }
-    
+
     public int getResponseCode() {
         return this.rcode;
     }
-    
+
     public OutputStream getResponseBody() {
         if (this.uos == null) {
             this.uos_orig = new PlaceholderOutputStream(null);
@@ -135,12 +137,12 @@ class ExchangeImpl
         }
         return this.uos;
     }
-    
+
     PlaceholderOutputStream getPlaceholderResponseBody() {
         this.getResponseBody();
         return this.uos_orig;
     }
-    
+
     public void sendResponseHeaders(final int n, long n2) throws IOException {
         if (this.sentHeaders) {
             throw new IOException("headers already sent");
@@ -155,13 +157,11 @@ class ExchangeImpl
             this.rspHdrs.set("Transfer-encoding", "chunked");
             placeholderResponseBody.setWrappedStream(new ChunkedOutputStream(this, this.ros));
             this.server.responseStarted(this.connection);
-        }
-        else {
+        } else {
             if (n2 == -1L) {
                 b = true;
                 n2 = 0L;
-            }
-            else {
+            } else {
                 this.server.responseStarted(this.connection);
             }
             if (this.rspHdrs.getFirst("Content-length") == null) {
@@ -179,7 +179,7 @@ class ExchangeImpl
         }
         this.server.logReply(n, this.req.requestLine(), null);
     }
-    
+
     void write(final Headers headers, final OutputStream outputStream) throws IOException {
         for (final Map.Entry<String, List<String>> entry : headers.entrySet()) {
             final String s = entry.getKey();
@@ -199,7 +199,7 @@ class ExchangeImpl
         outputStream.write(13);
         outputStream.write(10);
     }
-    
+
     private byte[] bytes(final String s, final int n) {
         final int length = s.length();
         if (length + n > this.rspbuf.length) {
@@ -207,26 +207,26 @@ class ExchangeImpl
         }
         final char[] charArray = s.toCharArray();
         for (int i = 0; i < charArray.length; ++i) {
-            this.rspbuf[i] = (byte)charArray[i];
+            this.rspbuf[i] = (byte) charArray[i];
         }
         return this.rspbuf;
     }
-    
+
     public InetSocketAddress getRemoteAddress() {
         final Socket socket = this.connection.getChannel().socket();
         return new InetSocketAddress(socket.getInetAddress(), socket.getPort());
     }
-    
+
     public InetSocketAddress getLocalAddress() {
         final Socket socket = this.connection.getChannel().socket();
         return new InetSocketAddress(socket.getLocalAddress(), socket.getLocalPort());
     }
-    
+
     public String getProtocol() {
         final String requestLine = this.req.requestLine();
         return requestLine.substring(requestLine.lastIndexOf(32) + 1);
     }
-    
+
     public SSLSession getSSLSession() {
         final SSLEngine sslEngine = this.connection.getSSLEngine();
         if (sslEngine == null) {
@@ -234,7 +234,7 @@ class ExchangeImpl
         }
         return sslEngine.getSession();
     }
-    
+
     public Object getAttribute(final String s) {
         if (s == null) {
             throw new NullPointerException("null name parameter");
@@ -244,7 +244,7 @@ class ExchangeImpl
         }
         return this.attributes.get(s);
     }
-    
+
     public void setAttribute(final String s, final Object o) {
         if (s == null) {
             throw new NullPointerException("null name parameter");
@@ -254,7 +254,7 @@ class ExchangeImpl
         }
         this.attributes.put(s, o);
     }
-    
+
     public void setStreams(final InputStream uis, final OutputStream uos) {
         assert this.uis != null;
         if (uis != null) {
@@ -264,28 +264,28 @@ class ExchangeImpl
             this.uos = uos;
         }
     }
-    
+
     HttpConnection getConnection() {
         return this.connection;
     }
-    
+
     ServerImpl getServerImpl() {
         return this.getHttpContext().getServerImpl();
     }
-    
+
     public HttpPrincipal getPrincipal() {
         return this.principal;
     }
-    
+
     void setPrincipal(final HttpPrincipal principal) {
         this.principal = principal;
     }
-    
+
     static ExchangeImpl get(final HttpExchange httpExchange) {
         if (httpExchange instanceof HttpExchangeImpl) {
-            return ((HttpExchangeImpl)httpExchange).getExchangeImpl();
+            return ((HttpExchangeImpl) httpExchange).getExchangeImpl();
         }
         assert httpExchange instanceof HttpsExchangeImpl;
-        return ((HttpsExchangeImpl)httpExchange).getExchangeImpl();
+        return ((HttpsExchangeImpl) httpExchange).getExchangeImpl();
     }
 }

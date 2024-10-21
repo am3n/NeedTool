@@ -16,7 +16,7 @@ public class Headers implements Map<String, List<String>>
     HashMap<String, List<String>> map;
     
     public Headers() {
-        this.map = new HashMap<String, List<String>>(32);
+        this.map = new HashMap<>(32);
     }
     
     private String normalize(final String s) {
@@ -76,7 +76,7 @@ public class Headers implements Map<String, List<String>>
         final String normalize = this.normalize(s);
         List<String> value = this.map.get(normalize);
         if (value == null) {
-            value = new LinkedList<String>();
+            value = new LinkedList<>();
             this.map.put(normalize, value);
         }
         value.add(s2);
@@ -85,7 +85,7 @@ public class Headers implements Map<String, List<String>>
     public void set(final String s, final String e) {
         final LinkedList<String> list = new LinkedList<String>();
         list.add(e);
-        this.put(s, (List<String>)list);
+        this.put(s, list);
     }
     
     public List<String> remove(final Object o) {
