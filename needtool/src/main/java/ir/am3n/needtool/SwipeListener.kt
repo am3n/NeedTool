@@ -33,10 +33,10 @@ class SwipeListener(
         override fun onDown(e: MotionEvent): Boolean {
             return false
         }
-        override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+        override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
             var result = false
             try {
-                val diffY = e2.y - e1.y
+                val diffY = e2.y - e1!!.y
                 val diffX = e2.x - e1.x
                 if (abs(diffX) > abs(diffY)) {
                     if (abs(diffX) > Companion.SWIPE_THRESHOLD && abs(velocityX) > Companion.SWIPE_VELOCITY_THRESHOLD) {

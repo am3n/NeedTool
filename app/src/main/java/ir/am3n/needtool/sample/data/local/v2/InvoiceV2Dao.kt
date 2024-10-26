@@ -22,10 +22,10 @@ abstract class InvoiceV2Dao : BaseDaoV2<InvoiceV2>(
 
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    abstract fun insertSyncOrAbort(entity: InvoiceV2?): Long?
+    abstract fun insertSyncOrAbort(entity: InvoiceV2): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertSyncOrReplace(entity: InvoiceV2?): Long?
+    abstract fun insertSyncOrReplace(entity: InvoiceV2): Long
 
 
     @Query("""UPDATE InvoiceV2 SET Status=:status WHERE BillNo=:billNo""")

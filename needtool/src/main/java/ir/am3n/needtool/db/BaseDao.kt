@@ -148,16 +148,16 @@ abstract class BaseDao<T>(
     abstract fun insertOrAbortSync(entity: T): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    abstract fun insertSync(entities: List<T>): List<Long>?
+    abstract fun insertSync(entities: List<T>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    abstract fun insertOrAbortSync(entities: List<T>): List<Long>?
+    abstract fun insertOrAbortSync(entities: List<T>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    abstract fun insertSync(vararg entities: T): List<Long>?
+    abstract fun insertSync(vararg entities: T): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    abstract fun insertOrAbortSync(vararg entities: T): List<Long>?
+    abstract fun insertOrAbortSync(vararg entities: T): List<Long>
 
 
     fun insert(entity: T, observer: Observer<Long> = Observer {}) {
@@ -186,13 +186,13 @@ abstract class BaseDao<T>(
     // ------------------- update ----------------------------
 
     @Update
-    abstract fun updateSync(entity: T): Int?
+    abstract fun updateSync(entity: T): Int
 
     @Update
-    abstract fun updateSync(entities: List<T?>?): Int?
+    abstract fun updateSync(entities: List<T>): Int
 
     @Update
-    abstract fun updateSync(vararg entities: T): Int?
+    abstract fun updateSync(vararg entities: T): Int
 
     fun update(entity: T, observer: Observer<Int?> = Observer {}) {
         onIO {
@@ -221,13 +221,13 @@ abstract class BaseDao<T>(
     // -------------- update or insert ------------------------
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun upsertSync(entity: T): Long?
+    abstract fun upsertSync(entity: T): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun upsertSync(entities: List<T>): List<Long?>
+    abstract fun upsertSync(entities: List<T>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun upsertSync(vararg entities: T): List<Long?>
+    abstract fun upsertSync(vararg entities: T): List<Long>
 
     fun upsert(entity: T, observer: Observer<Long?> = Observer {}) {
         Thread {
@@ -265,13 +265,13 @@ abstract class BaseDao<T>(
     }
 
     @Delete
-    abstract fun deleteSync(entity: T): Int?
+    abstract fun deleteSync(entity: T): Int
 
     @Delete
-    abstract fun deleteSync(entities: List<T>): Int?
+    abstract fun deleteSync(entities: List<T>): Int
 
     @Delete
-    abstract fun deleteSync(vararg entities: T): Int?
+    abstract fun deleteSync(vararg entities: T): Int
 
     fun deleteAll(observer: Observer<Int?> = Observer {}) {
         onIO {

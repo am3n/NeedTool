@@ -13,14 +13,14 @@ abstract class InvoiceDao : BaseDao<Invoice>("Invoice", DatabaseAct.db) {
 
 
     @Query("SELECT * FROM Invoice WHERE UpdateOnServer = 0")
-    abstract fun getAllNotUpdated(): LiveData<List<Invoice>>?
+    abstract fun getAllNotUpdated(): LiveData<List<Invoice>>
 
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    abstract fun insertSyncOrAbort(entity: Invoice?): Long?
+    abstract fun insertSyncOrAbort(entity: Invoice): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertSyncOrReplace(entity: Invoice?): Long?
+    abstract fun insertSyncOrReplace(entity: Invoice): Long
 
 
     @Query("""UPDATE Invoice SET Status=:status WHERE BillNo=:billNo""")

@@ -38,40 +38,40 @@ abstract class BaseDaoV2<T: BaseModelV2>(
 
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    protected abstract fun insertOrIgnoreSync(entities: List<T>): List<Long>?
+    protected abstract fun insertOrIgnoreSync(entities: List<T>): List<Long>
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    protected abstract fun insertOrAbortSync(entities: List<T>): List<Long>?
+    protected abstract fun insertOrAbortSync(entities: List<T>): List<Long>
 
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    protected abstract suspend fun insertOrIgnoreSuspend(entities: List<T>): List<Long>?
+    protected abstract suspend fun insertOrIgnoreSuspend(entities: List<T>): List<Long>
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    protected abstract suspend fun insertOrAbortSuspend(entities: List<T>): List<Long>?
+    protected abstract suspend fun insertOrAbortSuspend(entities: List<T>): List<Long>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    protected abstract fun insertOrUpdateSync(entities: List<T>): List<Long>?
+    protected abstract fun insertOrUpdateSync(entities: List<T>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    protected abstract suspend fun insertOrUpdateSuspend(entities: List<T>): List<Long>?
+    protected abstract suspend fun insertOrUpdateSuspend(entities: List<T>): List<Long>
 
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    protected abstract fun updateOrIgnoreSync(entities: List<T>): Int?
+    protected abstract fun updateOrIgnoreSync(entities: List<T>): Int
     @Update(onConflict = OnConflictStrategy.ABORT)
-    protected abstract fun updateOrAbortSync(entities: List<T>): Int?
+    protected abstract fun updateOrAbortSync(entities: List<T>): Int
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    protected abstract suspend fun updateOrIgnoreSuspend(entities: List<T>): Int?
+    protected abstract suspend fun updateOrIgnoreSuspend(entities: List<T>): Int
     @Update(onConflict = OnConflictStrategy.ABORT)
-    protected abstract suspend fun updateOrAbortSuspend(entities: List<T>): Int?
+    protected abstract suspend fun updateOrAbortSuspend(entities: List<T>): Int
 
 
     @Delete
-    protected abstract fun deleteSync(entities: List<T>): Int?
+    protected abstract fun deleteSync(entities: List<T>): Int
 
     @Delete
-    protected abstract suspend fun deleteSuspend(entities: List<T>): Int?
+    protected abstract suspend fun deleteSuspend(entities: List<T>): Int
 
 
     @RawQuery
