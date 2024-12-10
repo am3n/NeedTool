@@ -1,8 +1,11 @@
 package ir.am3n.needtool
 
+import android.graphics.Point
 import android.graphics.PorterDuff
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.*
 import android.widget.ProgressBar
@@ -59,3 +62,28 @@ fun View.delayOnLifecycleSuspended(
         block()
     }
 }
+
+/** Defines bounds of displayed view and check is it contains [Point]
+ * @param view View to define bounds
+ * @param event Touch motion event
+ * @return `true` if view bounds contains point, `false` - otherwise
+ */
+private fun isPointInsideViewBounds(view: View, event: MotionEvent): Boolean {
+    val touchPoint = Point(Math.round(event.rawX), Math.round(event.rawY))
+    return isPointInsideViewBounds(view, touchPoint)
+}
+
+/** Defines bounds of displayed view and check is it contains [Point]
+ * @param view View to define bounds
+ * @param point Point to check inside bounds *
+ * @return `true` if view bounds contains point, `false` - otherwise
+ */
+private fun isPointInsideViewBounds(view: View, point: Point): Boolean =
+    Rect().run {
+        view.getDrawingRect(this)
+        IntArray(2).also { locationOnScreen ->
+            view.getLocationOnScreen(locationOnScreen)
+            offset(locationOnScreen[0], locationOnScreen[1])
+        }
+        contains(point.x, point.y)
+    }
