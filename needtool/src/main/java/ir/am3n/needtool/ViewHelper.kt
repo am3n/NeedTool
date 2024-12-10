@@ -64,25 +64,23 @@ fun View.delayOnLifecycleSuspended(
 }
 
 /** Defines bounds of displayed view and check is it contains [Point]
- * @param view View to define bounds
  * @param event Touch motion event
  * @return `true` if view bounds contains point, `false` - otherwise
  */
-private fun isPointInsideViewBounds(view: View, event: MotionEvent): Boolean {
+fun View.isPointInsideViewBounds(event: MotionEvent): Boolean {
     val touchPoint = Point(Math.round(event.rawX), Math.round(event.rawY))
-    return isPointInsideViewBounds(view, touchPoint)
+    return this.isPointInsideViewBounds(touchPoint)
 }
 
 /** Defines bounds of displayed view and check is it contains [Point]
- * @param view View to define bounds
  * @param point Point to check inside bounds *
  * @return `true` if view bounds contains point, `false` - otherwise
  */
-private fun isPointInsideViewBounds(view: View, point: Point): Boolean =
+fun View.isPointInsideViewBounds(point: Point): Boolean =
     Rect().run {
-        view.getDrawingRect(this)
+        getDrawingRect(this)
         IntArray(2).also { locationOnScreen ->
-            view.getLocationOnScreen(locationOnScreen)
+            getLocationOnScreen(locationOnScreen)
             offset(locationOnScreen[0], locationOnScreen[1])
         }
         contains(point.x, point.y)
