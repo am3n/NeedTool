@@ -14,11 +14,7 @@ fun Context.collpasePanel() {
     try {
         val sbservice: Any = getSystemService("statusbar")
         val statusbarManager: Class<*> = Class.forName("android.app.StatusBarManager")
-        val showsb: Method = if (Build.VERSION.SDK_INT >= 17) {
-            statusbarManager.getMethod("collapsePanels")
-        } else {
-            statusbarManager.getMethod("collapse")
-        }
+        val showsb: Method = statusbarManager.getMethod("collapsePanels")
         showsb.invoke(sbservice)
     } catch (t: Throwable) {}
 }
@@ -29,11 +25,7 @@ fun Context.expandPanel() {
     try {
         val sbservice: Any = getSystemService("statusbar")
         val statusbarManager = Class.forName("android.app.StatusBarManager")
-        val showsb: Method = if (Build.VERSION.SDK_INT >= 17) {
-            statusbarManager.getMethod("expandPanels")
-        } else {
-            statusbarManager.getMethod("expand")
-        }
+        val showsb: Method = statusbarManager.getMethod("expandPanels")
         showsb.invoke(sbservice)
     } catch (t: Throwable) {}
 }
