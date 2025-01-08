@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -16,12 +17,14 @@ inline fun Context.notification(channelId: String, func: NotificationCompat.Buil
     return builder.build()
 }
 
-fun NotificationManagerCompat.areNotificationsFullyEnabled(): Boolean {
-    if (!areNotificationsEnabled())
+
+fun Context.areNotificationsFullyEnabled(): Boolean {
+    val nmc = NotificationManagerCompat.from(this)
+    if (!nmc.areNotificationsEnabled())
         return false
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        for (notificationChannel in notificationChannels) {
-            if (!notificationChannel.isFullyEnabled(this))
+        for (notificationChannel in nmc.notificationChannels) {
+            if (!notificationChannel.isFullyEnabled(nmc))
                 return false
         }
     }
@@ -37,4 +40,18 @@ fun NotificationChannel.isFullyEnabled(notificationManager: NotificationManagerC
             return false
     }
     return true
+}
+
+
+@RequiresApi(Build.VERSION_CODES.M)
+fun NotificationManager.isNotificationVisible(id: Int): Boolean {
+    var isVisible = false
+    val notifications = activeNotifications ?: emptyArray()
+    for (notification in notifications) {
+        if (notification.id == id) {
+            isVisible = true
+            break
+        }
+    }
+    return isVisible
 }
