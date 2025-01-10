@@ -17,7 +17,6 @@ inline fun Context.notification(channelId: String, func: NotificationCompat.Buil
     return builder.build()
 }
 
-
 fun Context.areNotificationsFullyEnabled(): Boolean {
     val nmc = NotificationManagerCompat.from(this)
     if (!nmc.areNotificationsEnabled())
@@ -40,6 +39,20 @@ fun NotificationChannel.isFullyEnabled(notificationManager: NotificationManagerC
             return false
     }
     return true
+}
+
+fun Context.notEnableNotificationChannels(): Array<NotificationChannel> {
+    val nmc = NotificationManagerCompat.from(this)
+    if (!nmc.areNotificationsEnabled())
+        return emptyArray()
+    val array = mutableListOf<NotificationChannel>()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        for (notificationChannel in nmc.notificationChannels) {
+            if (!notificationChannel.isFullyEnabled(nmc))
+                array.add(notificationChannel)
+        }
+    }
+    return array.toTypedArray()
 }
 
 
