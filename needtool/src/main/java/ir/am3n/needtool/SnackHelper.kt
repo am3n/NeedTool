@@ -18,12 +18,13 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 
 
 /**
  * CALLI    not set any typeface
- * AUTO     read "assets/fonts/" dir for .ttf fonts. if exists set it to textviews
+ * AUTO     read "assets/fonts/" dir for .ttf fonts. if exists set it to snackview
  * PATH     get typeface by provided @param fontPath
  */
 enum class SnackFont {
@@ -47,6 +48,7 @@ fun Context.snack(
     @ColorRes textColor: Int = 0,
     textSizeSp: Float = 0f,
     @ColorRes backgroundColor: Int = 0,
+    @BaseTransientBottomBar.AnimationMode animation: Int? = null,
     actionText: String? = "",
     @ColorRes actionTextColor: Int = 0,
     action: () -> Unit = {}
@@ -119,6 +121,10 @@ fun Context.snack(
         else -> ViewCompat.LAYOUT_DIRECTION_LOCALE
     })
 
+    if (animation != null) {
+        snackbar.animationMode = animation
+    }
+
     snackbar.show()
 
     return snackbar
@@ -136,6 +142,7 @@ fun snack(
     @ColorInt textColor: Int = 0,
     textSizeSp: Float = 0f,
     @ColorInt backgroundColor: Int = 0,
+    @BaseTransientBottomBar.AnimationMode animation: Int? = null,
     actionText: String? = "",
     @ColorInt actionTextColor: Int = 0,
     action: () -> Unit = {}
@@ -206,6 +213,10 @@ fun snack(
         Direction.INHERIT -> ViewCompat.LAYOUT_DIRECTION_INHERIT
         else -> ViewCompat.LAYOUT_DIRECTION_LOCALE
     })
+
+    if (animation != null) {
+        snackbar.animationMode = animation
+    }
 
     snackbar.show()
 
