@@ -63,27 +63,29 @@ fun Uri?.openInBrowser(context: Context) {
 inline fun <reified T : Any> String.removeNoneNumeric(): T {
     return when (T::class) {
         Short::class -> {
-            return (replace(Regex("[^\\d]"), "").toShortOrNull() ?: 0) as T
+            (replace(Regex("\\D"), "").toShortOrNull() ?: 0) as T
         }
         Int::class -> {
-            return (replace(Regex("[^\\d]"), "").toIntOrNull() ?: 0) as T
+            (replace(Regex("\\D"), "").toIntOrNull() ?: 0) as T
         }
         Long::class -> {
-            return (replace(Regex("[^\\d]"), "").toLongOrNull() ?: 0) as T
+            (replace(Regex("\\D"), "").toLongOrNull() ?: 0) as T
         }
         BigInteger::class -> {
-            return (replace(Regex("[^\\d]"), "").toBigIntegerOrNull() ?: 0) as T
+            (replace(Regex("\\D"), "").toBigIntegerOrNull() ?: 0) as T
         }
         BigDecimal::class -> {
-            return (replace(Regex("[^\\d]"), "").toBigDecimalOrNull() ?: 0) as T
+            (replace(Regex("\\D"), "").toBigDecimalOrNull() ?: 0) as T
         }
         Float::class -> {
-            return (replace(Regex("[^\\d.]"), "").toFloatOrNull() ?: 0) as T
+            (replace(Regex("[^\\d.]"), "").toFloatOrNull() ?: 0) as T
         }
         Double::class -> {
-            return (replace(Regex("[^\\d.]"), "").toDoubleOrNull() ?: 0) as T
+            (replace(Regex("[^\\d.]"), "").toDoubleOrNull() ?: 0) as T
         }
-        else -> 0 as T
+        else -> {
+            replace(Regex("\\D"), "") as T
+        }
     }
 }
 

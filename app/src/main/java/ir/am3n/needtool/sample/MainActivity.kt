@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
         Log.d("Me-MainAct", "onCreate() isDataEnabled: $isDataEnabled  -  isSimCardExists: $isSimCardExists")
 
+        Log.d("Mppppppp", "${"l9876543.99.gt556789".removeNoneNumeric<String>()}")
+
 
         toolbar.setMenu(
             listOf(
